@@ -7,6 +7,10 @@ use App\Repositories\GenderRepository;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class GenderSeeder
+ * @package Database\Seeders
+ */
 class GenderSeeder extends Seeder
 {
     /**
@@ -16,10 +20,18 @@ class GenderSeeder extends Seeder
      */
     public function run()
     {
+        /* API address from where to get data */
         $apiAddress = 'https://swapi.dev/api/people';
+
+        /* Seeding running */
         $this->seedGenders($apiAddress);
     }
 
+    /**
+     * Seeds genders to genders table in DB
+     * @param string $apiAddress
+     * @param array $gendersToSeed
+     */
     private function seedGenders(string $apiAddress, array $gendersToSeed = [])
     {
         $genderRepository = new GenderRepository();
@@ -32,6 +44,7 @@ class GenderSeeder extends Seeder
                     'type' => $person->gender,
                 ];
         }
+        /* If there is more than one page at API resource */
         if ($request->next) {
             $this->seedGenders($request->next, $gendersToSeed);
         } else {

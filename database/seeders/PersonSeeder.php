@@ -9,6 +9,10 @@ use App\Repositories\PersonRepository;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class PersonSeeder
+ * @package Database\Seeders
+ */
 class PersonSeeder extends Seeder
 {
     /**
@@ -18,11 +22,18 @@ class PersonSeeder extends Seeder
      */
     public function run()
     {
+        /* API address from where to get data */
         $apiAddress = 'https://swapi.dev/api/people';
-        $this->seedPeople($apiAddress);
 
+        /* Seeding running */
+        $this->seedPeople($apiAddress);
     }
 
+    /**
+     * Seeds people to people table in DB
+     * @param string $apiRequest
+     * @param array $peopleToSeed
+     */
     private function seedPeople(string $apiRequest, array $peopleToSeed = [])
     {
         $personRepository = new PersonRepository();
@@ -33,6 +44,7 @@ class PersonSeeder extends Seeder
         foreach ($people as $person) {
             $genderId = $genderRepository->getIdByType($person->gender);
             $homeworldId = preg_split('~\/~', $person->homeworld)[5];
+
             $peopleToSeed[] =
                 [
                     'name' => $person->name,
@@ -46,6 +58,7 @@ class PersonSeeder extends Seeder
                     'url' => $person->url,
                 ];
         }
+        /* If there is more than one page at API resource */
         if ($personRequest->next) {
             $this->seedPeople($personRequest->next, $peopleToSeed);
         } else {

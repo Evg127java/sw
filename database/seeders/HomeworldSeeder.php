@@ -7,6 +7,10 @@ use App\Repositories\HomeworldRepository;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class HomeworldSeeder
+ * @package Database\Seeders
+ */
 class HomeworldSeeder extends Seeder
 {
     /**
@@ -16,10 +20,18 @@ class HomeworldSeeder extends Seeder
      */
     public function run()
     {
+        /* API address from where to get data */
         $apiAddress = 'https://swapi.dev/api/planets';
+
+        /* Seeding running */
         $this->seedHomeworlds($apiAddress);
     }
 
+    /**
+     * Seeds homeworlds to homeworlds table in DB
+     * @param string $apiAddress
+     * @param array $homeworldsToSeed
+     */
     private function seedHomeworlds(string $apiAddress, array $homeworldsToSeed = [])
     {
         $homeworldRepository = new HomeworldRepository();
@@ -32,6 +44,7 @@ class HomeworldSeeder extends Seeder
                     'name' => $planet->name,
                 ];
         }
+        /* If there is more than one page at API resource */
         if ($request->next) {
             $this->seedHomeworlds($request->next, $homeworldsToSeed);
         } else {
