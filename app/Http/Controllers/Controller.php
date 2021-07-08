@@ -15,10 +15,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected $personRepository;
-    protected $filmRepository;
-    protected $homeworldRepository;
-    protected $genderRepository;
+    protected PersonRepositoryInterface $personRepository;
+    protected FilmRepositoryInterface $filmRepository;
+    protected HomeworldRepositoryInterface $homeworldRepository;
+    protected GenderRepositoryInterface $genderRepository;
 
     public function __construct(
         PersonRepositoryInterface $personRepository,
