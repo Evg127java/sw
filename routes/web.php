@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PersonController::class, 'index'])->name('home');
+
+Route::get('/people/{id}', [PersonController::class, 'show'])->whereNumber('id');
+
+Route::post('/create', [PersonController::class, 'store']);
+
+Route::get('/create', [PersonController::class, 'create']);
+
+Route::get('/edit/{id}', [PersonController::class, 'edit'])->whereNumber('id');
+
+Route::post('/edit/{id}', [PersonController::class, 'update'])->whereNumber('id');
+
+Route::get('/delete/{id}', [PersonController::class, 'destroy'])->whereNumber('id');
