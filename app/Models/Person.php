@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\File;
 use Storage;
 
 /**
@@ -60,6 +62,15 @@ class Person extends Model
     public function films()
     {
         return $this->belongsToMany(Film::class);
+    }
+
+    /**
+     * Each person is related to many images(one to many)
+     * @return HasMany
+     */
+    public function images()
+    {
+        return $this->HasMany(Image::class);
     }
 
     /**
@@ -125,9 +136,4 @@ class Person extends Model
     {
         $this->films()->detach();
     }
-
-
-    //-------------Related person's images processing-------------------//
-
-
 }
