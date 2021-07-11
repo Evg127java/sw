@@ -85,4 +85,21 @@ class Person extends Model
         Person::destroy($id);
     }
 
+
+    //-------------------FILMS-------------------
+
+    public function addFilmsToPerson()
+    {
+        $this->films()->sync(request('films'));
+    }
+
+    public function updateFilmsForPerson()
+    {
+        request('films') ? $this->addFilmsToPerson() : $this->removeAllFilmsFromPerson();
+    }
+
+    public function removeAllFilmsFromPerson()
+    {
+        $this->films()->detach();
+    }
 }
