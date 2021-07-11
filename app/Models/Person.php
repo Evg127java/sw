@@ -83,9 +83,7 @@ class Person extends Model
         $this->updateFilmsForPerson();
         $this->updateImagesForPerson();
 
-        if ($this->isDirty()) {
-            $this->save();
-        }
+        $this->touch();
     }
 
     /**
@@ -102,6 +100,7 @@ class Person extends Model
 
 
     //-------------Related person's films processing-------------------//
+
 
     /**
      * Updates the current person's films set due to the request content
@@ -126,4 +125,9 @@ class Person extends Model
     {
         $this->films()->detach();
     }
+
+
+    //-------------Related person's images processing-------------------//
+
+
 }

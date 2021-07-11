@@ -87,7 +87,6 @@ class PersonController extends Controller
 
         $person = $this->personRepository->getOneById(request('id'));
         $person->updatePerson($request);
-        $person->touch();
 
         return redirect('/people/' . $person->id);
 
