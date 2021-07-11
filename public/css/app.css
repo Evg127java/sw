@@ -1,1 +1,6 @@
-
+html, body {
+    background-image: url("/../images/sa_starwars_virtualbg_16x9_024_0f1a87c3.jpeg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
