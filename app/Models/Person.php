@@ -23,6 +23,7 @@ class Person extends Model
 
     use HasFactory;
 
+    /* Attributes for a default person's model */
     protected $attributes = [
         'name' => 'name',
         'height' => 0,
@@ -61,12 +62,20 @@ class Person extends Model
         return $this->belongsToMany(Film::class);
     }
 
+    /**
+     * Makes a new person's model
+     * @param PersonFormRequest $request validated request data
+     */
     public static function createNewPerson(PersonFormRequest $request)
     {
         $defaultPerson = self::create();
         $defaultPerson->updatePerson($request);
     }
 
+    /**
+     * Updates person's with passed data
+     * @param PersonFormRequest $request validated request data
+     */
     public function updatePerson(PersonFormRequest $request)
     {
         $this->update($request->validationData());
@@ -79,25 +88,40 @@ class Person extends Model
         }
     }
 
+    /**
+     * Deletes a person's instance by specified id
+     * @param int $id person's id to delete
+     */
     public static function deletePersonById(int $id)
     {
+        /* Delete related person's directory from the storage before the person's deleting */
         Storage::deleteDirectory('images/' . $id);
+
         Person::destroy($id);
     }
 
 
-    //-------------------FILMS-------------------
+    //-------------Related person's films processing-------------------//
 
-    public function addFilmsToPerson()
-    {
-        $this->films()->sync(request('films'));
-    }
-
+    /**
+     * Updates the current person's films set due to the request content
+     */
     public function updateFilmsForPerson()
     {
         request('films') ? $this->addFilmsToPerson() : $this->removeAllFilmsFromPerson();
     }
 
+    /**
+     * Adds films from the request with the current person
+     */
+    public function addFilmsToPerson()
+    {
+        $this->films()->sync(request('films'));
+    }
+
+    /**
+     * Removes films of the request of the current person
+     */
     public function removeAllFilmsFromPerson()
     {
         $this->films()->detach();

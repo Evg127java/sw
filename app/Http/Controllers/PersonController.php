@@ -3,23 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonFormRequest;
-use App\Models\Film;
-use App\Models\Gender;
-use App\Models\Homeworld;
 use App\Models\Person;
-use App\Repositories\FilmRepository;
-use App\Repositories\GenderRepository;
-use App\Repositories\HomeworldRepository;
-use App\Repositories\PersonRepository;
-use App\Services\FilmServices;
-use App\Services\ImageServices;
-use App\Services\PersonServices;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Storage;
 
 class PersonController extends Controller
 {
@@ -33,6 +22,7 @@ class PersonController extends Controller
             ->getAllByOrder('id', 'desc')
             ->paginate(10);
         return view('people', ['people' => $people]);
+
     }
 
     /**
@@ -51,11 +41,12 @@ class PersonController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @param PersonFormRequest $request
      * @return Application|RedirectResponse|Redirector
      */
-    public function store()
+    public function store(PersonFormRequest $request)
     {
-        Person::createNewPerson();
+        Person::createNewPerson($request);
         return redirect()->route('home');
     }
 
@@ -88,13 +79,14 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param PersonFormRequest $request
      * @return Application|RedirectResponse|Redirector
      */
-    public function update()
+    public function update(PersonFormRequest $request)
     {
 
         $person = $this->personRepository->getOneById(request('id'));
-        $person->updatePerson();
+        $person->updatePerson($request);
         $person->touch();
 
         return redirect('/people/' . $person->id);
