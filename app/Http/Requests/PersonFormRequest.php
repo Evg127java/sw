@@ -41,6 +41,10 @@ class PersonFormRequest extends FormRequest
         ];
     }
 
+    /**
+     * Adds attributes descriptions for error messages
+     * @return array|string[]
+     */
     public function attributes()
     {
         return [
@@ -49,6 +53,10 @@ class PersonFormRequest extends FormRequest
         ];
     }
 
+    /**
+     * Sets default field values(if they are null) after validation
+     *
+     */
     public function passedValidation()
     {
         /* Set default values */
