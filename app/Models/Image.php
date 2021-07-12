@@ -60,20 +60,19 @@ class Image extends Model
      */
     public static function saveImages(array $images, int $personId)
     {
-        $saved = [];
+        $storedImagesInstances = [];
         foreach ($images as $image) {
             if ($image->isValid()) {
 
                 /* Save the image in storage and get the path to it */
                 $path = self::saveImageInStorage($image, $personId);
 
-                /* Add image entry to DB */
+                /* Form the stored images' instances array */
                 $imageInstance = self::getNewImageInstance($path);
-
-                $saved[] = $imageInstance;
+                $storedImagesInstances[] = $imageInstance;
             }
         }
-        return $saved;
+        return $storedImagesInstances;
     }
 
     /**
