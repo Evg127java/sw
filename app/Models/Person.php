@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Requests\PersonFormRequest;
+use App\Services\PersonServices;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -56,21 +57,21 @@ class Person extends Model
     }
 
     /**
-     * Each person is related to many films(many to many)
-     * @return BelongsToMany
-     */
-    public function films()
-    {
-        return $this->belongsToMany(Film::class);
-    }
-
-    /**
      * Each person is related to many images(one to many)
      * @return HasMany
      */
     public function images()
     {
         return $this->HasMany(Image::class);
+    }
+
+    /**
+     * Each person is related to many films(many to many)
+     * @return BelongsToMany
+     */
+    public function films()
+    {
+        return $this->belongsToMany(Film::class);
     }
 
     /**
@@ -89,10 +90,13 @@ class Person extends Model
      */
     public function updatePerson(PersonFormRequest $request)
     {
+        /* Person's properties update with validated data */
         $this->update($request->validationData());
 
-        $this->updateFilmsForPerson();
-        $this->updateImagesForPerson();
+        /* Process films and images for the current person */
+        $personServices = new PersonServices($this);
+        $personServices->updateFilmsForPerson($request);
+        $personServices->updateImagesForPerson($request);
 
         $this->touch();
     }
@@ -107,33 +111,5 @@ class Person extends Model
         Storage::deleteDirectory('images/' . $id);
 
         Person::destroy($id);
-    }
-
-
-    //-------------Related person's films processing-------------------//
-
-
-    /**
-     * Updates the current person's films set due to the request content
-     */
-    public function updateFilmsForPerson()
-    {
-        request('films') ? $this->addFilmsToPerson() : $this->removeAllFilmsFromPerson();
-    }
-
-    /**
-     * Adds films from the request with the current person
-     */
-    public function addFilmsToPerson()
-    {
-        $this->films()->sync(request('films'));
-    }
-
-    /**
-     * Removes films of the request of the current person
-     */
-    public function removeAllFilmsFromPerson()
-    {
-        $this->films()->detach();
     }
 }
