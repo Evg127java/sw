@@ -76,29 +76,23 @@ class Person extends Model
 
     /**
      * Makes a new person's model
-     * @param PersonFormRequest $request validated request data
+     * @param array $request validated data from request
+     * @return Person|Model
      */
-    public static function createNewPerson(PersonFormRequest $request)
+    public static function createNewPerson(array $request)
     {
-        $defaultPerson = self::create();
-        $defaultPerson->updatePerson($request);
+        return self::create($request);
     }
 
     /**
      * Updates person's with passed data
-     * @param PersonFormRequest $request validated request data
+     * @param array $request validated data from request
      */
-    public function updatePerson(PersonFormRequest $request)
+    public function updatePerson(array $request)
     {
-        /* Person's properties update with validated data */
-        $this->update($request->validationData());
-
-        /* Process films and images for the current person */
-        $personServices = new PersonServices($this);
-        $personServices->updateFilmsForPerson($request);
-        $personServices->updateImagesForPerson($request);
-
-        $this->touch();
+        /* Person update with validated data */
+        $this->update($request);
+        return $this;
     }
 
     /**
