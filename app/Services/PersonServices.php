@@ -6,6 +6,8 @@ namespace App\Services;
 
 use App\Http\Requests\PersonFormRequest;
 use App\Models\Image;
+use App\Models\Person;
+use Arr;
 
 /**
  * Class PersonServices
@@ -13,39 +15,49 @@ use App\Models\Image;
  */
 class PersonServices
 {
-
     private $person;
-
+    private $request;
 
     /**
      * PersonServices constructor.
-     * @param $person
+     * @param Person $person
+     * @param array $request
      */
-    public function __construct($person)
+    public function __construct($person, array $request)
     {
         $this->person = $person;
+        $this->request = $request;
     }
-
 
     //-------------------FILMS for person processing-------------------//
 
+    /**
+     * Runs a person's relation processes
+     */
+    public function processPersonRelations()
+    {
+        $this->processFilmsForPerson();
+        $this->processImagesForPerson();
+    }
 
     /**
      * Updates films specified in form request for the person
-     * @param PersonFormRequest $request data to update
      */
-    public function updateFilmsForPerson(PersonFormRequest $request)
+    public function processFilmsForPerson()
     {
-        $request->films ? $this->addFilmsToPerson($request) : $this->removeAllFilmsFromPerson();
+        $request = $this->request;
+        Arr::exists($request, 'films') ?
+            $this->addFilmsToPerson($request['films']) :
+            $this->removeAllFilmsFromPerson();
     }
 
     /**
      * Adds passed films to the current person
-     * @param PersonFormRequest $request data to add
+     * @param $films
      */
-    public function addFilmsToPerson(PersonFormRequest $request)
+    public function addFilmsToPerson(array $films)
     {
-        $this->person->films()->sync($request->films);
+        $this->person->films()->sync($films);
     }
 
     /**
@@ -62,21 +74,20 @@ class PersonServices
 
     /**
      * Updates images specified in form request for the person
-     * @param PersonFormRequest $request
      */
-    public function updateImagesForPerson(PersonFormRequest $request)
+    public function processImagesForPerson()
     {
+        $request = $this->request;
         /* Delete images if they are specified */
-        $imagesToDelete = $request->imagesToDelete;
-        if (!empty($imagesToDelete)) {
-            Image::deleteImages($imagesToDelete);
+        if (Arr::has($request,'imagesToDelete')) {
+            Image::deleteImages($request['imagesToDelete']);
         }
 
         /* Add images if they are specified */
-        $imagesToAdd = $request->images;
-        if (!empty($imagesToAdd)) {
-            $this->addImagesToPerson($imagesToAdd);
+        if (Arr::has($request,'images')) {
+            $this->addImagesToPerson($request['images']);
         }
+        $this->person->touch();
     }
 
     /**
