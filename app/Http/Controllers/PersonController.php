@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonFormRequest;
 use App\Models\Person;
+use App\Services\PersonServices;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -46,7 +47,9 @@ class PersonController extends Controller
      */
     public function store(PersonFormRequest $request)
     {
-        Person::createNewPerson($request);
+        $person = Person::createNewPerson($request->all());
+        $personServices = new PersonServices($person, $request->all());
+        $personServices->processPersonRelations();
         return redirect()->route('home');
     }
 
@@ -84,12 +87,12 @@ class PersonController extends Controller
      */
     public function update(PersonFormRequest $request)
     {
-
         $person = $this->personRepository->getOneById(request('id'));
-        $person->updatePerson($request);
+        $person = $person->updatePerson($request->all());
+        $personServices = new PersonServices($person, $request->all());
+        $personServices->processPersonRelations();
 
         return redirect('/people/' . $person->id);
-
     }
 
     /**

@@ -4,7 +4,6 @@
 namespace App\Services;
 
 
-use App\Http\Requests\PersonFormRequest;
 use App\Models\Image;
 use App\Models\Person;
 use Arr;
@@ -23,7 +22,7 @@ class PersonServices
      * @param Person $person
      * @param array $request
      */
-    public function __construct($person, array $request)
+    public function __construct(Person $person, array $request)
     {
         $this->person = $person;
         $this->request = $request;
@@ -43,7 +42,7 @@ class PersonServices
     /**
      * Updates films specified in form request for the person
      */
-    public function processFilmsForPerson()
+    private function processFilmsForPerson()
     {
         $request = $this->request;
         Arr::exists($request, 'films') ?
@@ -55,7 +54,7 @@ class PersonServices
      * Adds passed films to the current person
      * @param $films
      */
-    public function addFilmsToPerson(array $films)
+    private function addFilmsToPerson(array $films)
     {
         $this->person->films()->sync($films);
     }
@@ -63,7 +62,7 @@ class PersonServices
     /**
      * Deletes all the films related to the current person
      */
-    public function removeAllFilmsFromPerson()
+    private function removeAllFilmsFromPerson()
     {
         $this->person->films()->detach();
     }
@@ -75,7 +74,7 @@ class PersonServices
     /**
      * Updates images specified in form request for the person
      */
-    public function processImagesForPerson()
+    private function processImagesForPerson()
     {
         $request = $this->request;
         /* Delete images if they are specified */
@@ -94,7 +93,7 @@ class PersonServices
      * Adds specified images to the current person
      * @param array $images
      */
-    public function addImagesToPerson(array $images)
+    private function addImagesToPerson(array $images)
     {
         $person = $this->person;
         $imagesToAdd = Image::saveImages($images, $person->id);
