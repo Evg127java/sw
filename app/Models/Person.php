@@ -26,18 +26,6 @@ class Person extends Model
 
     use HasFactory;
 
-    /* Attributes for a default person's model */
-    protected $attributes = [
-        'name' => 'name',
-        'height' => 0,
-        'mass' => 0,
-        'hair_color' => 'n/a',
-        'birth_year' => 0,
-        'url' => 'none',
-        'gender_id' => 1,
-        'homeworld_id' => 1,
-    ];
-
     /**
      * Each person is related (belongs to) to only one gender
      * @return BelongsTo
@@ -87,6 +75,7 @@ class Person extends Model
     /**
      * Updates person's with passed data
      * @param array $request validated data from request
+     * @return Person
      */
     public function updatePerson(array $request)
     {
