@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeworldController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +28,7 @@ Route::get('/edit/{id}', [PersonController::class, 'edit'])->whereNumber('id');
 Route::post('/edit/{id}', [PersonController::class, 'update'])->whereNumber('id');
 
 Route::get('/delete/{id}', [PersonController::class, 'destroy'])->whereNumber('id');
+
+Route::get('/homeworld', [HomeworldController::class, 'index']);
+
+Route::get('/homeworld/{homeworld:name}', [HomeworldController::class, 'show'])->whereAlpha('homeworld:name');
