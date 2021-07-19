@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use App\Http\Requests\PersonFormRequest;
-use App\Services\PersonServices;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Http\File;
 use Storage;
 
 /**
