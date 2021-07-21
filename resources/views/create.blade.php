@@ -162,4 +162,5 @@
                 </div>
             </div>
         </div>
+        <script src="/js/formValidation.js" type="text/javascript"></script>
     </div>@endsection
