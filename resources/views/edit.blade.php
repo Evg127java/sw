@@ -152,7 +152,9 @@
                                     @if ($person->images->isNotEmpty())
                                         @foreach($person->images as $image)
                                                 <div class="position-relative">
-                                                    <img src="{{ asset($image->path) }}" alt="image" style="height: 100px; width: 100px;" class="p-1">
+                                                    <a href="{{ asset($image->path) }}">
+                                                        <img src="{{ asset($image->path) }}" alt="image" style="height: 100px; width: 100px;" class="p-1">
+                                                    </a>
                                                     <input type="checkbox"
                                                            name="imagesToDelete[]"
                                                            value="{{ $image->id }}"

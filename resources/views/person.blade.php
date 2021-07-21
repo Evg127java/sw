@@ -80,8 +80,13 @@
                     </div>
                     <div class="col-md-8 text-center">
                         @forelse($person->images as $image)
-                            <img src="{{ asset($image->path) }}" alt="person image" style="height: 400px; width: 400px;"
-                                 class="p-1">
+                            <a href="{{ asset($image->path) }}">
+                                <img src="{{ asset($image->path) }}"
+                                     alt="person image"
+                                     style="height: 400px; width: 400px;"
+                                     class="p-1"
+                                >
+                            </a>
                         @empty
                             <div class="alert alert-secondary" role="alert">
                                 This personage has no images yet

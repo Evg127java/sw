@@ -70,8 +70,11 @@
                                         <div class="d-flex flex-wrap justify-content-center">
                                             @forelse($person->images as $image)
                                                 <div>
-                                                    <img src="{{ asset($image->path) }}" alt="image"
-                                                         style="height: 100px; width: 100px;" class="p-1">
+                                                    <a href="{{ asset($image->path) }}">
+                                                        <img src="{{ asset($image->path) }}" alt="image"
+                                                             style="height: 100px; width: 100px;" class="p-1"
+                                                        >
+                                                    </a>
                                                 </div>
                                             @empty
                                                 No images
