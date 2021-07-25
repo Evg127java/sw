@@ -16,7 +16,7 @@
 
                 <div class="row justify-content-center">
                     <div class="col-12 w-full">
-                        <table class="table">
+                        <table class="table text-center">
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col">Name</th>
@@ -29,7 +29,6 @@
                                 <th scope="col">Films</th>
                                 <th scope="col">Created</th>
                                 <th scope="col">URL</th>
-                                <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -54,10 +53,6 @@
                                         @else
                                             <a href="{{ $person->url }}">{{ $person->url }}</a>
                                         @endif
-                                    </td>
-                                    <td class="text-center"><a href="/delete/{{ $person->id }}">
-                                            <button class="badge badge-secondary">Delete</button>
-                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
