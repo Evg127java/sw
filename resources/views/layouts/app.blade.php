@@ -1,31 +1,43 @@
-<div class="container-fluid">
-    <div class="row text-center justify-content-center">
-        <div class="col-md-10 px-0 border-bottom">
-            <header class="bg-light py-3">
-                <div class="row justify-content-start mx-0">
-                    <div class="col-2 text-left">
-                        <a class="navbar-brand" href="/">
-                            <img src="/images/1200px-Star_wars2.svg.png" alt="logo" width="70" height="35">
-                        </a>
-                    </div>
-                    <div class="col-8">
-                        <ul class="nav nav-pills justify-content-center">
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::path() === '/' ?  'active bg-secondary ' : '' }}"
-                                   href="/">ENTITIES</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::path() === 'create' ?  'active bg-secondary ' : '' }}"
-                                   href="/create">CREATE ENTITY</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::path() === 'special' ?  'active bg-secondary ' : '' }}"
-                                   href="/homeworld">HOMEWORLD</a>
-                            </li>
-                        </ul>
-                    </div>
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-0 flex-row col-2 d-flex flex-row justify-content-end">
+                    <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -35,7 +47,7 @@
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item ml-2">
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
@@ -60,7 +72,12 @@
                         @endguest
                     </ul>
                 </div>
-            </header>
-        </div>
+            </div>
+        </nav>
+
+        <main class="py-4">
+            @yield('content')
+        </main>
     </div>
-</div>
+</body>
+</html>

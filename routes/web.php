@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PersonController::class, 'index'])->name('home');
+Route::get('/', [PersonController::class, 'index']);
 
 Route::get('/people/{id}', [PersonController::class, 'show'])->whereNumber('id');
 
@@ -32,3 +32,7 @@ Route::get('/delete/{id}', [PersonController::class, 'destroy'])->whereNumber('i
 Route::get('/homeworld', [HomeworldController::class, 'index']);
 
 Route::get('/homeworld/{homeworld:name}', [HomeworldController::class, 'show'])->whereAlpha('homeworld:name');
+
+Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
