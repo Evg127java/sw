@@ -50,7 +50,7 @@ class PersonController extends Controller
         $person = Person::createNewPerson($request->all());
         $personServices = new PersonServices($person, $request->all());
         $personServices->processPersonRelations();
-        return redirect()->route('home');
+        return redirect('/');
     }
 
     /**
@@ -103,6 +103,6 @@ class PersonController extends Controller
     public function destroy()
     {
         Person::deletePersonById(request('id'));
-        return redirect()->route('home');
+        return redirect('/');
     }
 }
