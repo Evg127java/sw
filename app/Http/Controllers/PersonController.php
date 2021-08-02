@@ -20,7 +20,7 @@ class PersonController extends Controller
     public function index()
     {
         $people = $this->personRepository
-            ->getAllByOrder('id', 'desc')
+            ->getAllByOrderWithRelations('id', 'desc', ['films', 'gender', 'homeworld'])
             ->paginate(10);
         return view('people', ['people' => $people]);
 

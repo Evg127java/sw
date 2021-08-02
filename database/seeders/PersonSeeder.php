@@ -4,10 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Gender;
 use App\Models\Person;
-use App\Repositories\GenderRepository;
-use App\Repositories\PersonRepository;
+use App\Repository\RepositoryInterface;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class PersonSeeder
@@ -15,13 +13,22 @@ use Illuminate\Support\Facades\DB;
  */
 class PersonSeeder extends Seeder
 {
+    protected $genderRepository;
+    protected $personRepository;
+
     /**
      * Run the database seeds.
      *
+     * @param RepositoryInterface $repository
+     * @param Gender $gender
+     * @param Person $person
      * @return void
      */
-    public function run()
+    public function run(RepositoryInterface $repository, Gender $gender, Person $person)
     {
+        ($this->personRepository = $repository)->setModel($person);
+        ($this->genderRepository = clone($repository))->setModel($gender);
+
         /* API address from where to get data */
         $apiAddress = 'https://swapi.dev/api/people';
 
@@ -36,13 +43,11 @@ class PersonSeeder extends Seeder
      */
     private function seedPeople(string $apiRequest, array $peopleToSeed = [])
     {
-        $personRepository = new PersonRepository();
-        $genderRepository = new GenderRepository();
         $personRequest = json_decode(file_get_contents($apiRequest, true));
 
         $people = $personRequest->results;
         foreach ($people as $person) {
-            $genderId = $genderRepository->getIdByType($person->gender);
+            $genderId = $this->genderRepository->getIdByColumnValue('type', $person->gender);
             $homeworldId = preg_split('~\/~', $person->homeworld)[5];
 
             $peopleToSeed[] =
@@ -62,7 +67,7 @@ class PersonSeeder extends Seeder
         if ($personRequest->next) {
             $this->seedPeople($personRequest->next, $peopleToSeed);
         } else {
-            $personRepository->addAll($peopleToSeed);
+            $this->personRepository->addAll($peopleToSeed);
         }
     }
 }

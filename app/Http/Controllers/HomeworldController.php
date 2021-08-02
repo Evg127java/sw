@@ -28,7 +28,7 @@ class HomeworldController extends Controller
     public function show(Homeworld $homeworld)
     {
         $people = $this->personRepository
-            ->getAllByColumn('homeworld_id', $homeworld->id)
+            ->getAllByColumnValueWithRelations('homeworld_id', $homeworld->id, ['films', 'images'])
             ->paginate(5);
         $homeworlds = $this->homeworldRepository->getAll();
 

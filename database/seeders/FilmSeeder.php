@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Film;
-use App\Repositories\FilmRepository;
+use App\Repository\RepositoryInterface;
+use App\Repository\Repository;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,13 +14,19 @@ use Illuminate\Support\Facades\DB;
  */
 class FilmSeeder extends Seeder
 {
+    protected $filmRepository;
+
     /**
      * Run the database seeds.
      *
+     * @param RepositoryInterface $repository
+     * @param Film $film
      * @return void
      */
-    public function run()
+    public function run(RepositoryInterface $repository, Film $film)
     {
+        ($this->filmRepository = $repository)->setModel($film);
+
         /* API address from where to get data */
         $apiAddress = 'https://swapi.dev/api/films';
 
@@ -34,7 +41,6 @@ class FilmSeeder extends Seeder
      */
     private function seedFilms(string $apiAddress, array $filmsToSeed = [])
     {
-        $filmRepository = new FilmRepository();
         $request = json_decode(file_get_contents($apiAddress, true));
 
         $films = $request->results;
@@ -48,7 +54,7 @@ class FilmSeeder extends Seeder
         if ($request->next) {
             $this->seedFilms($request->next, $filmsToSeed);
         } else {
-            $filmRepository->addAll($filmsToSeed);
+            $this->filmRepository->addAll($filmsToSeed);
         }
     }
 }

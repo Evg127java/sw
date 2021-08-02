@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Homeworld;
-use App\Repositories\HomeworldRepository;
+use App\Repository\RepositoryInterface;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class HomeworldSeeder
@@ -13,13 +12,19 @@ use Illuminate\Support\Facades\DB;
  */
 class HomeworldSeeder extends Seeder
 {
+    protected $homeworldRepository;
+
     /**
      * Run the database seeds.
      *
+     * @param RepositoryInterface $repository
+     * @param Homeworld $homeworld
      * @return void
      */
-    public function run()
+    public function run(RepositoryInterface $repository, Homeworld $homeworld)
     {
+        ($this->homeworldRepository = $repository)->setModel($homeworld);
+
         /* API address from where to get data */
         $apiAddress = 'https://swapi.dev/api/planets';
 
@@ -34,7 +39,6 @@ class HomeworldSeeder extends Seeder
      */
     private function seedHomeworlds(string $apiAddress, array $homeworldsToSeed = [])
     {
-        $homeworldRepository = new HomeworldRepository();
         $request = json_decode(file_get_contents($apiAddress, true));
 
         $planets = $request->results;
@@ -48,7 +52,7 @@ class HomeworldSeeder extends Seeder
         if ($request->next) {
             $this->seedHomeworlds($request->next, $homeworldsToSeed);
         } else {
-            $homeworldRepository->addAll($homeworldsToSeed);
+            $this->homeworldRepository->addAll($homeworldsToSeed);
         }
     }
 }

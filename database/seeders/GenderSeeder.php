@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Gender;
-use App\Repositories\GenderRepository;
+use App\Repository\RepositoryInterface;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class GenderSeeder
@@ -13,13 +12,19 @@ use Illuminate\Support\Facades\DB;
  */
 class GenderSeeder extends Seeder
 {
+    protected $genderRepository;
+
     /**
      * Run the database seeds.
      *
+     * @param RepositoryInterface $repository
+     * @param Gender $gender
      * @return void
      */
-    public function run()
+    public function run(RepositoryInterface $repository, Gender $gender)
     {
+        ($this->genderRepository = $repository)->setModel($gender);
+
         /* API address from where to get data */
         $apiAddress = 'https://swapi.dev/api/people';
 
@@ -34,7 +39,6 @@ class GenderSeeder extends Seeder
      */
     private function seedGenders(string $apiAddress, array $gendersToSeed = [])
     {
-        $genderRepository = new GenderRepository();
         $request = json_decode(file_get_contents($apiAddress, true));
 
         $people = $request->results;
@@ -48,7 +52,7 @@ class GenderSeeder extends Seeder
         if ($request->next) {
             $this->seedGenders($request->next, $gendersToSeed);
         } else {
-            $genderRepository->addAll($gendersToSeed);
+            $this->genderRepository->addAll($gendersToSeed);
         }
     }
 }

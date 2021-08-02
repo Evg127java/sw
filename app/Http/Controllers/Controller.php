@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\FilmRepositoryInterface;
-use App\Repositories\Interfaces\GenderRepositoryInterface;
-use App\Repositories\Interfaces\HomeworldRepositoryInterface;
-use App\Repositories\Interfaces\PersonRepositoryInterface;
+use App\Models\Film;
+use App\Models\Gender;
+use App\Models\Homeworld;
+use App\Models\Person;
+use App\Repository\RepositoryInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,20 +16,22 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected PersonRepositoryInterface $personRepository;
-    protected FilmRepositoryInterface $filmRepository;
-    protected HomeworldRepositoryInterface $homeworldRepository;
-    protected GenderRepositoryInterface $genderRepository;
+    protected RepositoryInterface $personRepository;
+    protected RepositoryInterface $filmRepository;
+    protected RepositoryInterface $homeworldRepository;
+    protected RepositoryInterface $genderRepository;
 
     public function __construct(
-        PersonRepositoryInterface $personRepository,
-        FilmRepositoryInterface $filmRepository,
-        GenderRepositoryInterface $genderRepository,
-        HomeworldRepositoryInterface $homeworldRepository
-    ) {
-        $this->personRepository = $personRepository;
-        $this->filmRepository = $filmRepository;
-        $this->genderRepository = $genderRepository;
-        $this->homeworldRepository = $homeworldRepository;
+        RepositoryInterface $repository,
+        Person $person,
+        Film $film,
+        Gender $gender,
+        Homeworld $homeworld
+    )
+    {
+        ($this->personRepository = $repository)->setModel($person);
+        ($this->filmRepository = clone($repository))->setModel($film);
+        ($this->genderRepository = clone($repository))->setModel($gender);
+        ($this->homeworldRepository = clone($repository))->setModel($homeworld);
     }
 }

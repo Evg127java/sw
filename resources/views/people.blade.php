@@ -6,13 +6,9 @@
 
 @section('content')
 
-    <script src="https://cdn.jsdelivr.net/gh/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     @if (session()->has('success register'))
     <div
-        x-data="{ show: true }"
-        x-init="setTimeout(() => show = false, 5000)"
-        x-show="show"
-        class="fixed-top rounded text-center mx-auto col-md-10 top-5 bg-secondary text-white">
+        class="fixed-bottom rounded text-center mx-auto col-md-10 top-5 bg-secondary text-white">
         <p>{{ session('success register') }}</p>
     </div>
     @endif

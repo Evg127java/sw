@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Repositories\FilmRepository;
-use App\Repositories\PersonRepository;
+use App\Models\Film;
+use App\Models\Person;
+use App\Repository\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 /**
@@ -12,29 +13,40 @@ use Illuminate\Database\Seeder;
  */
 class FilmPersonSeeder extends Seeder
 {
+    protected $filmRepository;
+    protected $personRepository;
+
     /**
      * Run the database seeds.
      *
+     * @param RepositoryInterface $repository
+     * @param Film $film
+     * @param Person $person
      * @return void
      */
-    public function run()
+    public function run(RepositoryInterface $repository, Film $film, Person $person)
     {
+        ($this->filmRepository = $repository)->setModel($film);
+        ($this->personRepository = clone($repository))->setModel($person);
+
         $apiAddress = 'https://swapi.dev/api/people';
         $this->bindFilmsToPeople($apiAddress);
     }
 
+    /**
+     * Binds films to people as relations
+     * @param $apiAddress
+     */
     private function bindFilmsToPeople($apiAddress)
     {
-        $personRepository = new PersonRepository();
-        $filmRepository = new FilmRepository();
         $personRequest = json_decode(file_get_contents($apiAddress, true));
 
         $people = $personRequest->results;
         foreach ($people as $person) {
             foreach ($person->films as $filmLink) {
-                $person = $personRepository->getOneByName($person->name);
+                $person = $this->personRepository->getOneByColumnValue('name', $person->name);
                 $filmId = preg_split('~\/~', $filmLink)[5];
-                $film = $filmRepository->getOneById($filmId);
+                $film = $this->filmRepository->getOneById($filmId);
                 $person->films()->attach($film);
             }
         }

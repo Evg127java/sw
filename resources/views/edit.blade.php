@@ -39,6 +39,7 @@
                               onsubmit="return validateForm()"
                         >
                             @csrf
+                            @method('PUT')
                             <div class="row mx-0">
                                 <div class="form-group col-md-12">
                                     <label for="name">Name*</label>
