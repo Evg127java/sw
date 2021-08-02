@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonFormRequest;
+use App\Models\Film;
+use App\Models\Gender;
+use App\Models\Homeworld;
 use App\Models\Person;
+use App\Repository\RepositoryInterface;
+use App\Services\PersonServiceInterface;
 use App\Services\PersonServices;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -13,6 +18,17 @@ use Illuminate\Routing\Redirector;
 
 class PersonController extends Controller
 {
+    protected PersonServiceInterface $personServices;
+
+    public function __construct(
+        PersonServiceInterface $personServices,
+        RepositoryInterface $repository,
+        Person $person, Film $film, Gender $gender, Homeworld $homeworld)
+    {
+        parent::__construct($repository, $person, $film, $gender, $homeworld);
+        $this->personServices = $personServices;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -47,9 +63,15 @@ class PersonController extends Controller
      */
     public function store(PersonFormRequest $request)
     {
-        $person = Person::createNewPerson($request->all());
-        $personServices = new PersonServices($person, $request->all());
-        $personServices->processPersonRelations();
+        $personFormRequest = $request->all();
+        $person = Person::createNewPerson($personFormRequest);
+
+        /* Process person's external relations */
+        $this->personServices
+            ->setPerson($person)
+            ->setRequest($personFormRequest)
+            ->processPersonRelations();
+
         return redirect('/');
     }
 
@@ -80,17 +102,24 @@ class PersonController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Updates the specified resource in storage.
      *
      * @param PersonFormRequest $request
      * @return Application|RedirectResponse|Redirector
      */
     public function update(PersonFormRequest $request)
     {
+        $personFormRequest = $request->all();
         $person = $this->personRepository->getOneById(request('id'));
-        $person = $person->updatePerson($request->all());
-        $personServices = new PersonServices($person, $request->all());
-        $personServices->processPersonRelations();
+
+        /* Update person's base data */
+        $person = $person->updatePerson($personFormRequest);
+
+        /* Process person's external relations */
+        $this->personServices
+            ->setPerson($person)
+            ->setRequest($personFormRequest)
+            ->processPersonRelations();
 
         return redirect('/people/' . $person->id);
     }

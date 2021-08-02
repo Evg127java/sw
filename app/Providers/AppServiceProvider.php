@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repository\RepositoryInterface;
 use App\Repository\Repository;
+use App\Services\PersonServiceInterface;
+use App\Services\PersonServices;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             RepositoryInterface::class,
             Repository::class
+        );
+
+        $this->app->bind(
+            PersonServiceInterface::class,
+            PersonServices::class
         );
     }
 

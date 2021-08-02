@@ -12,20 +12,31 @@ use Arr;
  * Class PersonServices
  * @package App\Services
  */
-class PersonServices
+class PersonServices implements PersonServiceInterface
 {
-    private $person;
-    private $request;
+    private Person $person;
+    private array $request;
 
     /**
-     * PersonServices constructor.
-     * @param Person $person
+     * Sets current person's request data
      * @param array $request
+     * @return PersonServices
      */
-    public function __construct(Person $person, array $request)
+    public function setRequest(array $request)
+    {
+        $this->request = $request;
+        return $this;
+    }
+
+    /**
+     * Sets current person to service
+     * @param Person $person
+     * @return PersonServices
+     */
+    public function setPerson(Person $person)
     {
         $this->person = $person;
-        $this->request = $request;
+        return $this;
     }
 
     //-------------------FILMS for person processing-------------------//
@@ -42,7 +53,7 @@ class PersonServices
     /**
      * Updates films specified in form request for the person
      */
-    private function processFilmsForPerson()
+    public function processFilmsForPerson()
     {
         $request = $this->request;
         Arr::exists($request, 'films') ?
@@ -54,7 +65,7 @@ class PersonServices
      * Adds passed films to the current person
      * @param $films
      */
-    private function addFilmsToPerson(array $films)
+    public function addFilmsToPerson(array $films)
     {
         $this->person->films()->sync($films);
     }
@@ -62,7 +73,7 @@ class PersonServices
     /**
      * Deletes all the films related to the current person
      */
-    private function removeAllFilmsFromPerson()
+    public function removeAllFilmsFromPerson()
     {
         $this->person->films()->detach();
     }
@@ -74,7 +85,7 @@ class PersonServices
     /**
      * Updates images specified in form request for the person
      */
-    private function processImagesForPerson()
+    public function processImagesForPerson()
     {
         $request = $this->request;
         /* Delete images if they are specified */
@@ -93,7 +104,7 @@ class PersonServices
      * Adds specified images to the current person
      * @param array $images
      */
-    private function addImagesToPerson(array $images)
+    public function addImagesToPerson(array $images)
     {
         $person = $this->person;
         $imagesToAdd = Image::saveImages($images, $person->id);
