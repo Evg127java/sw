@@ -2,26 +2,26 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Verified extends Mailable
+class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $userName;
+    public string $url;
 
     /**
      * Create a new message instance.
      *
-     * @param User $user
+     * @param $user
      */
-    public function __construct(User $user)
+    public function __construct($user)
     {
         $this->userName = $user->name;
+        $this->url = $_SERVER['HTTP_HOST'];
     }
 
     /**
@@ -31,7 +31,7 @@ class Verified extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.verified')
-            ->subject('Successfully verified');
+        return $this->markdown('emails.welcome')
+            ->subject('Welcome');
     }
 }
