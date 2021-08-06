@@ -2,8 +2,11 @@
 
 namespace App\Console;
 
+use App\Mail\AnnualCongratsMail;
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Mail;
 
 class Kernel extends ConsoleKernel
 {
@@ -25,6 +28,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        $emails = User::all()->pluck('email');
+        $schedule->call(function () use ($emails){
+            Mail::to($emails)->send(new AnnualCongratsMail());
+        })->yearlyOn(8,5,'12:00');
     }
 
     /**
