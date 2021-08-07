@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\HomeworldController;
 use App\Http\Controllers\Api\PersonController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,4 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResources([
     'people' => PersonController::class,
+    'homeworlds' => HomeworldController::class,
 ]);
