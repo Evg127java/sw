@@ -19,25 +19,19 @@ use Illuminate\Http\Request;
 
 Route::middleware('verified')->group(function () {
     Route::post('/create', [PersonController::class, 'store']);
-
     Route::get('/create', [PersonController::class, 'create']);
-
     Route::get('/edit/{id}', [PersonController::class, 'edit'])->whereNumber('id');
-
     Route::put('/edit/{id}', [PersonController::class, 'update'])->whereNumber('id');
-
     Route::get('/delete/{id}', [PersonController::class, 'destroy'])->whereNumber('id');
 });
-
 Route::get('/', [PersonController::class, 'index']);
-
 Route::get('/people/{id}', [PersonController::class, 'show'])->whereNumber('id');
-
 Route::post('/create', [PersonController::class, 'store']);
-
 Route::get('/homeworld', [HomeworldController::class, 'index']);
-
 Route::get('/homeworld/{homeworld:name}', [HomeworldController::class, 'show'])->whereAlpha('homeworld:name');
+
+
+/* Authentication routes */
 
 Auth::routes();
 

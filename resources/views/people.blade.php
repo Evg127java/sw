@@ -7,10 +7,10 @@
 @section('content')
 
     @if (session()->has('success register'))
-    <div
-        class="fixed-bottom rounded text-center mx-auto col-md-10 top-5 bg-secondary text-white">
-        <p>{{ session('success register') }}</p>
-    </div>
+        <div
+            class="fixed-bottom rounded text-center mx-auto col-md-10 top-5 bg-secondary text-white">
+            <p>{{ session('success register') }}</p>
+        </div>
     @endif
     <div class="container-fluid my-0">
         <div class="row justify-content-center">

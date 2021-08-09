@@ -18,7 +18,9 @@
                             <div class="row justify-content-md-center">
                                 <div class="col-md-8">
                                     <select class="form-control" id="homeworld" onchange="location = this.value;">
-                                        <option {{ !isset($homeworldName) ? ' selected' : '' }} disabled>Choose a planet</option>
+                                        <option {{ !isset($homeworldName) ? ' selected' : '' }} disabled>Choose a
+                                            planet
+                                        </option>
                                         @foreach($homeworlds as $homeworld)
                                             <option
                                                 value="/homeworld/{{ $homeworld->name ?? '' }}"
