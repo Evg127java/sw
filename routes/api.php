@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FilmController;
 use App\Http\Controllers\Api\HomeworldController;
 use App\Http\Controllers\Api\ImageController;
@@ -18,18 +19,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->get('/name', function (Request $request) {
+    return $request->user()->name;
+});
+
+/* Public routes */
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/people', [PersonController::class, 'index']);
+Route::get('/people/{id}', [PersonController::class, 'show']);
+
 Route::apiResources([
-    'people' => PersonController::class,
     'homeworlds' => HomeworldController::class,
     'images' => ImageController::class,
     'films' => FilmController::class,
 ]);
 
-Route::prefix('api')->middleware('auth')->group(function () {
+/* Protected routes */
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/people', [PersonController::class, 'store']);
     Route::put('/people/{id}', [PersonController::class, 'update']);
     Route::delete('/people/{id}', [PersonController::class, 'destroy']);
