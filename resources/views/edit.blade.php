@@ -14,16 +14,16 @@
             <div class="col-md-10 bg-light py-3">
                 <div class="row text-center">
                     <div class="col-md-12">
-                        <h4>Fill in the fields and press the 'Update entity' button to create an entity</h4>
+                        <h4>Fill in the fields and press the 'Update person' button to confirm editing the person</h4>
                     </div>
                 </div>
                 <div class="row justify-content-md-center mx-0">
                     <div class="col-md-8">
                         <div class="row justify-content-md-center mx-0">
-                        @if ($errors->any())
+                            @if ($errors->any())
                                 <div class="alert alert-danger col-12">
                                     <ul>
-                                    @foreach ($errors->all() as $error)
+                                        @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
@@ -49,7 +49,8 @@
                                            value="{{ $person->name }}"
                                            name="name"
                                            required
-                                    ><div class="error" id="nameErr"></div>
+                                    >
+                                    <div class="error" id="nameErr"></div>
                                 </div>
                             </div>
                             <div class="row mx-0">
@@ -89,15 +90,17 @@
                                            value="{{ $person->birth_year }}"
                                            name="birth_year"
                                            required
-                                    ><div class="error" id="birth_yearErr"></div>
+                                    >
+                                    <div class="error" id="birth_yearErr"></div>
                                 </div>
                             </div>
                             <div class="row mx-0">
                                 <div class="form-group col-md-6">
                                     <label for="gender">Gender choice</label>
                                     <select class="form-control" id="gender" name="gender_id">
-                                    @foreach($genders as $gender)
-                                            <option value="{{ $gender->id }}" {{ $gender->type === $person->gender->type ? ' selected' : '' }}>
+                                        @foreach($genders as $gender)
+                                            <option
+                                                value="{{ $gender->id }}" {{ $gender->type === $person->gender->type ? ' selected' : '' }}>
                                                 {{ $gender->type }}
                                             </option>
                                         @endforeach
@@ -107,8 +110,9 @@
                                 <div class="form-group col-md-6">
                                     <label for="homeworld">Home world</label>
                                     <select class="form-control" id="homeworld" name="homeworld_id">
-                                    @foreach($homeworlds as $homeworld)
-                                            <option value="{{ $homeworld->id }}" {{ $homeworld->name === $person->homeworld->name ? ' selected' : '' }}>
+                                        @foreach($homeworlds as $homeworld)
+                                            <option
+                                                value="{{ $homeworld->id }}" {{ $homeworld->name === $person->homeworld->name ? ' selected' : '' }}>
                                                 {{ $homeworld->name }}
                                             </option>
                                         @endforeach
@@ -121,8 +125,9 @@
                                 <div class="form-group col-md-12">
                                     <label for="films">Films</label>
                                     <select multiple class="form-control" id="films" name="films[]">
-                                    @foreach($films as $film)
-                                            <option value="{{ $film->id }}" {{ $person->films->contains($film) ? ' selected' : '' }}>
+                                        @foreach($films as $film)
+                                            <option
+                                                value="{{ $film->id }}" {{ $person->films->contains($film) ? ' selected' : '' }}>
                                                 {{ $film->title }}
                                             </option>
                                         @endforeach
@@ -150,11 +155,12 @@
                             <div class="row mx-0  col-md-12  justify-content-center">
                                 <div class="form-group">
                                     <div class="d-flex flex-wrap justify-content-center border-bottom">
-                                    @if ($person->images->isNotEmpty())
-                                        @foreach($person->images as $image)
+                                        @if ($person->images->isNotEmpty())
+                                            @foreach($person->images as $image)
                                                 <div class="position-relative">
                                                     <a href="{{ asset($image->path) }}">
-                                                        <img src="{{ asset($image->path) }}" alt="image" style="height: 100px; width: 100px;" class="p-1">
+                                                        <img src="{{ asset($image->path) }}" alt="image"
+                                                             style="height: 100px; width: 100px;" class="p-1">
                                                     </a>
                                                     <input type="checkbox"
                                                            name="imagesToDelete[]"
@@ -185,7 +191,8 @@
                             </div>
                             <div class="row mx-0 text-center">
                                 <div class="form-group col-md-12">
-                                    <button type="submit" class="validateBtn btn btn-outline-secondary">Update entity data</button>
+                                    <button type="submit" class="validateBtn btn btn-outline-secondary">Update person
+                                    </button>
                                 </div>
                             </div>
                         </form>

@@ -12,11 +12,11 @@
                         <ul class="nav nav-pills justify-content-center">
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::path() === '/' ?  'active bg-secondary ' : '' }}"
-                                   href="/">ENTITIES</a>
+                                   href="/">PEOPLE</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::path() === 'create' ?  'active bg-secondary ' : '' }}"
-                                   href="/create">CREATE ENTITY</a>
+                                   href="/create">CREATE PERSON</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ Request::path() === 'special' ?  'active bg-secondary ' : '' }}"
@@ -41,7 +41,8 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
