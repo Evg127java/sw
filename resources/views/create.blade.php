@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    entity creating
+    person creating
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
             <div class="col-10 bg-light py-3">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h4>Fill in the fields and press the 'Submit' button to create an entity</h4>
+                        <h4>Fill in the fields and press the 'Create person' button to create a new person</h4>
                     </div>
                 </div>
 
@@ -91,7 +91,6 @@
                                            placeholder="Birth year"
                                            name="birth_year"
                                            value="{{ old('birth_year') }}"
-                                           {{--required--}}
                                     ><div class="error" id="birth_yearErr"></div>
                                 </div>
                             </div>
@@ -154,7 +153,7 @@
                             </div>
                             <div class="row text-center">
                                 <div class="form-group col-md-12">
-                                    <button type="submit" class="validateBtn btn btn-secondary">Create entity</button>
+                                    <button type="submit" class="validateBtn btn btn-secondary">Create person</button>
                                 </div>
                             </div>
                         </form>
