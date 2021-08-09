@@ -8,7 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Hi, congrats!</h2> Today is our resource's birth day. Thanks for taking part in our advance!
-
+<h2>Hi, congrats!</h2> Today is our resource's birth day. Thanks for taking part in our advance!
 </body>
 </html>

@@ -9,11 +9,11 @@
 </head>
 <body>
 @component('mail::message')
-<h2>Hi <b>{{ $userName }}</b>! Congratulations! You are verified now</h2>
-You can use the resource as a verified user, create new and edit existing creatures.
-@component('mail::button', ['url' => config('app.url'), 'color' => 'success'])
-    Go to StarWars
-@endcomponent
+    <h2>Hi <b>{{ $userName }}</b>! Congratulations! You are verified now</h2>
+    You can use the resource as a verified user, create new and edit existing creatures.
+    @component('mail::button', ['url' => config('app.url'), 'color' => 'success'])
+        Go to StarWars
+    @endcomponent
 @endcomponent
 </body>
 </html>
