@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FilmController;
 use App\Http\Controllers\Api\HomeworldController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\PersonController;
@@ -25,4 +26,11 @@ Route::apiResources([
     'people' => PersonController::class,
     'homeworlds' => HomeworldController::class,
     'images' => ImageController::class,
+    'films' => FilmController::class,
 ]);
+
+Route::prefix('api')->middleware('auth')->group(function () {
+    Route::post('/people', [PersonController::class, 'store']);
+    Route::put('/people/{id}', [PersonController::class, 'update']);
+    Route::delete('/people/{id}', [PersonController::class, 'destroy']);
+});
