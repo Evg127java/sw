@@ -2,12 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Models\User;
-use App\Mail\WelcomeMail;
+use App\Jobs\SendWelcomeMailJob;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Mail;
 
 class SendWelcomeMail
 {
@@ -28,7 +24,8 @@ class SendWelcomeMail
      */
     public function handle(Verified $event)
     {
+        /* Send the job to the default queue */
         $user = $event->user;
-        Mail::to($user)->send(new WelcomeMail($user));
+        SendWelcomeMailJob::dispatch($user)->delay(now()->addSeconds(15));
     }
 }

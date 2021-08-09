@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
+
+        //============== Annual Mail sending ================
         $emails = User::all()->pluck('email');
         $schedule->call(function () use ($emails){
             Mail::to($emails)->send(new AnnualCongratsMail());

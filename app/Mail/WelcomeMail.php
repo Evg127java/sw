@@ -4,10 +4,11 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class WelcomeMail extends Mailable implements ShouldQueue
+class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,11 +19,12 @@ class WelcomeMail extends Mailable implements ShouldQueue
      * Create a new message instance.
      *
      * @param $user
+     * @param Request $request
      */
     public function __construct($user)
     {
         $this->userName = $user->name;
-        $this->url = $_SERVER['HTTP_HOST'];
+        $this->url = request()->server('HTTP_HOST');
     }
 
     /**
