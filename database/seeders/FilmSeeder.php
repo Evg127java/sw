@@ -36,8 +36,8 @@ class FilmSeeder extends Seeder
 
     /**
      * Seeds films to films table in DB
-     * @param string $apiAddress  address from where to get data
-     * @param array $filmsToSeed  films array to seed
+     * @param string $apiAddress address from where to get data
+     * @param array $filmsToSeed films array to seed
      */
     private function seedFilms(string $apiAddress, array $filmsToSeed = [])
     {

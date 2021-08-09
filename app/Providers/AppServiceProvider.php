@@ -18,11 +18,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        /* Repositories */
         $this->app->bind(
             RepositoryInterface::class,
             Repository::class
         );
 
+        /* Service for images and films processing */
         $this->app->bind(
             PersonServiceInterface::class,
             PersonServices::class
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /* Use bootstrap paginator */
         Paginator::useBootstrap();
     }
 }

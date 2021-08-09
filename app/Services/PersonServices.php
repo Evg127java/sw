@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-
 use App\Models\Image;
 use App\Models\Person;
 use Arr;
@@ -89,12 +88,12 @@ class PersonServices implements PersonServiceInterface
     {
         $request = $this->request;
         /* Delete images if they are specified */
-        if (Arr::has($request,'imagesToDelete')) {
+        if (Arr::has($request, 'imagesToDelete')) {
             Image::deleteImages($request['imagesToDelete']);
         }
 
         /* Add images if they are specified */
-        if (Arr::has($request,'images')) {
+        if (Arr::has($request, 'images')) {
             $this->addImagesToPerson($request['images']);
         }
         $this->person->touch();
