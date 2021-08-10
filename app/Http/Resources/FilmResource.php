@@ -16,7 +16,8 @@ class FilmResource extends JsonResource
     {
         return [
             'title' => $this->title,
-            'people' => (new ResourceUrlBuilder())($this->people, 'people/'),
+            'people' => (new CollectionLinksBuilder())($this->people, 'people/'),
+            'url' => (new SingleLinkBuilder())($this->id, 'films/'),
         ];
     }
 }

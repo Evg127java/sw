@@ -6,7 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Database\Eloquent\Collection;
 
-class ResourceUrlBuilder
+class CollectionLinksBuilder
 {
     /**
      * Builds resources' url for the specified collections

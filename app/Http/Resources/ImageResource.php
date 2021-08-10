@@ -16,7 +16,7 @@ class ImageResource extends JsonResource
     {
         return [
             'path' => $this->path,
-            'person' => 'http://' . request()->server('HTTP_HOST') . '/api/people/' . $this->person_id,
+            'person' => (new SingleLinkBuilder())($this->person_id, 'people/'),
         ];
     }
 }

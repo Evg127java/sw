@@ -16,7 +16,8 @@ class HomeworldResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'people' => (new ResourceUrlBuilder())($this->people, 'people/'),
+            'people' => (new CollectionLinksBuilder())($this->people, 'people/'),
+            'url' => (new SingleLinkBuilder())($this->id, 'homeworlds/'),
         ];
     }
 }
