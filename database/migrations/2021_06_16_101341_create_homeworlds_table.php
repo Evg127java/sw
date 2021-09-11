@@ -20,8 +20,6 @@ class CreateHomeworldsTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
-
-        Artisan::call('db:seed', ['--class' => HomeworldSeeder::class]);
     }
 
     /**

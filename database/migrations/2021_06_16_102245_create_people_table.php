@@ -27,8 +27,6 @@ class CreatePeopleTable extends Migration
             $table->string('url');
             $table->timestamps();
         });
-
-        Artisan::call('db:seed', ['--class' => PersonSeeder::class]);
     }
 
     /**

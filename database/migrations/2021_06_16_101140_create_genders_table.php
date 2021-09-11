@@ -21,8 +21,6 @@ class CreateGendersTable extends Migration
             $table->string('type')->unique();
             $table->timestamps();
         });
-
-        Artisan::call('db:seed', ['--class' => GenderSeeder::class]);
     }
 
     /**

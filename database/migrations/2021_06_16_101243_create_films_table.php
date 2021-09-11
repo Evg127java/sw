@@ -20,8 +20,6 @@ class CreateFilmsTable extends Migration
             $table->string('title');
             $table->timestamps();
         });
-
-        Artisan::call('db:seed', ['--class' => FilmSeeder::class]);
     }
 
     /**

@@ -21,8 +21,6 @@ class CreateFilmPersonTable extends Migration
             $table->unsignedBigInteger('film_id');
             $table->timestamps();
         });
-
-        Artisan::call('db:seed', ['--class' => FilmPersonSeeder::class]);
     }
 
     /**

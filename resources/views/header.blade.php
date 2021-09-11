@@ -5,7 +5,7 @@
                 <div class="row justify-content-start mx-0">
                     <div class="col-2 text-left">
                         <a class="navbar-brand" href="/">
-                            <img src="/images/1200px-Star_wars2.svg.png" alt="logo" width="70" height="35">
+                            <img src="/img/1200px-Star_wars2.svg.png" alt="logo" width="70" height="35">
                         </a>
                     </div>
                     <div class="col-8">
