@@ -18,5 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(HomeworldSeeder::class);
         $this->call(PersonSeeder::class);
         $this->call(FilmPersonSeeder::class);
+        $this->call(StarshipSeeder::class);
+        $this->call(FilmStarshipSeeder::class);
+        $this->call(PersonStarshipSeeder::class);
     }
 }
