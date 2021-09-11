@@ -17,6 +17,7 @@ class CreateImagesTable extends Migration
             $table->id();
             $table->string('path');
             $table->unsignedBigInteger('person_id')->nullable();
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -23,7 +23,9 @@ class CreatePeopleTable extends Migration
             $table->string('hair_color');
             $table->string('birth_year');
             $table->unsignedBigInteger('gender_id');
+            $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
             $table->unsignedBigInteger('homeworld_id');
+            $table->foreign('homeworld_id')->references('id')->on('homeworlds')->onDelete('cascade');
             $table->string('url');
             $table->timestamps();
         });
