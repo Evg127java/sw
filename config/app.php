@@ -230,4 +230,12 @@ return [
 
     ],
 
+    /* Custom data */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Api source's host from where to get data for this project
+    |--------------------------------------------------------------------------
+    */
+    'apiBaseSource' => 'https://swapi.dev/api/',
 ];

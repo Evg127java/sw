@@ -30,7 +30,7 @@ class PersonSeeder extends Seeder
         ($this->genderRepository = clone($repository))->setModel($gender);
 
         /* API address from where to get data */
-        $apiAddress = 'https://swapi.dev/api/people';
+        $apiAddress = config('app.apiBaseSource').'people';
 
         /* Seeding running */
         $this->seedPeople($apiAddress);

@@ -26,7 +26,7 @@ class HomeworldSeeder extends Seeder
         ($this->homeworldRepository = $repository)->setModel($homeworld);
 
         /* API address from where to get data */
-        $apiAddress = 'https://swapi.dev/api/planets';
+        $apiAddress = config('app.apiBaseSource').'planets';
 
         /* Seeding running */
         $this->seedHomeworlds($apiAddress);

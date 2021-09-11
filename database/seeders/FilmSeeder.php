@@ -28,7 +28,7 @@ class FilmSeeder extends Seeder
         ($this->filmRepository = $repository)->setModel($film);
 
         /* API address from where to get data */
-        $apiAddress = 'https://swapi.dev/api/films';
+        $apiAddress = config('app.apiBaseSource').'films';
 
         /* Seeding running */
         $this->seedFilms($apiAddress);
