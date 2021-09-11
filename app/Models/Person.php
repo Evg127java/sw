@@ -59,6 +59,11 @@ class Person extends Model
         return $this->belongsToMany(Film::class);
     }
 
+    public function starships()
+    {
+        return $this->belongsToMany(Starship::class);
+    }
+
     /**
      * Makes a new person's model
      * @param array $request validated data from request

@@ -2,23 +2,21 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * Class Film
- *
+ * Class Starship
  * @package App\Models
- * @mixin Eloquent
  */
-class Film extends Model
+class Starship extends Model
 {
     use HasFactory;
 
     /**
-     * Each film is related to many people (many to many)
+     * Each starship is related (belongs to) to many people
      * @return BelongsToMany
      */
     public function people()
@@ -26,8 +24,12 @@ class Film extends Model
         return $this->belongsToMany(Person::class);
     }
 
-    public function starships()
+    /**
+     * Each starship is related (belongs to) to many films
+     * @return BelongsToMany
+     */
+    public function films()
     {
-        return $this->belongsToMany(Starship::class);
+        return $this->belongsToMany(Film::class);
     }
 }
