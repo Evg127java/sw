@@ -26,8 +26,21 @@ class Film extends Model
         return $this->belongsToMany(Person::class);
     }
 
+    /**
+     * Each film is related to many starships (many to many)
+     * @return BelongsToMany
+     */
     public function starships()
     {
         return $this->belongsToMany(Starship::class);
+    }
+
+    /**
+     * Each film is related to many vehicles (many to many)
+     * @return BelongsToMany
+     */
+    public function vehicles()
+    {
+        return $this->belongsToMany(Vehicle::class);
     }
 }
