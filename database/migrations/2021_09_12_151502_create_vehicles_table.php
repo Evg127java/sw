@@ -25,7 +25,7 @@ class CreateVehiclesTable extends Migration
             $table->string('crew');
             $table->integer('cargo_capacity');
             $table->string('consumables');
-            $table->double('vehicle_class');
+            $table->string('vehicle_class');
             $table->string('url');
             $table->timestamps();
         });

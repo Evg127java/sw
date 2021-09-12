@@ -13,13 +13,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(GenderSeeder::class);
-        $this->call(FilmSeeder::class);
-        $this->call(HomeworldSeeder::class);
-        $this->call(PersonSeeder::class);
-        $this->call(FilmPersonSeeder::class);
-        $this->call(StarshipSeeder::class);
-        $this->call(FilmStarshipSeeder::class);
-        $this->call(PersonStarshipSeeder::class);
+        $this->call([
+            GenderSeeder::class,
+            FilmSeeder::class,
+            HomeworldSeeder::class,
+            PersonSeeder::class,
+            FilmPersonSeeder::class,
+            StarshipSeeder::class,
+            FilmStarshipSeeder::class,
+            PersonStarshipSeeder::class,
+            VehicleSeeder::class,
+            FilmVehicleSeeder::class,
+            PersonVehicleSeeder::class,
+        ]);
     }
 }
