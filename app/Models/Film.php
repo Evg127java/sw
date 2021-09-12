@@ -43,4 +43,13 @@ class Film extends Model
     {
         return $this->belongsToMany(Vehicle::class);
     }
+
+    /**
+     * Each film is related to many species (many to many)
+     * @return BelongsToMany
+     */
+    public function species()
+    {
+        return $this->belongsToMany(Specie::class);
+    }
 }

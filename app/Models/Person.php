@@ -78,6 +78,15 @@ class Person extends Model
     }
 
     /**
+     * Each person is related(belongs to) to the only specie(one to many)
+     * @return BelongsTo
+     */
+    public function specie()
+    {
+        return $this->belongsTo(Specie::class);
+    }
+
+    /**
      * Makes a new person's model
      * @param array $request validated data from request
      * @return Person|Model
