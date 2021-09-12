@@ -25,4 +25,13 @@ class Homeworld extends Model
     {
         return $this->hasMany(Person::class);
     }
+
+    /**
+     * Each homeworld related to many species
+     * @return HasMany
+     */
+    public function species()
+    {
+        return $this->hasMany(Specie::class);
+    }
 }
