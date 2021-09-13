@@ -13,23 +13,17 @@ class VehicleSeeder extends Seeder
     /**
      * @var RepositoryInterface
      */
-    protected $personRepository;
-    /**
-     * @var RepositoryInterface
-     */
     protected $vehicleRepository;
 
     /**
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Person $person
      * @param Vehicle $vehicle
      * @return void
      */
-    public function run(RepositoryInterface $repository, Person $person, Vehicle $vehicle)
+    public function run(RepositoryInterface $repository, Vehicle $vehicle)
     {
-        ($this->personRepository = $repository)->setModel($person);
         ($this->vehicleRepository = clone($repository))->setModel($vehicle);
 
         /* API address from where to get data */

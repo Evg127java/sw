@@ -12,23 +12,17 @@ class StarshipSeeder extends Seeder
     /**
      * @var RepositoryInterface
      */
-    protected $personRepository;
-    /**
-     * @var RepositoryInterface
-     */
     protected $starshipRepository;
 
     /**
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Person $person
      * @param Starship $starship
      * @return void
      */
-    public function run(RepositoryInterface $repository, Person $person, Starship $starship)
+    public function run(RepositoryInterface $repository, Starship $starship)
     {
-        ($this->personRepository = $repository)->setModel($person);
         ($this->starshipRepository = clone($repository))->setModel($starship);
 
         /* API address from where to get data */

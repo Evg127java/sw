@@ -12,7 +12,7 @@ class PersonVehicleSeeder extends Seeder
     /**
      * @var RepositoryInterface
      */
-    protected $filmRepository;
+    protected $personRepository;
     /**
      * @var RepositoryInterface
      */
@@ -28,7 +28,7 @@ class PersonVehicleSeeder extends Seeder
      */
     public function run(RepositoryInterface $repository, Person $person, Vehicle $vehicle)
     {
-        ($this->filmRepository = $repository)->setModel($person);
+        ($this->personRepository = $repository)->setModel($person);
         ($this->vehicleRepository = clone($repository))->setModel($vehicle);
 
         $apiAddress = config('app.apiBaseSource').'vehicles';
@@ -48,7 +48,7 @@ class PersonVehicleSeeder extends Seeder
             foreach ($vehicle->pilots as $pilotLink) {
                 $vehicle = $this->vehicleRepository->getOneByColumnValue('name', $vehicle->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[5];
-                $pilot = $this->filmRepository->getOneById($pilotId);
+                $pilot = $this->personRepository->getOneById($pilotId);
                 $vehicle->people()->attach($pilot);
             }
         }

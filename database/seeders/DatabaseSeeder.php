@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class,
             FilmVehicleSeeder::class,
             PersonVehicleSeeder::class,
+            SpecieSeeder::class,
+            FilmSpecieSeeder::class,
+            PersonSpecieSeeder::class,
         ]);
     }
 }

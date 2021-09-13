@@ -23,7 +23,7 @@ class CreateSpeciesTable extends Migration
             $table->string('hair_colors');
             $table->string('eye_colors');
             $table->string('average_lifespan');
-            $table->string('homeworld');
+            $table->integer('homeworld');
             $table->string('language');
             $table->string('url');
             $table->timestamps();

@@ -49,9 +49,11 @@ class PersonSeeder extends Seeder
         foreach ($people as $person) {
             $genderId = $this->genderRepository->getIdByColumnValue('type', $person->gender);
             $homeworldId = preg_split('~\/~', $person->homeworld)[5];
+            $personId = preg_split('~\/~', $person->url)[5];
 
             $peopleToSeed[] =
                 [
+                    'id' => $personId,
                     'name' => $person->name,
                     'height' => $person->height,
                     'mass' => $person->mass,

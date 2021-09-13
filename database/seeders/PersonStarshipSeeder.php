@@ -13,7 +13,7 @@ class PersonStarshipSeeder extends Seeder
     /**
      * @var RepositoryInterface
      */
-    protected $filmRepository;
+    protected $personRepository;
     /**
      * @var RepositoryInterface
      */
@@ -29,7 +29,7 @@ class PersonStarshipSeeder extends Seeder
      */
     public function run(RepositoryInterface $repository, Person $person, Starship $starship)
     {
-        ($this->filmRepository = $repository)->setModel($person);
+        ($this->personRepository = $repository)->setModel($person);
         ($this->starshipRepository = clone($repository))->setModel($starship);
 
         $apiAddress = config('app.apiBaseSource').'starships';
@@ -49,7 +49,7 @@ class PersonStarshipSeeder extends Seeder
             foreach ($starship->pilots as $pilotLink) {
                 $starship = $this->starshipRepository->getOneByColumnValue('name', $starship->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[5];
-                $pilot = $this->filmRepository->getOneById($pilotId);
+                $pilot = $this->personRepository->getOneById($pilotId);
                 $starship->people()->attach($pilot);
             }
         }
