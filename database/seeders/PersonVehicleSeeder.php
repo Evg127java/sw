@@ -4,13 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Person;
 use App\Models\Vehicle;
-use App\Repository\RepositoryInterface;
+use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class PersonVehicleSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var PersonRepositoryInterface
      */
     protected $personRepository;
     /**
@@ -22,14 +23,14 @@ class PersonVehicleSeeder extends Seeder
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Person $person
+     * @param PersonRepositoryInterface $personRepository
      * @param Vehicle $vehicle
      * @return void
      */
-    public function run(RepositoryInterface $repository, Person $person, Vehicle $vehicle)
+    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Vehicle $vehicle)
     {
-        ($this->personRepository = $repository)->setModel($person);
-        ($this->vehicleRepository = clone($repository))->setModel($vehicle);
+        $this->personRepository = $personRepository;
+        ($this->vehicleRepository = $repository)->setModel($vehicle);
 
         $apiAddress = config('app.vehiclesApiSource');
         $this->bindPeopleToVehicles($apiAddress);
@@ -48,7 +49,7 @@ class PersonVehicleSeeder extends Seeder
             foreach ($vehicle->pilots as $pilotLink) {
                 $vehicle = $this->vehicleRepository->getOneByColumnValue('name', $vehicle->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[5];
-                $pilot = $this->personRepository->getOneById($pilotId);
+                $pilot = $this->personRepository->getPersonById($pilotId);
                 $vehicle->people()->attach($pilot);
             }
         }

@@ -7,7 +7,8 @@ use App\Models\Film;
 use App\Models\Gender;
 use App\Models\Homeworld;
 use App\Models\Person;
-use App\Repository\RepositoryInterface;
+use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use App\Services\PersonServiceInterface;
 use App\Services\PersonServices;
 use Illuminate\Contracts\Foundation\Application;
@@ -19,14 +20,16 @@ use Illuminate\Routing\Redirector;
 class PersonController extends Controller
 {
     protected PersonServiceInterface $personServices;
+    protected PersonRepositoryInterface $personRepository;
 
     public function __construct(
         PersonServiceInterface $personServices,
         RepositoryInterface $repository,
-        Person $person, Film $film, Gender $gender, Homeworld $homeworld)
+        Film $film, Gender $gender, Homeworld $homeworld, PersonRepositoryInterface $personRepositorySql)
     {
-        parent::__construct($repository, $person, $film, $gender, $homeworld);
+        parent::__construct($repository, $film, $gender, $homeworld);
         $this->personServices = $personServices;
+        $this->personRepository = $personRepositorySql;
     }
 
     /**
@@ -36,8 +39,7 @@ class PersonController extends Controller
     public function index()
     {
         $people = $this->personRepository
-            ->getAllByOrderWithRelations('id', 'desc', ['films', 'gender', 'homeworld'])
-            ->paginate(10);
+            ->getAllPeopleSorted('id', 'desc', ['films', 'gender', 'homeworld'], true);
         return view('people', ['people' => $people]);
 
     }
@@ -81,7 +83,7 @@ class PersonController extends Controller
      */
     public function show()
     {
-        $person = $this->personRepository->getOneById(request('id'));
+        $person = $this->personRepository->getPersonById(request('id'));
         return view('person', ['person' => $person]);
     }
 
@@ -94,7 +96,7 @@ class PersonController extends Controller
     {
         return view('edit',
             [
-                'person' => $this->personRepository->getOneById($id),
+                'person' => $this->personRepository->getPersonById($id),
                 'films' => $this->filmRepository->getAll(),
                 'homeworlds' => $this->homeworldRepository->getAll(),
                 'genders' => $this->genderRepository->getAll(),
@@ -110,7 +112,7 @@ class PersonController extends Controller
     public function update(PersonFormRequest $request)
     {
         $personFormRequest = $request->all();
-        $person = $this->personRepository->getOneById(request('id'));
+        $person = $this->personRepository->getPersonById(request('id'));
 
         /* Update person's base data */
         $person = $person->updatePerson($personFormRequest);

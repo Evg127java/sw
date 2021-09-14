@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Film;
 use App\Models\Specie;
-use App\Repository\RepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmSpecieSeeder extends Seeder

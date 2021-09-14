@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Homeworld;
-use App\Repository\RepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 /**

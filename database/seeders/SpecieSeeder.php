@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Person;
 use App\Models\Specie;
 use App\Models\Vehicle;
-use App\Repository\RepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class SpecieSeeder extends Seeder
@@ -43,7 +43,6 @@ class SpecieSeeder extends Seeder
         $specieRequest = json_decode(file_get_contents($apiRequest, true));
 
         $species = $specieRequest->results;
-        //dd($species);
         foreach ($species as $specie) {
 
             $homeworldId = is_null($specie->homeworld) ?

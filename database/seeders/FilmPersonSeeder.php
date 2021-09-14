@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Film;
 use App\Models\Person;
-use App\Repository\RepositoryInterface;
+use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 /**
@@ -14,20 +15,21 @@ use Illuminate\Database\Seeder;
 class FilmPersonSeeder extends Seeder
 {
     protected $filmRepository;
-    protected $personRepository;
+    protected PersonRepositoryInterface $personRepository;
 
     /**
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
+     * @param PersonRepositoryInterface $personRepository
      * @param Film $film
      * @param Person $person
      * @return void
      */
-    public function run(RepositoryInterface $repository, Film $film, Person $person)
+    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Film $film, Person $person)
     {
         ($this->filmRepository = $repository)->setModel($film);
-        ($this->personRepository = clone($repository))->setModel($person);
+        $this->personRepository = $personRepository;
 
         $apiAddress = config('app.peopleApiSource');
         $this->bindFilmsToPeople($apiAddress);
@@ -44,7 +46,8 @@ class FilmPersonSeeder extends Seeder
         $people = $personRequest->results;
         foreach ($people as $person) {
             foreach ($person->films as $filmLink) {
-                $person = $this->personRepository->getOneByColumnValue('name', $person->name);
+                $person = $this->personRepository
+                    ->getPersonByParameterAndValue('name', $person->name);
                 $filmId = preg_split('~\/~', $filmLink)[5];
                 $film = $this->filmRepository->getOneById($filmId);
                 $person->films()->attach($film);

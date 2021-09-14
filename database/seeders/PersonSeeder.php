@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Gender;
 use App\Models\Person;
-use App\Repository\RepositoryInterface;
+use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 /**
@@ -20,14 +21,14 @@ class PersonSeeder extends Seeder
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
+     * @param PersonRepositoryInterface $personRepository
      * @param Gender $gender
-     * @param Person $person
      * @return void
      */
-    public function run(RepositoryInterface $repository, Gender $gender, Person $person)
+    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Gender $gender)
     {
-        ($this->personRepository = $repository)->setModel($person);
-        ($this->genderRepository = clone($repository))->setModel($gender);
+        $this->personRepository = $personRepository;
+        ($this->genderRepository = $repository)->setModel($gender);
 
         /* API address from where to get data */
         $apiAddress = config('app.peopleApiSource');
@@ -69,7 +70,7 @@ class PersonSeeder extends Seeder
         if ($personRequest->next) {
             $this->seedPeople($personRequest->next, $peopleToSeed);
         } else {
-            $this->personRepository->addAll($peopleToSeed);
+            $this->personRepository->addAllPeople($peopleToSeed);
         }
     }
 }

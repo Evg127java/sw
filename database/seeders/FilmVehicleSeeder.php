@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Film;
 use App\Models\Vehicle;
-use App\Repository\RepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmVehicleSeeder extends Seeder

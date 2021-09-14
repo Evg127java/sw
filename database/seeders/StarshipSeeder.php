@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Person;
 use App\Models\Starship;
-use App\Repository\RepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class StarshipSeeder extends Seeder

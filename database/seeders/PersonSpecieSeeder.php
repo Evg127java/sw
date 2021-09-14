@@ -5,13 +5,14 @@ namespace Database\Seeders;
 use App\Models\Person;
 use App\Models\Specie;
 use App\Models\Starship;
-use App\Repository\RepositoryInterface;
+use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class PersonSpecieSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var PersonRepositoryInterface
      */
     protected $personRepository;
     /**
@@ -23,14 +24,14 @@ class PersonSpecieSeeder extends Seeder
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Person $person
+     * @param PersonRepositoryInterface $personRepository
      * @param Specie $specie
      * @return void
      */
-    public function run(RepositoryInterface $repository, Person $person, Specie $specie)
+    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Specie $specie)
     {
-        ($this->personRepository = $repository)->setModel($person);
-        ($this->specieRepository = clone($repository))->setModel($specie);
+        $this->personRepository = $personRepository;
+        ($this->specieRepository = $repository)->setModel($specie);
 
         $apiAddress = config('app.speciesApiSource');
         $this->bindPeopleToSpecies($apiAddress);
@@ -49,7 +50,7 @@ class PersonSpecieSeeder extends Seeder
             foreach ($specie->people as $personLink) {
                 $specie = $this->specieRepository->getOneByColumnValue('name', $specie->name);
                 $personId = preg_split('~\/~', $personLink)[5];
-                $person = $this->personRepository->getOneById($personId);
+                $person = $this->personRepository->getPersonById($personId);
                 $specie->people()->save($person);
             }
         }

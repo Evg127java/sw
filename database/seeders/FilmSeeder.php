@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Film;
-use App\Repository\RepositoryInterface;
-use App\Repository\Repository;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class FilmSeeder

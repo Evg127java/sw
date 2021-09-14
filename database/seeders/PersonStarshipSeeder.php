@@ -5,13 +5,14 @@ namespace Database\Seeders;
 use App\Models\Film;
 use App\Models\Person;
 use App\Models\Starship;
-use App\Repository\RepositoryInterface;
+use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class PersonStarshipSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var PersonRepositoryInterface
      */
     protected $personRepository;
     /**
@@ -23,14 +24,14 @@ class PersonStarshipSeeder extends Seeder
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Person $person
+     * @param PersonRepositoryInterface $personRepository
      * @param Starship $starship
      * @return void
      */
-    public function run(RepositoryInterface $repository, Person $person, Starship $starship)
+    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Starship $starship)
     {
-        ($this->personRepository = $repository)->setModel($person);
-        ($this->starshipRepository = clone($repository))->setModel($starship);
+        $this->personRepository = $personRepository;
+        ($this->starshipRepository = $repository)->setModel($starship);
 
         $apiAddress = config('app.starshipsApiSource');
         $this->bindPeopleToStarships($apiAddress);
@@ -49,7 +50,7 @@ class PersonStarshipSeeder extends Seeder
             foreach ($starship->pilots as $pilotLink) {
                 $starship = $this->starshipRepository->getOneByColumnValue('name', $starship->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[5];
-                $pilot = $this->personRepository->getOneById($pilotId);
+                $pilot = $this->personRepository->getPersonById($pilotId);
                 $starship->people()->attach($pilot);
             }
         }

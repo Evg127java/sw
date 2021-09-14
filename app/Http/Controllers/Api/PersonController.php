@@ -9,7 +9,7 @@ use App\Models\Film;
 use App\Models\Gender;
 use App\Models\Homeworld;
 use App\Models\Person;
-use App\Repository\RepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use App\Services\PersonServiceInterface;
 use App\Services\PersonServices;
 use Illuminate\Http\Request;

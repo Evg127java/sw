@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Person;
 use App\Models\Starship;
 use App\Models\Vehicle;
-use App\Repository\RepositoryInterface;
+use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class VehicleSeeder extends Seeder
