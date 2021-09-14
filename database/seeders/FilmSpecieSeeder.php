@@ -31,7 +31,7 @@ class FilmSpecieSeeder extends Seeder
         ($this->filmRepository = $repository)->setModel($film);
         ($this->specieRepository = clone($repository))->setModel($specie);
 
-        $apiAddress = config('app.apiBaseSource').'species';
+        $apiAddress = config('app.speciesApiSource');
         $this->bindFilmsToSpecies($apiAddress);
     }
 

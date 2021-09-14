@@ -31,7 +31,7 @@ class PersonVehicleSeeder extends Seeder
         ($this->personRepository = $repository)->setModel($person);
         ($this->vehicleRepository = clone($repository))->setModel($vehicle);
 
-        $apiAddress = config('app.apiBaseSource').'vehicles';
+        $apiAddress = config('app.vehiclesApiSource');
         $this->bindPeopleToVehicles($apiAddress);
     }
 

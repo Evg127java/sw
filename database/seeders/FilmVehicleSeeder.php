@@ -31,7 +31,7 @@ class FilmVehicleSeeder extends Seeder
         ($this->filmRepository = $repository)->setModel($film);
         ($this->vehicleRepository = clone($repository))->setModel($vehicle);
 
-        $apiAddress = config('app.apiBaseSource').'vehicles';
+        $apiAddress = config('app.vehiclesApiSource');
         $this->bindFilmsToVehicles($apiAddress);
     }
 

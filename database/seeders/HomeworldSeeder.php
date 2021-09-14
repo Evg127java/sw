@@ -26,7 +26,7 @@ class HomeworldSeeder extends Seeder
         ($this->homeworldRepository = $repository)->setModel($homeworld);
 
         /* API address from where to get data */
-        $apiAddress = config('app.apiBaseSource').'planets';
+        $apiAddress = config('app.homeworldsApiSource');
 
         /* Seeding running */
         $this->seedHomeworlds($apiAddress);

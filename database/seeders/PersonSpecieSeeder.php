@@ -32,7 +32,7 @@ class PersonSpecieSeeder extends Seeder
         ($this->personRepository = $repository)->setModel($person);
         ($this->specieRepository = clone($repository))->setModel($specie);
 
-        $apiAddress = config('app.apiBaseSource').'species';
+        $apiAddress = config('app.speciesApiSource');
         $this->bindPeopleToSpecies($apiAddress);
     }
 

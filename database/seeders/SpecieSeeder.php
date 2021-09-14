@@ -27,7 +27,7 @@ class SpecieSeeder extends Seeder
         ($this->specieRepository = $repository)->setModel($specie);
 
         /* API address from where to get data */
-        $apiAddress = config('app.apiBaseSource').'species';
+        $apiAddress = config('app.speciesApiSource');
 
         /* Seeding running */
         $this->seedSpecies($apiAddress);

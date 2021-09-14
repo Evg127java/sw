@@ -28,7 +28,7 @@ class FilmSeeder extends Seeder
         ($this->filmRepository = $repository)->setModel($film);
 
         /* API address from where to get data */
-        $apiAddress = config('app.apiBaseSource').'films';
+        $apiAddress = config('app.filmsApiSource');
 
         /* Seeding running */
         $this->seedFilms($apiAddress);
@@ -45,10 +45,7 @@ class FilmSeeder extends Seeder
 
         $films = $request->results;
         foreach ($films as $film) {
-            $filmsToSeed[] =
-                [
-                    'title' => $film->title,
-                ];
+            $filmsToSeed[] = ['title' => $film->title];
         }
         /* If there is more than one page at API resource */
         if ($request->next) {

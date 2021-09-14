@@ -234,8 +234,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Api source's host from where to get data for this project
+    | Api sources from where to get data for this project
     |--------------------------------------------------------------------------
     */
-    'apiBaseSource' => 'https://swapi.dev/api/',
+    'peopleApiSource' => 'https://swapi.dev/api/people',
+    'homeworldsApiSource' => 'https://swapi.dev/api/planets',
+    'filmsApiSource' => 'https://swapi.dev/api/films',
+    'starshipsApiSource' => 'https://swapi.dev/api/starships',
+    'vehiclesApiSource' => 'https://swapi.dev/api/vehicles',
+    'speciesApiSource' => 'https://swapi.dev/api/species',
 ];

@@ -26,7 +26,7 @@ class GenderSeeder extends Seeder
         ($this->genderRepository = $repository)->setModel($gender);
 
         /* API address from where to get data */
-        $apiAddress = config('app.apiBaseSource').'people';
+        $apiAddress = config('app.peopleApiSource');
 
         /* Seeding running */
         $this->seedGenders($apiAddress);

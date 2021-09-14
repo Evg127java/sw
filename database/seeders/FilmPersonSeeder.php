@@ -29,7 +29,7 @@ class FilmPersonSeeder extends Seeder
         ($this->filmRepository = $repository)->setModel($film);
         ($this->personRepository = clone($repository))->setModel($person);
 
-        $apiAddress = config('app.apiBaseSource').'people';
+        $apiAddress = config('app.peopleApiSource');
         $this->bindFilmsToPeople($apiAddress);
     }
 

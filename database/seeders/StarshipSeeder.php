@@ -26,7 +26,7 @@ class StarshipSeeder extends Seeder
         ($this->starshipRepository = clone($repository))->setModel($starship);
 
         /* API address from where to get data */
-        $apiAddress = config('app.apiBaseSource').'starships';
+        $apiAddress = config('app.starshipsApiSource');
 
         /* Seeding running */
         $this->seedStarships($apiAddress);

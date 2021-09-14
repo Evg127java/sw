@@ -32,7 +32,7 @@ class PersonStarshipSeeder extends Seeder
         ($this->personRepository = $repository)->setModel($person);
         ($this->starshipRepository = clone($repository))->setModel($starship);
 
-        $apiAddress = config('app.apiBaseSource').'starships';
+        $apiAddress = config('app.starshipsApiSource');
         $this->bindPeopleToStarships($apiAddress);
     }
 

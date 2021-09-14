@@ -27,7 +27,7 @@ class VehicleSeeder extends Seeder
         ($this->vehicleRepository = clone($repository))->setModel($vehicle);
 
         /* API address from where to get data */
-        $apiAddress = config('app.apiBaseSource').'vehicles';
+        $apiAddress = config('app.vehiclesApiSource');
 
         /* Seeding running */
         $this->seedVehicles($apiAddress);

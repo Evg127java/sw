@@ -31,7 +31,7 @@ class FilmStarshipSeeder extends Seeder
         ($this->filmRepository = $repository)->setModel($film);
         ($this->starshipRepository = clone($repository))->setModel($starship);
 
-        $apiAddress = config('app.apiBaseSource').'starships';
+        $apiAddress = config('app.starshipsApiSource');
         $this->bindFilmsToStarships($apiAddress);
     }
 
