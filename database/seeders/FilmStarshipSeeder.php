@@ -4,15 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\Film;
 use App\Models\Starship;
+use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmStarshipSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var FilmRepositoryInterface
      */
-    protected $filmRepository;
+    protected FilmRepositoryInterface $filmRepository;
     /**
      * @var RepositoryInterface
      */
@@ -22,14 +23,14 @@ class FilmStarshipSeeder extends Seeder
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Film $film
+     * @param FilmRepositoryInterface $filmRepository
      * @param Starship $starship
      * @return void
      */
-    public function run(RepositoryInterface $repository, Film $film, Starship $starship)
+    public function run(RepositoryInterface $repository, FilmRepositoryInterface $filmRepository, Starship $starship)
     {
-        ($this->filmRepository = $repository)->setModel($film);
-        ($this->starshipRepository = clone($repository))->setModel($starship);
+        $this->filmRepository = $filmRepository;
+        ($this->starshipRepository = $repository)->setModel($starship);
 
         $apiAddress = config('app.starshipsApiSource');
         $this->bindFilmsToStarships($apiAddress);

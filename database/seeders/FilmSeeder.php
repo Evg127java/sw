@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Film;
-use App\Repositories\RepositoryInterface;
+use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 /**
@@ -12,18 +11,17 @@ use Illuminate\Database\Seeder;
  */
 class FilmSeeder extends Seeder
 {
-    protected $filmRepository;
+    protected FilmRepositoryInterface $filmRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
-     * @param Film $film
+     * @param FilmRepositoryInterface $filmRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, Film $film)
+    public function run(FilmRepositoryInterface $filmRepository)
     {
-        ($this->filmRepository = $repository)->setModel($film);
+        $this->filmRepository = $filmRepository;
 
         /* API address from where to get data */
         $apiAddress = config('app.filmsApiSource');

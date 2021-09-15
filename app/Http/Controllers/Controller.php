@@ -16,19 +16,16 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected RepositoryInterface $filmRepository;
     protected RepositoryInterface $homeworldRepository;
     protected RepositoryInterface $genderRepository;
 
     public function __construct(
         RepositoryInterface $repository,
-        Film $film,
         Gender $gender,
         Homeworld $homeworld
     )
     {
-        ($this->filmRepository = $repository)->setModel($film);
-        ($this->genderRepository = clone($repository))->setModel($gender);
+        ($this->genderRepository = $repository)->setModel($gender);
         ($this->homeworldRepository = clone($repository))->setModel($homeworld);
     }
 }

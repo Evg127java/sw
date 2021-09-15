@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\FilmRepository\FilmRepositoryInterface;
+use App\Repositories\FilmRepository\FilmRepositorySql;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositorySql;
 use App\Repositories\RepositoryInterface;
@@ -35,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PersonRepositoryInterface::class,
             PersonRepositorySql::class
+        );
+        $this->app->bind(
+            FilmRepositoryInterface::class,
+            FilmRepositorySql::class
         );
     }
 

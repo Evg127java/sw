@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Film;
 use App\Models\Person;
+use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
@@ -14,7 +15,7 @@ use Illuminate\Database\Seeder;
  */
 class FilmPersonSeeder extends Seeder
 {
-    protected $filmRepository;
+    protected FilmRepositoryInterface $filmRepository;
     protected PersonRepositoryInterface $personRepository;
 
     /**
@@ -22,13 +23,12 @@ class FilmPersonSeeder extends Seeder
      *
      * @param RepositoryInterface $repository
      * @param PersonRepositoryInterface $personRepository
-     * @param Film $film
-     * @param Person $person
+     * @param FilmRepositoryInterface $filmRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Film $film, Person $person)
+    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, FilmRepositoryInterface $filmRepository)
     {
-        ($this->filmRepository = $repository)->setModel($film);
+        $this->filmRepository = $filmRepository;
         $this->personRepository = $personRepository;
 
         $apiAddress = config('app.peopleApiSource');

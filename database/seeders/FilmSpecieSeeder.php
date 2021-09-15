@@ -4,15 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\Film;
 use App\Models\Specie;
+use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmSpecieSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var FilmRepositoryInterface
      */
-    protected $filmRepository;
+    protected FilmRepositoryInterface $filmRepository;
     /**
      * @var RepositoryInterface
      */
@@ -22,14 +23,14 @@ class FilmSpecieSeeder extends Seeder
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Film $film
+     * @param FilmRepositoryInterface $filmRepository
      * @param Specie $specie
      * @return void
      */
-    public function run(RepositoryInterface $repository, Film $film, Specie $specie)
+    public function run(RepositoryInterface $repository, FilmRepositoryInterface $filmRepository, Specie $specie)
     {
-        ($this->filmRepository = $repository)->setModel($film);
-        ($this->specieRepository = clone($repository))->setModel($specie);
+        $this->filmRepository = $filmRepository;
+        ($this->specieRepository = $repository)->setModel($specie);
 
         $apiAddress = config('app.speciesApiSource');
         $this->bindFilmsToSpecies($apiAddress);

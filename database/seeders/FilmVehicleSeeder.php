@@ -4,15 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\Film;
 use App\Models\Vehicle;
+use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmVehicleSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var FilmRepositoryInterface
      */
-    protected $filmRepository;
+    protected FilmRepositoryInterface $filmRepository;
     /**
      * @var RepositoryInterface
      */
@@ -22,14 +23,14 @@ class FilmVehicleSeeder extends Seeder
      * Run the database seeds.
      *
      * @param RepositoryInterface $repository
-     * @param Film $film
+     * @param FilmRepositoryInterface $filmRepository
      * @param Vehicle $vehicle
      * @return void
      */
-    public function run(RepositoryInterface $repository, Film $film, Vehicle $vehicle)
+    public function run(RepositoryInterface $repository, FilmRepositoryInterface $filmRepository, Vehicle $vehicle)
     {
-        ($this->filmRepository = $repository)->setModel($film);
-        ($this->vehicleRepository = clone($repository))->setModel($vehicle);
+        $this->filmRepository = $filmRepository;
+        ($this->vehicleRepository = $repository)->setModel($vehicle);
 
         $apiAddress = config('app.vehiclesApiSource');
         $this->bindFilmsToVehicles($apiAddress);
