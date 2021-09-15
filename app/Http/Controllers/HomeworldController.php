@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Homeworld;
+use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -10,6 +11,13 @@ use Illuminate\Contracts\View\View;
 
 class HomeworldController extends Controller
 {
+    protected HomeworldRepositoryInterface $homeworldRepository;
+
+    public function __construct(HomeworldRepositoryInterface $homeworldRepository)
+    {
+        $this->homeworldRepository = $homeworldRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *

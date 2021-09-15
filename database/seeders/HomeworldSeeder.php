@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Homeworld;
+use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
@@ -12,18 +13,17 @@ use Illuminate\Database\Seeder;
  */
 class HomeworldSeeder extends Seeder
 {
-    protected $homeworldRepository;
+    protected HomeworldRepositoryInterface $homeworldRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
-     * @param Homeworld $homeworld
+     * @param HomeworldRepositoryInterface $homeworldRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, Homeworld $homeworld)
+    public function run(HomeworldRepositoryInterface $homeworldRepository)
     {
-        ($this->homeworldRepository = $repository)->setModel($homeworld);
+        $this->homeworldRepository = $homeworldRepository;
 
         /* API address from where to get data */
         $apiAddress = config('app.homeworldsApiSource');

@@ -15,14 +15,4 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    protected RepositoryInterface $homeworldRepository;
-
-    public function __construct(
-        RepositoryInterface $repository,
-        Homeworld $homeworld
-    )
-    {
-        ($this->homeworldRepository = $repository)->setModel($homeworld);
-    }
 }

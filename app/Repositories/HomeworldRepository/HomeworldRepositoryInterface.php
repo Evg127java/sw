@@ -1,11 +1,10 @@
 <?php
 
 
-namespace App\Repositories\GenderRepository;
+namespace App\Repositories\HomeworldRepository;
 
 
-
-interface GenderRepositoryInterface
+interface HomeworldRepositoryInterface
 {
     /**
      * Gets all instances from a storage

@@ -14,7 +14,7 @@ class PersonStarshipSeeder extends Seeder
     /**
      * @var PersonRepositoryInterface
      */
-    protected $personRepository;
+    protected PersonRepositoryInterface $personRepository;
     /**
      * @var RepositoryInterface
      */

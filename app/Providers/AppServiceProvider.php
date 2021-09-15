@@ -6,6 +6,8 @@ use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\FilmRepository\FilmRepositorySql;
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\GenderRepository\GenderRepositorySql;
+use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
+use App\Repositories\HomeworldRepository\HomeworldRepositorySql;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositorySql;
 use App\Repositories\RepositoryInterface;
@@ -47,6 +49,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GenderRepositoryInterface::class,
             GenderRepositorySql::class
+        );
+        $this->app->bind(
+            HomeworldRepositoryInterface::class,
+            HomeworldRepositorySql::class
         );
     }
 
