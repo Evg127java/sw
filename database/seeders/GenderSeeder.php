@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Gender;
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
-use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 /**

@@ -7,6 +7,7 @@ use App\Models\Person;
 use App\Models\Starship;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class PersonStarshipSeeder extends Seeder
@@ -16,22 +17,21 @@ class PersonStarshipSeeder extends Seeder
      */
     protected PersonRepositoryInterface $personRepository;
     /**
-     * @var RepositoryInterface
+     * @var StarshipRepositoryInterface
      */
-    protected $starshipRepository;
+    protected StarshipRepositoryInterface $starshipRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
      * @param PersonRepositoryInterface $personRepository
-     * @param Starship $starship
+     * @param StarshipRepositoryInterface $starshipRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Starship $starship)
+    public function run(PersonRepositoryInterface $personRepository, StarshipRepositoryInterface $starshipRepository)
     {
         $this->personRepository = $personRepository;
-        ($this->starshipRepository = $repository)->setModel($starship);
+        $this->starshipRepository = $starshipRepository;
 
         $apiAddress = config('app.starshipsApiSource');
         $this->bindPeopleToStarships($apiAddress);
@@ -48,7 +48,7 @@ class PersonStarshipSeeder extends Seeder
         $starships = $starshipRequest->results;
         foreach ($starships as $starship) {
             foreach ($starship->pilots as $pilotLink) {
-                $starship = $this->starshipRepository->getOneByColumnValue('name', $starship->name);
+                $starship = $this->starshipRepository->getStarshipByParameterAndValue('name', $starship->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[5];
                 $pilot = $this->personRepository->getPersonById($pilotId);
                 $starship->people()->attach($pilot);

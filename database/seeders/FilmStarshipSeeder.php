@@ -6,6 +6,7 @@ use App\Models\Film;
 use App\Models\Starship;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmStarshipSeeder extends Seeder
@@ -15,22 +16,21 @@ class FilmStarshipSeeder extends Seeder
      */
     protected FilmRepositoryInterface $filmRepository;
     /**
-     * @var RepositoryInterface
+     * @var StarshipRepositoryInterface
      */
-    protected RepositoryInterface $starshipRepository;
+    protected StarshipRepositoryInterface $starshipRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
+     * @param StarshipRepositoryInterface $starshipRepository
      * @param FilmRepositoryInterface $filmRepository
-     * @param Starship $starship
      * @return void
      */
-    public function run(RepositoryInterface $repository, FilmRepositoryInterface $filmRepository, Starship $starship)
+    public function run(StarshipRepositoryInterface $starshipRepository, FilmRepositoryInterface $filmRepository)
     {
         $this->filmRepository = $filmRepository;
-        ($this->starshipRepository = $repository)->setModel($starship);
+        $this->starshipRepository = $starshipRepository;
 
         $apiAddress = config('app.starshipsApiSource');
         $this->bindFilmsToStarships($apiAddress);
@@ -47,7 +47,7 @@ class FilmStarshipSeeder extends Seeder
         $starships = $starshipRequest->results;
         foreach ($starships as $starship) {
             foreach ($starship->films as $filmLink) {
-                $starship = $this->starshipRepository->getOneByColumnValue('name', $starship->name);
+                $starship = $this->starshipRepository->getStarshipByParameterAndValue('name', $starship->name);
                 $filmId = preg_split('~\/~', $filmLink)[5];
                 $film = $this->filmRepository->getOneById($filmId);
                 $starship->films()->attach($film);

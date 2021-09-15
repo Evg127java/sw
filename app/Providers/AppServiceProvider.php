@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Starship;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\FilmRepository\FilmRepositorySql;
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
@@ -10,8 +11,8 @@ use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use App\Repositories\HomeworldRepository\HomeworldRepositorySql;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositorySql;
-use App\Repositories\RepositoryInterface;
-use App\Repositories\Repository;
+use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
+use App\Repositories\StarshipRepository\StarshipRepositorySql;
 use App\Services\PersonServiceInterface;
 use App\Services\PersonServices;
 use Illuminate\Pagination\Paginator;
@@ -26,17 +27,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        /* Repositories */
-        $this->app->bind(
-            RepositoryInterface::class,
-            Repository::class
-        );
 
         /* Service for images and films processing */
         $this->app->bind(
             PersonServiceInterface::class,
             PersonServices::class
         );
+
+
+        /* Repositories */
 
         $this->app->bind(
             PersonRepositoryInterface::class,
@@ -53,6 +52,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             HomeworldRepositoryInterface::class,
             HomeworldRepositorySql::class
+        );
+        $this->app->bind(
+            StarshipRepositoryInterface::class,
+            StarshipRepositorySql::class
         );
     }
 

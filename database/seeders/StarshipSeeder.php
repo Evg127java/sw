@@ -5,25 +5,25 @@ namespace Database\Seeders;
 use App\Models\Person;
 use App\Models\Starship;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class StarshipSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var StarshipRepositoryInterface
      */
-    protected $starshipRepository;
+    protected StarshipRepositoryInterface $starshipRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
-     * @param Starship $starship
+     * @param StarshipRepositoryInterface $starshipRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, Starship $starship)
+    public function run(StarshipRepositoryInterface $starshipRepository)
     {
-        ($this->starshipRepository = clone($repository))->setModel($starship);
+        $this->starshipRepository = $starshipRepository;
 
         /* API address from where to get data */
         $apiAddress = config('app.starshipsApiSource');
