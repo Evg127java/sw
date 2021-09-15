@@ -11,8 +11,12 @@ use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use App\Repositories\HomeworldRepository\HomeworldRepositorySql;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositorySql;
+use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
+use App\Repositories\SpecieRepository\SpecieRepositorySql;
 use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
 use App\Repositories\StarshipRepository\StarshipRepositorySql;
+use App\Repositories\VehicleRepository\VehicleRepositoryInterface;
+use App\Repositories\VehicleRepository\VehicleRepositorySql;
 use App\Services\PersonServiceInterface;
 use App\Services\PersonServices;
 use Illuminate\Pagination\Paginator;
@@ -56,6 +60,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             StarshipRepositoryInterface::class,
             StarshipRepositorySql::class
+        );
+        $this->app->bind(
+            VehicleRepositoryInterface::class,
+            VehicleRepositorySql::class
+        );
+        $this->app->bind(
+            SpecieRepositoryInterface::class,
+            SpecieRepositorySql::class
         );
     }
 

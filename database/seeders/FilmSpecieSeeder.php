@@ -6,6 +6,7 @@ use App\Models\Film;
 use App\Models\Specie;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmSpecieSeeder extends Seeder
@@ -15,29 +16,28 @@ class FilmSpecieSeeder extends Seeder
      */
     protected FilmRepositoryInterface $filmRepository;
     /**
-     * @var RepositoryInterface
+     * @var SpecieRepositoryInterface
      */
-    protected $specieRepository;
+    protected SpecieRepositoryInterface $specieRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
+     * @param SpecieRepositoryInterface $specieRepository
      * @param FilmRepositoryInterface $filmRepository
-     * @param Specie $specie
      * @return void
      */
-    public function run(RepositoryInterface $repository, FilmRepositoryInterface $filmRepository, Specie $specie)
+    public function run(SpecieRepositoryInterface $specieRepository, FilmRepositoryInterface $filmRepository)
     {
         $this->filmRepository = $filmRepository;
-        ($this->specieRepository = $repository)->setModel($specie);
+        $this->specieRepository = $specieRepository;
 
         $apiAddress = config('app.speciesApiSource');
         $this->bindFilmsToSpecies($apiAddress);
     }
 
     /**
-     * Binds films to starships as relations
+     * Binds films to species as relations
      * @param $apiAddress
      */
     private function bindFilmsToSpecies($apiAddress)
@@ -47,7 +47,7 @@ class FilmSpecieSeeder extends Seeder
         $species = $specieRequest->results;
         foreach ($species as $specie) {
             foreach ($specie->films as $filmLink) {
-                $specie = $this->specieRepository->getOneByColumnValue('name', $specie->name);
+                $specie = $this->specieRepository->getSpecieByParameterAndValue('name', $specie->name);
                 $filmId = preg_split('~\/~', $filmLink)[5];
                 $film = $this->filmRepository->getOneById($filmId);
                 $specie->films()->attach($film);

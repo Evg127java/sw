@@ -6,6 +6,7 @@ use App\Models\Film;
 use App\Models\Vehicle;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\VehicleRepository\VehicleRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class FilmVehicleSeeder extends Seeder
@@ -15,22 +16,21 @@ class FilmVehicleSeeder extends Seeder
      */
     protected FilmRepositoryInterface $filmRepository;
     /**
-     * @var RepositoryInterface
+     * @var VehicleRepositoryInterface
      */
-    protected $vehicleRepository;
+    protected VehicleRepositoryInterface $vehicleRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
+     * @param VehicleRepositoryInterface $vehicleRepository
      * @param FilmRepositoryInterface $filmRepository
-     * @param Vehicle $vehicle
      * @return void
      */
-    public function run(RepositoryInterface $repository, FilmRepositoryInterface $filmRepository, Vehicle $vehicle)
+    public function run(VehicleRepositoryInterface $vehicleRepository, FilmRepositoryInterface $filmRepository)
     {
         $this->filmRepository = $filmRepository;
-        ($this->vehicleRepository = $repository)->setModel($vehicle);
+        $this->vehicleRepository = $vehicleRepository;
 
         $apiAddress = config('app.vehiclesApiSource');
         $this->bindFilmsToVehicles($apiAddress);
@@ -47,7 +47,7 @@ class FilmVehicleSeeder extends Seeder
         $vehicles = $VehicleRequest->results;
         foreach ($vehicles as $vehicle) {
             foreach ($vehicle->films as $filmLink) {
-                $vehicle = $this->vehicleRepository->getOneByColumnValue('name', $vehicle->name);
+                $vehicle = $this->vehicleRepository->getVehicleByParameterAndValue('name', $vehicle->name);
                 $filmId = preg_split('~\/~', $filmLink)[5];
                 $film = $this->filmRepository->getOneById($filmId);
                 $vehicle->films()->attach($film);

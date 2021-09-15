@@ -6,25 +6,25 @@ use App\Models\Person;
 use App\Models\Specie;
 use App\Models\Vehicle;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class SpecieSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var SpecieRepositoryInterface
      */
-    protected $specieRepository;
+    protected SpecieRepositoryInterface $specieRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
-     * @param Specie $specie
+     * @param SpecieRepositoryInterface $specieRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, Specie $specie)
+    public function run(SpecieRepositoryInterface $specieRepository)
     {
-        ($this->specieRepository = $repository)->setModel($specie);
+        $this->specieRepository = $specieRepository;
 
         /* API address from where to get data */
         $apiAddress = config('app.speciesApiSource');

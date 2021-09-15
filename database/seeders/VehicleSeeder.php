@@ -6,25 +6,25 @@ use App\Models\Person;
 use App\Models\Starship;
 use App\Models\Vehicle;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\VehicleRepository\VehicleRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class VehicleSeeder extends Seeder
 {
     /**
-     * @var RepositoryInterface
+     * @var VehicleRepositoryInterface
      */
-    protected $vehicleRepository;
+    protected VehicleRepositoryInterface $vehicleRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
-     * @param Vehicle $vehicle
+     * @param VehicleRepositoryInterface $vehicleRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, Vehicle $vehicle)
+    public function run(VehicleRepositoryInterface $vehicleRepository)
     {
-        ($this->vehicleRepository = clone($repository))->setModel($vehicle);
+        $this->vehicleRepository = $vehicleRepository;
 
         /* API address from where to get data */
         $apiAddress = config('app.vehiclesApiSource');

@@ -6,6 +6,7 @@ use App\Models\Person;
 use App\Models\Vehicle;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\VehicleRepository\VehicleRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class PersonVehicleSeeder extends Seeder
@@ -15,22 +16,21 @@ class PersonVehicleSeeder extends Seeder
      */
     protected PersonRepositoryInterface $personRepository;
     /**
-     * @var RepositoryInterface
+     * @var VehicleRepositoryInterface
      */
-    protected $vehicleRepository;
+    protected VehicleRepositoryInterface $vehicleRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
+     * @param VehicleRepositoryInterface $vehicleRepository
      * @param PersonRepositoryInterface $personRepository
-     * @param Vehicle $vehicle
      * @return void
      */
-    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Vehicle $vehicle)
+    public function run(VehicleRepositoryInterface $vehicleRepository, PersonRepositoryInterface $personRepository)
     {
         $this->personRepository = $personRepository;
-        ($this->vehicleRepository = $repository)->setModel($vehicle);
+        $this->vehicleRepository = $vehicleRepository;
 
         $apiAddress = config('app.vehiclesApiSource');
         $this->bindPeopleToVehicles($apiAddress);
@@ -47,7 +47,7 @@ class PersonVehicleSeeder extends Seeder
         $vehicles = $vehicleRequest->results;
         foreach ($vehicles as $vehicle) {
             foreach ($vehicle->pilots as $pilotLink) {
-                $vehicle = $this->vehicleRepository->getOneByColumnValue('name', $vehicle->name);
+                $vehicle = $this->vehicleRepository->getVehicleByParameterAndValue('name', $vehicle->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[5];
                 $pilot = $this->personRepository->getPersonById($pilotId);
                 $vehicle->people()->attach($pilot);

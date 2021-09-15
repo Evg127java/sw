@@ -7,6 +7,7 @@ use App\Models\Specie;
 use App\Models\Starship;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\RepositoryInterface;
+use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
 use Illuminate\Database\Seeder;
 
 class PersonSpecieSeeder extends Seeder
@@ -14,24 +15,23 @@ class PersonSpecieSeeder extends Seeder
     /**
      * @var PersonRepositoryInterface
      */
-    protected $personRepository;
+    protected PersonRepositoryInterface $personRepository;
     /**
-     * @var RepositoryInterface
+     * @var SpecieRepositoryInterface
      */
-    protected $specieRepository;
+    protected SpecieRepositoryInterface $specieRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
+     * @param SpecieRepositoryInterface $specieRepository
      * @param PersonRepositoryInterface $personRepository
-     * @param Specie $specie
      * @return void
      */
-    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Specie $specie)
+    public function run(SpecieRepositoryInterface $specieRepository, PersonRepositoryInterface $personRepository)
     {
         $this->personRepository = $personRepository;
-        ($this->specieRepository = $repository)->setModel($specie);
+        $this->specieRepository = $specieRepository;
 
         $apiAddress = config('app.speciesApiSource');
         $this->bindPeopleToSpecies($apiAddress);
@@ -48,7 +48,7 @@ class PersonSpecieSeeder extends Seeder
         $species = $specieRequest->results;
         foreach ($species as $specie) {
             foreach ($specie->people as $personLink) {
-                $specie = $this->specieRepository->getOneByColumnValue('name', $specie->name);
+                $specie = $this->specieRepository->getSpecieByParameterAndValue('name', $specie->name);
                 $personId = preg_split('~\/~', $personLink)[5];
                 $person = $this->personRepository->getPersonById($personId);
                 $specie->people()->save($person);
