@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Gender;
+use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
@@ -12,18 +13,17 @@ use Illuminate\Database\Seeder;
  */
 class GenderSeeder extends Seeder
 {
-    protected $genderRepository;
+    protected GenderRepositoryInterface $genderRepository;
 
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
-     * @param Gender $gender
+     * @param GenderRepositoryInterface $genderRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, Gender $gender)
+    public function run(GenderRepositoryInterface $genderRepository)
     {
-        ($this->genderRepository = $repository)->setModel($gender);
+        $this->genderRepository = $genderRepository;
 
         /* API address from where to get data */
         $apiAddress = config('app.peopleApiSource');

@@ -8,6 +8,7 @@ use App\Models\Gender;
 use App\Models\Homeworld;
 use App\Models\Person;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
+use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use App\Services\PersonServiceInterface;
@@ -23,18 +24,21 @@ class PersonController extends Controller
     protected PersonServiceInterface $personServices;
     protected PersonRepositoryInterface $personRepository;
     protected FilmRepositoryInterface $filmRepository;
+    protected GenderRepositoryInterface $genderRepository;
 
     public function __construct(
         PersonServiceInterface $personServices,
         RepositoryInterface $repository,
-        Gender $gender, Homeworld $homeworld,
+        Homeworld $homeworld,
         PersonRepositoryInterface $personRepositorySql,
-        FilmRepositoryInterface $filmRepositorySql)
+        FilmRepositoryInterface $filmRepositorySql,
+        GenderRepositoryInterface $genderRepositorySql)
     {
-        parent::__construct($repository, $gender, $homeworld);
+        parent::__construct($repository, $homeworld);
         $this->personServices = $personServices;
         $this->personRepository = $personRepositorySql;
         $this->filmRepository = $filmRepositorySql;
+        $this->genderRepository = $genderRepositorySql;
     }
 
     /**

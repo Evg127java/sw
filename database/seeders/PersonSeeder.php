@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Gender;
 use App\Models\Person;
+use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
@@ -20,15 +21,14 @@ class PersonSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
+     * @param GenderRepositoryInterface $genderRepository
      * @param PersonRepositoryInterface $personRepository
-     * @param Gender $gender
      * @return void
      */
-    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, Gender $gender)
+    public function run(GenderRepositoryInterface $genderRepository, PersonRepositoryInterface $personRepository)
     {
         $this->personRepository = $personRepository;
-        ($this->genderRepository = $repository)->setModel($gender);
+        $this->genderRepository = $genderRepository;
 
         /* API address from where to get data */
         $apiAddress = config('app.peopleApiSource');
@@ -48,7 +48,7 @@ class PersonSeeder extends Seeder
 
         $people = $personRequest->results;
         foreach ($people as $person) {
-            $genderId = $this->genderRepository->getIdByColumnValue('type', $person->gender);
+            $genderId = $this->genderRepository->getIdByParameter('type', $person->gender);
             $homeworldId = preg_split('~\/~', $person->homeworld)[5];
             $personId = preg_split('~\/~', $person->url)[5];
 

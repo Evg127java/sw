@@ -17,15 +17,12 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected RepositoryInterface $homeworldRepository;
-    protected RepositoryInterface $genderRepository;
 
     public function __construct(
         RepositoryInterface $repository,
-        Gender $gender,
         Homeworld $homeworld
     )
     {
-        ($this->genderRepository = $repository)->setModel($gender);
-        ($this->homeworldRepository = clone($repository))->setModel($homeworld);
+        ($this->homeworldRepository = $repository)->setModel($homeworld);
     }
 }

@@ -17,7 +17,7 @@ class FilmStarshipSeeder extends Seeder
     /**
      * @var RepositoryInterface
      */
-    protected $starshipRepository;
+    protected RepositoryInterface $starshipRepository;
 
     /**
      * Run the database seeds.

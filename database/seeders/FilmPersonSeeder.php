@@ -21,12 +21,11 @@ class FilmPersonSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @param RepositoryInterface $repository
      * @param PersonRepositoryInterface $personRepository
      * @param FilmRepositoryInterface $filmRepository
      * @return void
      */
-    public function run(RepositoryInterface $repository, PersonRepositoryInterface $personRepository, FilmRepositoryInterface $filmRepository)
+    public function run(PersonRepositoryInterface $personRepository, FilmRepositoryInterface $filmRepository)
     {
         $this->filmRepository = $filmRepository;
         $this->personRepository = $personRepository;
