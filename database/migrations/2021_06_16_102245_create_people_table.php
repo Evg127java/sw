@@ -27,7 +27,7 @@ class CreatePeopleTable extends Migration
             $table->unsignedBigInteger('homeworld_id');
             $table->foreign('homeworld_id')->references('id')->on('homeworlds')->onDelete('cascade');
             $table->string('url');
-            $table->integer('specie_id');
+            $table->integer('specie_id')->nullable();
             $table->timestamps();
         });
     }

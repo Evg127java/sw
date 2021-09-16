@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Starship;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\FilmRepository\FilmRepositorySql;
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
@@ -17,8 +16,6 @@ use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
 use App\Repositories\StarshipRepository\StarshipRepositorySql;
 use App\Repositories\VehicleRepository\VehicleRepositoryInterface;
 use App\Repositories\VehicleRepository\VehicleRepositorySql;
-use App\Services\PersonServiceInterface;
-use App\Services\PersonServices;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,14 +28,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
-        /* Service for images and films processing */
-        $this->app->bind(
-            PersonServiceInterface::class,
-            PersonServices::class
-        );
-
-
         /* Repositories */
 
         $this->app->bind(

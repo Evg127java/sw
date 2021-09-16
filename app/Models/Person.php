@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Arr;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,10 +19,22 @@ use Storage;
  */
 class Person extends Model
 {
+
     /* Mass assignment */
-    protected $fillable = ['name', 'gender_id', 'hair_color', 'mass', 'height', 'homeworld_id', 'birth_year', 'url'];
+    protected $fillable =
+        [
+            'name', 'gender_id', 'hair_color', 'mass',
+            'height', 'homeworld_id', 'birth_year', 'url'
+        ];
 
     use HasFactory;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations to other entities
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Each person is related (belongs to) to only one gender
@@ -86,6 +99,13 @@ class Person extends Model
         return $this->belongsTo(Specie::class);
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Models operations
+    |--------------------------------------------------------------------------
+    */
+
     /**
      * Makes a new person's model
      * @param array $request validated data from request
@@ -93,7 +113,9 @@ class Person extends Model
      */
     public static function createNewPerson(array $request)
     {
-        return self::create($request);
+        $person = self::create($request);
+        self::processRelations($request, $person);
+        return $person;
     }
 
     /**
@@ -105,6 +127,7 @@ class Person extends Model
     {
         /* Person update with validated data */
         $this->update($request);
+        self::processRelations($request, $this);
         return $this;
     }
 
@@ -118,5 +141,97 @@ class Person extends Model
         Storage::deleteDirectory('images/' . $id);
 
         Person::destroy($id);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Person's related entities' processing
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Runs a person's relation processes
+     * @param array $request
+     * @param Person $currentPerson
+     */
+    public static function processRelations(array $request, Person $currentPerson)
+    {
+        self::processFilms($request, $currentPerson);
+        self::processImages($request,$currentPerson);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FILMS for person processing
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Updates films specified in form request for the person
+     * @param array $request
+     * @param Person $currentPerson
+     */
+    public static function processFilms(array $request, Person $currentPerson)
+    {
+        Arr::exists($request, 'films') ?
+            $currentPerson->addFilms($request['films'], $currentPerson) :
+            $currentPerson->removeAllFilms($currentPerson);
+    }
+
+    /**
+     * Adds passed films to the current person
+     * @param array $films
+     * @param Person $currentPerson
+     */
+    public static function addFilms(array $films, Person $currentPerson)
+    {
+        $currentPerson->films()->sync($films);
+    }
+
+    /**
+     * Deletes all the films related to the current person
+     * @param Person $currentPerson
+     */
+    public static function removeAllFilms(Person $currentPerson)
+    {
+        $currentPerson->films()->detach();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | IMAGES for person processing
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Updates images specified in form request for the person
+     * @param array $request
+     * @param Person $currentPerson
+     */
+    public static function processImages(array $request, Person $currentPerson)
+    {
+        /* Delete images if they are specified */
+        if (Arr::has($request, 'imagesToDelete')) {
+            Image::deleteImages($request['imagesToDelete']);
+        }
+
+        /* Add images if they are specified */
+        if (Arr::has($request, 'images')) {
+            $currentPerson->addImages($request['images'], $currentPerson);
+        }
+        $currentPerson->touch();
+    }
+
+    /**
+     * Adds specified images to the current person
+     * @param array $images
+     * @param Person $currentPerson
+     */
+    public static function addImages(array $images, Person $currentPerson)
+    {
+        $imagesToAdd = Image::saveImages($images, $currentPerson->id);
+
+        /* Add the image to the current person */
+        $currentPerson->images()->saveMany($imagesToAdd);
     }
 }

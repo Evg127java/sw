@@ -3,17 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonFormRequest;
-use App\Models\Film;
-use App\Models\Gender;
-use App\Models\Homeworld;
 use App\Models\Person;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
-use App\Repositories\RepositoryInterface;
-use App\Services\PersonServiceInterface;
-use App\Services\PersonServices;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -22,20 +16,17 @@ use Illuminate\Routing\Redirector;
 
 class PersonController extends Controller
 {
-    protected PersonServiceInterface $personServices;
     protected PersonRepositoryInterface $personRepository;
     protected FilmRepositoryInterface $filmRepository;
     protected GenderRepositoryInterface $genderRepository;
     protected HomeworldRepositoryInterface $homeworldRepository;
 
     public function __construct(
-        PersonServiceInterface $personServices,
         PersonRepositoryInterface $personRepositorySql,
         FilmRepositoryInterface $filmRepositorySql,
         GenderRepositoryInterface $genderRepositorySql,
         HomeworldRepositoryInterface $homeworldRepositorySql)
     {
-        $this->personServices = $personServices;
         $this->personRepository = $personRepositorySql;
         $this->filmRepository = $filmRepositorySql;
         $this->genderRepository = $genderRepositorySql;
@@ -76,13 +67,7 @@ class PersonController extends Controller
     public function store(PersonFormRequest $request)
     {
         $personFormRequest = $request->all();
-        $person = Person::createNewPerson($personFormRequest);
-
-        /* Process person's external relations */
-        $this->personServices
-            ->setPerson($person)
-            ->setRequest($personFormRequest)
-            ->processPersonRelations();
+        Person::createNewPerson($personFormRequest);
 
         return redirect('/');
     }
@@ -124,14 +109,8 @@ class PersonController extends Controller
         $personFormRequest = $request->all();
         $person = $this->personRepository->getPersonById(request('id'));
 
-        /* Update person's base data */
-        $person = $person->updatePerson($personFormRequest);
-
-        /* Process person's external relations */
-        $this->personServices
-            ->setPerson($person)
-            ->setRequest($personFormRequest)
-            ->processPersonRelations();
+        /* Update person's data */
+        $person->updatePerson($personFormRequest);
 
         return redirect('/people/' . $person->id);
     }
