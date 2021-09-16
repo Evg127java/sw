@@ -42,13 +42,14 @@ class FilmSpecieSeeder extends Seeder
      */
     private function bindFilmsToSpecies($apiAddress)
     {
-        $specieRequest = json_decode(file_get_contents($apiAddress, true));
+
+        $specieRequest = json_decode(\Http::get($apiAddress));
 
         $species = $specieRequest->results;
         foreach ($species as $specie) {
             foreach ($specie->films as $filmLink) {
                 $specie = $this->specieRepository->getSpecieByParameterAndValue('name', $specie->name);
-                $filmId = preg_split('~\/~', $filmLink)[5];
+                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $specie->films()->attach($film);
             }

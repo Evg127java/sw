@@ -252,4 +252,14 @@ return [
     'starshipsApiSource' => 'https://swapi.dev/api/starships',
     'vehiclesApiSource' => 'https://swapi.dev/api/vehicles',
     'speciesApiSource' => 'https://swapi.dev/api/species',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Place in a link after delimiter slash.
+    | The same as the key's number of a link part after exploding it by slash
+    |--------------------------------------------------------------------------
+    */
+
+    'linkPartNumber' => 5,
+
 ];

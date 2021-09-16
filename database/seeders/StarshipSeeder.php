@@ -35,11 +35,11 @@ class StarshipSeeder extends Seeder
     /**
      * Seeds starships to starships table in DB
      * @param string $apiRequest
-     * @param array $starshipsToSeed
      */
-    private function seedStarships(string $apiRequest, array $starshipsToSeed = [])
+    private function seedStarships(string $apiRequest)
     {
-        $starshipRequest = json_decode(file_get_contents($apiRequest, true));
+        $starshipsToSeed = [];
+        $starshipRequest = json_decode(\Http::get($apiRequest));
 
         $starships = $starshipRequest->results;
         foreach ($starships as $starship) {
@@ -64,11 +64,10 @@ class StarshipSeeder extends Seeder
                     'url' => $starship->url,
                 ];
         }
+        $this->starshipRepository->addAll($starshipsToSeed);
         /* If there are more than one pages at API resource */
         if ($starshipRequest->next) {
-            $this->seedStarships($starshipRequest->next, $starshipsToSeed);
-        } else {
-            $this->starshipRepository->addAll($starshipsToSeed);
+            $this->seedStarships($starshipRequest->next);
         }
     }
 }

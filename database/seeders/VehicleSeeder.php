@@ -36,11 +36,11 @@ class VehicleSeeder extends Seeder
     /**
      * Seeds vehicles to vehicles table in DB
      * @param string $apiRequest
-     * @param array $vehiclesToSeed
      */
-    private function seedVehicles(string $apiRequest, array $vehiclesToSeed = [])
+    private function seedVehicles(string $apiRequest)
     {
-        $vehicleRequest = json_decode(file_get_contents($apiRequest, true));
+        $vehiclesToSeed = [];
+        $vehicleRequest = json_decode(\Http::get($apiRequest));
 
         $vehicles = $vehicleRequest->results;
         foreach ($vehicles as $vehicle) {
@@ -63,11 +63,10 @@ class VehicleSeeder extends Seeder
                     'url' => $vehicle->url,
                 ];
         }
+        $this->vehicleRepository->addAll($vehiclesToSeed);
         /* If there are more than one pages at API resource */
         if ($vehicleRequest->next) {
-            $this->seedVehicles($vehicleRequest->next, $vehiclesToSeed);
-        } else {
-            $this->vehicleRepository->addAll($vehiclesToSeed);
+            $this->seedVehicles($vehicleRequest->next);
         }
     }
 }

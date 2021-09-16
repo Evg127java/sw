@@ -33,24 +33,20 @@ class GenderSeeder extends Seeder
     /**
      * Seeds genders to genders table in DB
      * @param string $apiAddress
-     * @param array $gendersToSeed
      */
-    private function seedGenders(string $apiAddress, array $gendersToSeed = [])
+    private function seedGenders(string $apiAddress)
     {
-        $request = json_decode(file_get_contents($apiAddress, true));
+        $gendersToSeed = [];
+        $request = json_decode(\Http::get($apiAddress));
 
         $people = $request->results;
         foreach ($people as $person) {
-            $gendersToSeed[] =
-                [
-                    'type' => $person->gender,
-                ];
+            $gendersToSeed[] = ['type' => $person->gender];
         }
+        $this->genderRepository->addAll($gendersToSeed);
         /* If there is more than one page at API resource */
         if ($request->next) {
-            $this->seedGenders($request->next, $gendersToSeed);
-        } else {
-            $this->genderRepository->addAll($gendersToSeed);
+            $this->seedGenders($request->next);
         }
     }
 }

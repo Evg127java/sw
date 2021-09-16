@@ -10,11 +10,11 @@ class SpecieRepositorySql implements SpecieRepositoryInterface
 {
     /**
      * Add all passed instances to a storage
-     * @param array $vehiclesSet
+     * @param array $speciesSet
      */
-    public function addAll(array $vehiclesSet)
+    public function addAll(array $speciesSet)
     {
-        Specie::insertOrIgnore($vehiclesSet);
+        Specie::insertOrIgnore($speciesSet);
     }
 
     /**

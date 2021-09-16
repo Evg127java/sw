@@ -36,17 +36,17 @@ class SpecieSeeder extends Seeder
     /**
      * Seeds species to species table in DB
      * @param string $apiRequest
-     * @param array $speciesToSeed
      */
-    private function seedSpecies(string $apiRequest, array $speciesToSeed = [])
+    private function seedSpecies(string $apiRequest)
     {
-        $specieRequest = json_decode(file_get_contents($apiRequest, true));
+        $speciesToSeed = [];
+        $specieRequest = json_decode(\Http::get($apiRequest));
 
         $species = $specieRequest->results;
         foreach ($species as $specie) {
 
             $homeworldId = is_null($specie->homeworld) ?
-                null : preg_split('~\/~', $specie->homeworld)[5];
+                null : preg_split('~\/~', $specie->homeworld)[config('app.linkPartNumber')];
 
             $speciesToSeed[] =
                 [
@@ -65,11 +65,10 @@ class SpecieSeeder extends Seeder
                     'url' => $specie->url,
                 ];
         }
+        $this->specieRepository->addAll($speciesToSeed);
         /* If there are more than one pages at API resource */
         if ($specieRequest->next) {
-            $this->seedSpecies($specieRequest->next, $speciesToSeed);
-        } else {
-            $this->specieRepository->addAll($speciesToSeed);
+            $this->seedSpecies($specieRequest->next);
         }
     }
 }

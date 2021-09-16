@@ -40,17 +40,17 @@ class PersonSeeder extends Seeder
     /**
      * Seeds people to people table in DB
      * @param string $apiRequest
-     * @param array $peopleToSeed
      */
-    private function seedPeople(string $apiRequest, array $peopleToSeed = [])
+    private function seedPeople(string $apiRequest)
     {
-        $personRequest = json_decode(file_get_contents($apiRequest, true));
+        $peopleToSeed = [];
+        $personRequest = json_decode(\Http::get($apiRequest));
 
         $people = $personRequest->results;
         foreach ($people as $person) {
             $genderId = $this->genderRepository->getIdByParameter('type', $person->gender);
-            $homeworldId = preg_split('~\/~', $person->homeworld)[5];
-            $personId = preg_split('~\/~', $person->url)[5];
+            $homeworldId = preg_split('~\/~', $person->homeworld)[config('app.linkPartNumber')];
+            $personId = preg_split('~\/~', $person->url)[config('app.linkPartNumber')];
 
             $peopleToSeed[] =
                 [
@@ -63,14 +63,14 @@ class PersonSeeder extends Seeder
                     'gender_id' => $genderId,
                     'homeworld_id' => $homeworldId,
                     'created_at' => date('Y-m-d H:i:s', strtotime($person->created)),
+                    'updated_at' => date('Y-m-d H:i:s', strtotime($person->edited)),
                     'url' => $person->url,
                 ];
         }
+        $this->personRepository->addAllPeople($peopleToSeed);
         /* If there is more than one page at API resource */
         if ($personRequest->next) {
-            $this->seedPeople($personRequest->next, $peopleToSeed);
-        } else {
-            $this->personRepository->addAllPeople($peopleToSeed);
+            $this->seedPeople($personRequest->next);
         }
     }
 }

@@ -42,13 +42,13 @@ class PersonVehicleSeeder extends Seeder
      */
     private function bindPeopleToVehicles($apiAddress)
     {
-        $vehicleRequest = json_decode(file_get_contents($apiAddress, true));
+        $vehicleRequest = json_decode(\Http::get($apiAddress));
 
         $vehicles = $vehicleRequest->results;
         foreach ($vehicles as $vehicle) {
             foreach ($vehicle->pilots as $pilotLink) {
                 $vehicle = $this->vehicleRepository->getVehicleByParameterAndValue('name', $vehicle->name);
-                $pilotId = preg_split('~\/~', $pilotLink)[5];
+                $pilotId = preg_split('~\/~', $pilotLink)[config('app.linkPartNumber')];
                 $pilot = $this->personRepository->getPersonById($pilotId);
                 $vehicle->people()->attach($pilot);
             }

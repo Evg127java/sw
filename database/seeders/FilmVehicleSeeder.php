@@ -42,19 +42,19 @@ class FilmVehicleSeeder extends Seeder
      */
     private function bindFilmsToVehicles($apiAddress)
     {
-        $VehicleRequest = json_decode(file_get_contents($apiAddress, true));
+        $vehicleRequest = json_decode(\Http::get($apiAddress));
 
-        $vehicles = $VehicleRequest->results;
+        $vehicles = $vehicleRequest->results;
         foreach ($vehicles as $vehicle) {
             foreach ($vehicle->films as $filmLink) {
                 $vehicle = $this->vehicleRepository->getVehicleByParameterAndValue('name', $vehicle->name);
-                $filmId = preg_split('~\/~', $filmLink)[5];
+                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $vehicle->films()->attach($film);
             }
         }
-        if ($VehicleRequest->next) {
-            $this->bindFilmsToVehicles($VehicleRequest->next);
+        if ($vehicleRequest->next) {
+            $this->bindFilmsToVehicles($vehicleRequest->next);
         }
     }
 }

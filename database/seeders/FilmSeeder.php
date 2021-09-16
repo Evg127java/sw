@@ -33,21 +33,20 @@ class FilmSeeder extends Seeder
     /**
      * Seeds films to films table in DB
      * @param string $apiAddress address from where to get data
-     * @param array $filmsToSeed films array to seed
      */
-    private function seedFilms(string $apiAddress, array $filmsToSeed = [])
+    private function seedFilms(string $apiAddress)
     {
-        $request = json_decode(file_get_contents($apiAddress, true));
+        $filmsToSeed = [];
+        $request = json_decode(\Http::get($apiAddress));
 
         $films = $request->results;
         foreach ($films as $film) {
             $filmsToSeed[] = ['title' => $film->title];
         }
+        $this->filmRepository->addAll($filmsToSeed);
         /* If there is more than one page at API resource */
         if ($request->next) {
-            $this->seedFilms($request->next, $filmsToSeed);
-        } else {
-            $this->filmRepository->addAll($filmsToSeed);
+            $this->seedFilms($request->next);
         }
     }
 }

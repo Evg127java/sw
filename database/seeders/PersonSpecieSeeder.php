@@ -43,13 +43,13 @@ class PersonSpecieSeeder extends Seeder
      */
     private function bindPeopleToSpecies($apiAddress)
     {
-        $specieRequest = json_decode(file_get_contents($apiAddress, true));
+        $specieRequest = json_decode(\Http::get($apiAddress));
 
         $species = $specieRequest->results;
         foreach ($species as $specie) {
             foreach ($specie->people as $personLink) {
                 $specie = $this->specieRepository->getSpecieByParameterAndValue('name', $specie->name);
-                $personId = preg_split('~\/~', $personLink)[5];
+                $personId = preg_split('~\/~', $personLink)[config('app.linkPartNumber')];
                 $person = $this->personRepository->getPersonById($personId);
                 $specie->people()->save($person);
             }

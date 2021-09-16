@@ -40,14 +40,14 @@ class FilmPersonSeeder extends Seeder
      */
     private function bindFilmsToPeople($apiAddress)
     {
-        $personRequest = json_decode(file_get_contents($apiAddress, true));
+        $personRequest = json_decode(\Http::get($apiAddress));
 
         $people = $personRequest->results;
         foreach ($people as $person) {
             foreach ($person->films as $filmLink) {
                 $person = $this->personRepository
                     ->getPersonByParameterAndValue('name', $person->name);
-                $filmId = preg_split('~\/~', $filmLink)[5];
+                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $person->films()->attach($film);
             }

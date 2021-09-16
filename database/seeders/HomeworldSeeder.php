@@ -35,24 +35,20 @@ class HomeworldSeeder extends Seeder
     /**
      * Seeds homeworlds to homeworlds table in DB
      * @param string $apiAddress
-     * @param array $homeworldsToSeed
      */
-    private function seedHomeworlds(string $apiAddress, array $homeworldsToSeed = [])
+    private function seedHomeworlds(string $apiAddress)
     {
-        $request = json_decode(file_get_contents($apiAddress, true));
+        $homeworldsToSeed = [];
+        $request = json_decode(\Http::get($apiAddress));
 
         $planets = $request->results;
         foreach ($planets as $planet) {
-            $homeworldsToSeed[] =
-                [
-                    'name' => $planet->name,
-                ];
+            $homeworldsToSeed[] = ['name' => $planet->name];
         }
+        $this->homeworldRepository->addAll($homeworldsToSeed);
         /* If there is more than one page at API resource */
         if ($request->next) {
-            $this->seedHomeworlds($request->next, $homeworldsToSeed);
-        } else {
-            $this->homeworldRepository->addAll($homeworldsToSeed);
+            $this->seedHomeworlds($request->next);
         }
     }
 }

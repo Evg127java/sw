@@ -42,13 +42,13 @@ class FilmStarshipSeeder extends Seeder
      */
     private function bindFilmsToStarships($apiAddress)
     {
-        $starshipRequest = json_decode(file_get_contents($apiAddress, true));
+        $starshipRequest = json_decode(\Http::get($apiAddress));
 
         $starships = $starshipRequest->results;
         foreach ($starships as $starship) {
             foreach ($starship->films as $filmLink) {
                 $starship = $this->starshipRepository->getStarshipByParameterAndValue('name', $starship->name);
-                $filmId = preg_split('~\/~', $filmLink)[5];
+                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $starship->films()->attach($film);
             }

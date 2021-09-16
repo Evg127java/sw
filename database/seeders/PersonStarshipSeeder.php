@@ -43,13 +43,13 @@ class PersonStarshipSeeder extends Seeder
      */
     private function bindPeopleToStarships($apiAddress)
     {
-        $starshipRequest = json_decode(file_get_contents($apiAddress, true));
+        $starshipRequest = json_decode(\Http::get($apiAddress));
 
         $starships = $starshipRequest->results;
         foreach ($starships as $starship) {
             foreach ($starship->pilots as $pilotLink) {
                 $starship = $this->starshipRepository->getStarshipByParameterAndValue('name', $starship->name);
-                $pilotId = preg_split('~\/~', $pilotLink)[5];
+                $pilotId = preg_split('~\/~', $pilotLink)[config('app.linkPartNumber')];
                 $pilot = $this->personRepository->getPersonById($pilotId);
                 $starship->people()->attach($pilot);
             }
