@@ -20,11 +20,11 @@ class HomeworldRepositorySql implements HomeworldRepositoryInterface
 
     /**
      * Add all passed instances to a storage
-     * @param array $homeworldsSet
+     * @param array $homeworlds
      */
-    public function addAll(array $homeworldsSet)
+    public function saveMany(array $homeworlds)
     {
-        Homeworld::insertOrIgnore($homeworldsSet);
+        Homeworld::insertOrIgnore($homeworlds);
     }
 
     /**

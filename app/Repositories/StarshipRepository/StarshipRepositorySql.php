@@ -10,11 +10,11 @@ class StarshipRepositorySql implements StarshipRepositoryInterface
 {
     /**
      * Add all passed instances to a storage
-     * @param array $starshipsSet
+     * @param array $starships
      */
-    public function addAll(array $starshipsSet)
+    public function saveMany(array $starships)
     {
-        Starship::insertOrIgnore($starshipsSet);
+        Starship::insertOrIgnore($starships);
     }
 
     /**
@@ -23,7 +23,7 @@ class StarshipRepositorySql implements StarshipRepositoryInterface
      * @param $value
      * @return mixed
      */
-    public function getStarshipByParameterAndValue(string $parameter, $value)
+    public function getOneByParameter(string $parameter, $value)
     {
         return Starship::firstWhere($parameter, $value);
     }

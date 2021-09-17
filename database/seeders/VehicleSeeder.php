@@ -63,7 +63,7 @@ class VehicleSeeder extends Seeder
                     'url' => $vehicle->url,
                 ];
         }
-        $this->vehicleRepository->addAll($vehiclesToSeed);
+        $this->vehicleRepository->saveMany($vehiclesToSeed);
         /* If there are more than one pages at API resource */
         if ($vehicleRequest->next) {
             $this->seedVehicles($vehicleRequest->next);

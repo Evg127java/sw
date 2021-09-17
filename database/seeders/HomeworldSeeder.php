@@ -59,7 +59,7 @@ class HomeworldSeeder extends Seeder
                     'url' => $planet->url,
                 ];
         }
-        $this->homeworldRepository->addAll($homeworldsToSeed);
+        $this->homeworldRepository->saveMany($homeworldsToSeed);
         /* If there is more than one page at API resource */
         if ($request->next) {
             $this->seedHomeworlds($request->next);

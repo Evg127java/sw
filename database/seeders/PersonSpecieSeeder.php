@@ -48,9 +48,9 @@ class PersonSpecieSeeder extends Seeder
         $species = $specieRequest->results;
         foreach ($species as $specie) {
             foreach ($specie->people as $personLink) {
-                $specie = $this->specieRepository->getSpecieByParameterAndValue('name', $specie->name);
+                $specie = $this->specieRepository->getOneByParameter('name', $specie->name);
                 $personId = preg_split('~\/~', $personLink)[config('app.linkPartNumber')];
-                $person = $this->personRepository->getPersonById($personId);
+                $person = $this->personRepository->getOneById($personId);
                 $specie->people()->save($person);
             }
         }

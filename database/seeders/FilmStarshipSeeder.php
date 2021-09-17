@@ -47,7 +47,7 @@ class FilmStarshipSeeder extends Seeder
         $starships = $starshipRequest->results;
         foreach ($starships as $starship) {
             foreach ($starship->films as $filmLink) {
-                $starship = $this->starshipRepository->getStarshipByParameterAndValue('name', $starship->name);
+                $starship = $this->starshipRepository->getOneByParameter('name', $starship->name);
                 $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $starship->films()->attach($film);

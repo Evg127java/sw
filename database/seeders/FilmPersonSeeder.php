@@ -46,7 +46,7 @@ class FilmPersonSeeder extends Seeder
         foreach ($people as $person) {
             foreach ($person->films as $filmLink) {
                 $person = $this->personRepository
-                    ->getPersonByParameterAndValue('name', $person->name);
+                    ->getOneByParameter('name', $person->name);
                 $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $person->films()->attach($film);

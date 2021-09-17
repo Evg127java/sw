@@ -10,11 +10,11 @@ class SpecieRepositorySql implements SpecieRepositoryInterface
 {
     /**
      * Add all passed instances to a storage
-     * @param array $speciesSet
+     * @param array $species
      */
-    public function addAll(array $speciesSet)
+    public function saveMany(array $species)
     {
-        Specie::insertOrIgnore($speciesSet);
+        Specie::insertOrIgnore($species);
     }
 
     /**
@@ -23,7 +23,7 @@ class SpecieRepositorySql implements SpecieRepositoryInterface
      * @param $value
      * @return mixed
      */
-    public function getSpecieByParameterAndValue(string $parameter, $value)
+    public function getOneByParameter(string $parameter, $value)
     {
         return Specie::firstWhere($parameter, $value);
     }

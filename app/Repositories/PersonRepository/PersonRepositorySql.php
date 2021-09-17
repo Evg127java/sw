@@ -16,7 +16,7 @@ class PersonRepositorySql implements PersonRepositoryInterface
      * @param bool $paginate
      * @return mixed
      */
-    public function getAllPeopleSorted(
+    public function getAllSorted(
         string $sortedBy, string $sortDirection, array $relationEntities = [], $paginate = false)
     {
         $temp = Person::with($relationEntities)->orderBy($sortedBy, $sortDirection);
@@ -28,18 +28,18 @@ class PersonRepositorySql implements PersonRepositoryInterface
      * @param int $id instance's id value to get
      * @return mixed
      */
-    public function getPersonById(int $id)
+    public function getOneById(int $id)
     {
         return Person::findOrFail($id);
     }
 
     /**
      * Add all passed instances to the BD
-     * @param array $peopleSet
+     * @param array $entities
      */
-    public function addAllPeople(array $peopleSet)
+    public function saveMany(array $entities)
     {
-        Person::insertOrIgnore($peopleSet);
+        Person::insertOrIgnore($entities);
     }
 
     /**
@@ -47,7 +47,7 @@ class PersonRepositorySql implements PersonRepositoryInterface
      * @param array $data
      * @return mixed|void
      */
-    public function addPersonFromData(array $data)
+    public function saveFromData(array $data)
     {
         Person::create($data);
     }
@@ -60,7 +60,7 @@ class PersonRepositorySql implements PersonRepositoryInterface
      * @param bool $paginate
      * @return mixed
      */
-    public function getAllPeopleByParameter(
+    public function getAllByParameter(
         string $parameter, $value, array $relatedEntities = [], $paginate = false)
     {
         $temp = Person::with($relatedEntities)->where($parameter, $value);
@@ -73,7 +73,7 @@ class PersonRepositorySql implements PersonRepositoryInterface
      * @param $value
      * @return mixed
      */
-    public function getPersonByParameterAndValue(string $parameter, $value)
+    public function getOneByParameter(string $parameter, $value)
     {
         return Person::firstWhere($parameter, $value);
     }

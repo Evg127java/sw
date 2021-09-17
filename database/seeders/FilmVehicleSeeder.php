@@ -47,7 +47,7 @@ class FilmVehicleSeeder extends Seeder
         $vehicles = $vehicleRequest->results;
         foreach ($vehicles as $vehicle) {
             foreach ($vehicle->films as $filmLink) {
-                $vehicle = $this->vehicleRepository->getVehicleByParameterAndValue('name', $vehicle->name);
+                $vehicle = $this->vehicleRepository->getOneByParameter('name', $vehicle->name);
                 $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $vehicle->films()->attach($film);

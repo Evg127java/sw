@@ -47,9 +47,9 @@ class PersonVehicleSeeder extends Seeder
         $vehicles = $vehicleRequest->results;
         foreach ($vehicles as $vehicle) {
             foreach ($vehicle->pilots as $pilotLink) {
-                $vehicle = $this->vehicleRepository->getVehicleByParameterAndValue('name', $vehicle->name);
+                $vehicle = $this->vehicleRepository->getOneByParameter('name', $vehicle->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[config('app.linkPartNumber')];
-                $pilot = $this->personRepository->getPersonById($pilotId);
+                $pilot = $this->personRepository->getOneById($pilotId);
                 $vehicle->people()->attach($pilot);
             }
         }

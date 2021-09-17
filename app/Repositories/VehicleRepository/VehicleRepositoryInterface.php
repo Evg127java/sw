@@ -5,13 +5,14 @@ namespace App\Repositories\VehicleRepository;
 
 
 
+
 interface VehicleRepositoryInterface
 {
     /**
      * Add all passed instances to a storage
-     * @param array $entitiesSet
+     * @param array $entities
      */
-    public function addAll(array $entitiesSet);
+    public function saveMany(array $entities);
 
     /**
      * Gets the only instance by the specified parameter and its value
@@ -19,5 +20,5 @@ interface VehicleRepositoryInterface
      * @param $value
      * @return mixed
      */
-    public function getVehicleByParameterAndValue(string $parameter, $value);
+    public function getOneByParameter(string $parameter, $value);
 }

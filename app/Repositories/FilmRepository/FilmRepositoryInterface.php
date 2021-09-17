@@ -5,6 +5,7 @@ namespace App\Repositories\FilmRepository;
 
 
 use App\Models\Film;
+use App\Repositories\BaseRepositoryInterface;
 
 interface FilmRepositoryInterface
 {
@@ -21,9 +22,10 @@ interface FilmRepositoryInterface
      */
     public function getOneById(int $id);
 
+
     /**
      * Add all passed instances to a storage
-     * @param array $entitiesSet
+     * @param array $entities
      */
-    public function addAll(array $entitiesSet);
+    public function saveMany(array $entities);
 }

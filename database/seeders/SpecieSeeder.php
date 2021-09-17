@@ -65,7 +65,7 @@ class SpecieSeeder extends Seeder
                     'url' => $specie->url,
                 ];
         }
-        $this->specieRepository->addAll($speciesToSeed);
+        $this->specieRepository->saveMany($speciesToSeed);
         /* If there are more than one pages at API resource */
         if ($specieRequest->next) {
             $this->seedSpecies($specieRequest->next);

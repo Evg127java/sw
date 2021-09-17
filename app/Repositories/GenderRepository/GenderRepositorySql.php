@@ -19,11 +19,11 @@ class GenderRepositorySql implements GenderRepositoryInterface
 
     /**
      * Add all passed instances to a storage
-     * @param array $gendersSet
+     * @param array $genders
      */
-    public function addAll(array $gendersSet)
+    public function saveMany(array $genders)
     {
-        Gender::insertOrIgnore($gendersSet);
+        Gender::insertOrIgnore($genders);
     }
 
     /**

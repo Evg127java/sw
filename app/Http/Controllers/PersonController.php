@@ -40,7 +40,7 @@ class PersonController extends Controller
     public function index()
     {
         $people = $this->personRepository
-            ->getAllPeopleSorted('id', 'desc', ['films', 'gender', 'homeworld'], true);
+            ->getAllSorted('id', 'desc', ['films', 'gender', 'homeworld'], true);
         return view('people', ['people' => $people]);
 
     }
@@ -78,7 +78,7 @@ class PersonController extends Controller
      */
     public function show()
     {
-        $person = $this->personRepository->getPersonById(request('id'));
+        $person = $this->personRepository->getOneById(request('id'));
         return view('person', ['person' => $person]);
     }
 
@@ -91,7 +91,7 @@ class PersonController extends Controller
     {
         return view('edit',
             [
-                'person' => $this->personRepository->getPersonById($id),
+                'person' => $this->personRepository->getOneById($id),
                 'films' => $this->filmRepository->getAll(),
                 'homeworlds' => $this->homeworldRepository->getAll(),
                 'genders' => $this->genderRepository->getAll(),
@@ -107,7 +107,7 @@ class PersonController extends Controller
     public function update(PersonFormRequest $request)
     {
         $personFormRequest = $request->all();
-        $person = $this->personRepository->getPersonById(request('id'));
+        $person = $this->personRepository->getOneById(request('id'));
 
         /* Update person's data */
         $person->updatePerson($personFormRequest);

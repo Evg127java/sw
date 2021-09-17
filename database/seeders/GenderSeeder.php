@@ -43,7 +43,7 @@ class GenderSeeder extends Seeder
         foreach ($people as $person) {
             $gendersToSeed[] = ['type' => $person->gender];
         }
-        $this->genderRepository->addAll($gendersToSeed);
+        $this->genderRepository->saveMany($gendersToSeed);
         /* If there is more than one page at API resource */
         if ($request->next) {
             $this->seedGenders($request->next);

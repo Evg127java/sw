@@ -30,10 +30,10 @@ class FilmRepositorySql implements FilmRepositoryInterface
 
     /**
      * Add all passed instances to the DB
-     * @param array $filmsSet
+     * @param array $films
      */
-    public function addAll(array $filmsSet)
+    public function saveMany(array $films)
     {
-        Film::insertOrIgnore($filmsSet);
+        Film::insertOrIgnore($films);
     }
 }

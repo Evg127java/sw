@@ -69,7 +69,7 @@ class PersonSeeder extends Seeder
                     'url' => $person->url,
                 ];
         }
-        $this->personRepository->addAllPeople($peopleToSeed);
+        $this->personRepository->saveMany($peopleToSeed);
         /* If there is more than one page at API resource */
         if ($personRequest->next) {
             $this->seedPeople($personRequest->next);

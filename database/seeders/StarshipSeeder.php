@@ -64,7 +64,7 @@ class StarshipSeeder extends Seeder
                     'url' => $starship->url,
                 ];
         }
-        $this->starshipRepository->addAll($starshipsToSeed);
+        $this->starshipRepository->saveMany($starshipsToSeed);
         /* If there are more than one pages at API resource */
         if ($starshipRequest->next) {
             $this->seedStarships($starshipRequest->next);

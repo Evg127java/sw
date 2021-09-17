@@ -10,11 +10,11 @@ class VehicleRepositorySql implements VehicleRepositoryInterface
 {
     /**
      * Add all passed instances to a storage
-     * @param array $vehiclesSet
+     * @param array $vehicles
      */
-    public function addAll(array $vehiclesSet)
+    public function saveMany(array $vehicles)
     {
-        Vehicle::insertOrIgnore($vehiclesSet);
+        Vehicle::insertOrIgnore($vehicles);
     }
 
     /**
@@ -23,7 +23,7 @@ class VehicleRepositorySql implements VehicleRepositoryInterface
      * @param $value
      * @return mixed
      */
-    public function getVehicleByParameterAndValue(string $parameter, $value)
+    public function getOneByParameter(string $parameter, $value)
     {
         return Vehicle::firstWhere($parameter, $value);
     }

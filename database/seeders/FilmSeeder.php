@@ -54,7 +54,7 @@ class FilmSeeder extends Seeder
                     'url' => $film->url,
                 ];
         }
-        $this->filmRepository->addAll($filmsToSeed);
+        $this->filmRepository->saveMany($filmsToSeed);
         /* If there is more than one page at API resource */
         if ($request->next) {
             $this->seedFilms($request->next);

@@ -48,7 +48,7 @@ class FilmSpecieSeeder extends Seeder
         $species = $specieRequest->results;
         foreach ($species as $specie) {
             foreach ($specie->films as $filmLink) {
-                $specie = $this->specieRepository->getSpecieByParameterAndValue('name', $specie->name);
+                $specie = $this->specieRepository->getOneByParameter('name', $specie->name);
                 $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
                 $film = $this->filmRepository->getOneById($filmId);
                 $specie->films()->attach($film);
