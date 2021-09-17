@@ -18,6 +18,12 @@ class CreateFilmsTable extends Migration
         Schema::create('films', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->integer('episode_id');
+            $table->string('opening_crawl');
+            $table->string('director');
+            $table->string('producer');
+            $table->date('release_date');
+            $table->string('url');
             $table->timestamps();
         });
     }

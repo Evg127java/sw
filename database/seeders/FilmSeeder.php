@@ -41,7 +41,18 @@ class FilmSeeder extends Seeder
 
         $films = $request->results;
         foreach ($films as $film) {
-            $filmsToSeed[] = ['title' => $film->title];
+            $filmsToSeed[] =
+                [
+                    'title' => $film->title,
+                    'episode_id' => $film->episode_id,
+                    'opening_crawl' => $film->opening_crawl,
+                    'director' => $film->director,
+                    'producer' => $film->producer,
+                    'release_date' => $film->release_date,
+                    'created_at' => date('Y-m-d H:i:s', strtotime($film->created)),
+                    'updated_at' => date('Y-m-d H:i:s', strtotime($film->edited)),
+                    'url' => $film->url,
+                ];
         }
         $this->filmRepository->addAll($filmsToSeed);
         /* If there is more than one page at API resource */

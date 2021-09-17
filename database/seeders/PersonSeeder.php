@@ -59,6 +59,8 @@ class PersonSeeder extends Seeder
                     'height' => $person->height,
                     'mass' => $person->mass,
                     'hair_color' => $person->hair_color,
+                    'skin_color' => $person->skin_color,
+                    'eye_color' => $person->eye_color,
                     'birth_year' => $person->birth_year,
                     'gender_id' => $genderId,
                     'homeworld_id' => $homeworldId,

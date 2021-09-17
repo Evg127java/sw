@@ -21,6 +21,8 @@ class CreatePeopleTable extends Migration
             $table->string('height');
             $table->string('mass');
             $table->string('hair_color');
+            $table->string('skin_color');
+            $table->string('eye_color');
             $table->string('birth_year');
             $table->unsignedBigInteger('gender_id');
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
