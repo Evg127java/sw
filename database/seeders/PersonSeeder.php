@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Gender;
-use App\Models\Person;
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
-use App\Repositories\RepositoryInterface;
 use Illuminate\Database\Seeder;
 
 /**
@@ -15,8 +12,8 @@ use Illuminate\Database\Seeder;
  */
 class PersonSeeder extends Seeder
 {
-    protected $genderRepository;
-    protected $personRepository;
+    protected GenderRepositoryInterface $genderRepository;
+    protected PersonRepositoryInterface $personRepository;
 
     /**
      * Run the database seeds.

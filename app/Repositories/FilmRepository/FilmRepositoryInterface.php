@@ -4,27 +4,26 @@
 namespace App\Repositories\FilmRepository;
 
 
-use App\Models\Film;
-use App\Repositories\BaseRepositoryInterface;
+use App\Entities\FilmEntity;
 
 interface FilmRepositoryInterface
 {
     /**
-     * Gets all instances
-     * @return Film[]
+     * Gets all instances from the repository
+     * @return FilmEntity[]
      */
     public function getAll();
 
     /**
-     * Gets the only instance by the specified id
+     * Gets the only instance by the specified id from the repository
      * @param int $id
-     * @return Film
+     * @return FilmEntity
      */
     public function getOneById(int $id);
 
 
     /**
-     * Add all passed instances to a storage
+     * Add all passed instances to the repository
      * @param array $entities
      */
     public function saveMany(array $entities);

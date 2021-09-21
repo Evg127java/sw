@@ -22,12 +22,12 @@ class FilmSeeder extends Seeder
     public function run(FilmRepositoryInterface $filmRepository)
     {
         $this->filmRepository = $filmRepository;
-
         /* API address from where to get data */
         $apiAddress = config('app.filmsApiSource');
 
         /* Seeding running */
         $this->seedFilms($apiAddress);
+
     }
 
     /**
@@ -36,28 +36,30 @@ class FilmSeeder extends Seeder
      */
     private function seedFilms(string $apiAddress)
     {
-        $filmsToSeed = [];
-        $request = json_decode(\Http::get($apiAddress));
+        $link = $apiAddress;
 
-        $films = $request->results;
-        foreach ($films as $film) {
-            $filmsToSeed[] =
-                [
-                    'title' => $film->title,
-                    'episode_id' => $film->episode_id,
-                    'opening_crawl' => $film->opening_crawl,
-                    'director' => $film->director,
-                    'producer' => $film->producer,
-                    'release_date' => $film->release_date,
-                    'created_at' => date('Y-m-d H:i:s', strtotime($film->created)),
-                    'updated_at' => date('Y-m-d H:i:s', strtotime($film->edited)),
-                    'url' => $film->url,
-                ];
-        }
-        $this->filmRepository->saveMany($filmsToSeed);
-        /* If there is more than one page at API resource */
-        if ($request->next) {
-            $this->seedFilms($request->next);
+        while ($link) {
+            $request = json_decode(\Http::get($link));
+            $filmsToSeed = [];
+            foreach ($request->results as $film) {
+
+                $filmsToSeed[] =
+                    [
+                        'title' => $film->title,
+                        'episode_id' => $film->episode_id,
+                        'opening_crawl' => $film->opening_crawl,
+                        'director' => $film->director,
+                        'producer' => $film->producer,
+                        'release_date' => $film->release_date,
+                        'created_at' => date('Y-m-d H:i:s', strtotime($film->created)),
+                        'updated_at' => date('Y-m-d H:i:s', strtotime($film->edited)),
+                        'url' => $film->url,
+                    ];
+            }
+            $this->filmRepository->saveMany($filmsToSeed);
+
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }

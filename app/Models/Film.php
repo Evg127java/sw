@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * Class Film
+ * Class FilmEntity
  *
  * @package App\Models
  * @mixin Eloquent

@@ -4,36 +4,46 @@
 namespace App\Repositories\FilmRepository;
 
 
-use App\Models\Film;
-use Illuminate\Database\Eloquent\Collection;
+use App\Entities\FilmEntity;
+use DB;
+use Exception;
 
 class FilmRepositorySql implements FilmRepositoryInterface
 {
     /**
-     * Gets all Films from a source
-     * @return Film[]|Collection|mixed
+     * Gets all instances from the repository
+     * @return FilmEntity[]
      */
     public function getAll()
     {
-        return Film::all();
+        $filmsCollection = DB::table('films')->get();
+        $films = $filmsCollection->map(function ($item) {
+            return new FilmEntity(get_object_vars($item));
+        });
+        return $films->toArray();
     }
 
     /**
-     * Gets the only Film by the specified id
+     * Gets the only instance by the specified id from the repository
      * @param int $id
-     * @return Film
+     * @return FilmEntity
+     * @throws Exception
      */
     public function getOneById(int $id)
     {
-        return Film::findOrFail($id);
+        $filmFromSql = DB::table('films')->where('id', $id)->first();
+        if ($filmFromSql) {
+            return new FilmEntity(get_object_vars($filmFromSql));
+        }
+        throw new Exception('No records for the passed id');
     }
 
     /**
-     * Add all passed instances to the DB
+     * Add all passed instances to the repository
      * @param array $films
      */
     public function saveMany(array $films)
     {
-        Film::insertOrIgnore($films);
+        DB::table('films')->insertOrIgnore($films);
     }
 }
