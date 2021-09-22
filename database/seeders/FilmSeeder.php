@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
+use Http;
 use Illuminate\Database\Seeder;
 
 /**
@@ -39,7 +40,7 @@ class FilmSeeder extends Seeder
         $link = $apiAddress;
 
         while ($link) {
-            $request = json_decode(\Http::get($link));
+            $request = json_decode(Http::get($link));
             $filmsToSeed = [];
             foreach ($request->results as $film) {
 

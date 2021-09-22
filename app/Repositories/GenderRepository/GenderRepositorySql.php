@@ -4,36 +4,48 @@
 namespace App\Repositories\GenderRepository;
 
 
-use App\Models\Gender;
+use App\Entities\GenderEntity;
+use DB;
+use Exception;
 
 class GenderRepositorySql implements GenderRepositoryInterface
 {
+    private string $tableName = 'genders';
+
     /**
-     * Gets all instances from a storage
-     * @return Gender[]
+     * Gets all instances from the repository
+     * @return GenderEntity[]
      */
     public function getAll()
     {
-        return Gender::all();
+        $gendersCollection = DB::table($this->tableName)->get();
+        $genders = $gendersCollection->map(function ($item) {
+            return new GenderEntity(get_object_vars($item));
+        });
+        return $genders->toArray();
     }
 
     /**
-     * Add all passed instances to a storage
+     * Gets instance's id by its type
+     * @param string $type
+     * @return int
+     * @throws Exception
+     */
+    public function getIdByType(string $type)
+    {
+        $id = DB::table($this->tableName)->where($type)->first()->id;
+        if ($id) {
+            return $id;
+        }
+        throw new Exception('No records for the passed type');
+    }
+
+    /**
+     * Add all passed instances to the repository
      * @param array $genders
      */
     public function saveMany(array $genders)
     {
-        Gender::insertOrIgnore($genders);
-    }
-
-    /**
-     * Gets instance's id by the specified parameter and its value
-     * @param string $parameterName
-     * @param string $parameterValue
-     * @return int
-     */
-    public function getIdByParameter(string $parameterName, string $parameterValue)
-    {
-        return Gender::where($parameterName, $parameterValue)->firstOrFail()->id;
+        DB::table($this->tableName)->insertOrIgnore($genders);
     }
 }

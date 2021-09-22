@@ -4,26 +4,25 @@
 namespace App\Repositories\GenderRepository;
 
 
+use App\Entities\GenderEntity;
 
 interface GenderRepositoryInterface
 {
     /**
-     * Gets all instances from a storage
-     * @return array
+     * Gets all instances from the repository
+     * @return GenderEntity[]
      */
     public function getAll();
 
     /**
-     * Gets instance's id by the specified parameter and its value
-     * @param string $parameterName
-     * @param string $parameterValue
+     * Gets instance's id by its type
+     * @param string $type
      * @return int
      */
-    public function getIdByParameter(string $parameterName, string $parameterValue);
-
+    public function getIdByType(string $type);
 
     /**
-     * Add all passed instances to a storage
+     * Add all passed instances to the repository
      * @param array $entities
      */
     public function saveMany(array $entities);

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
+use Http;
 use Illuminate\Database\Seeder;
 
 /**
@@ -36,17 +37,24 @@ class GenderSeeder extends Seeder
      */
     private function seedGenders(string $apiAddress)
     {
-        $gendersToSeed = [];
-        $request = json_decode(\Http::get($apiAddress));
+        $link = $apiAddress;
 
-        $people = $request->results;
-        foreach ($people as $person) {
-            $gendersToSeed[] = ['type' => $person->gender];
-        }
-        $this->genderRepository->saveMany($gendersToSeed);
-        /* If there is more than one page at API resource */
-        if ($request->next) {
-            $this->seedGenders($request->next);
+        while ($link) {
+            $request = json_decode(Http::get($link));
+            $gendersToSeed = [];
+            $people = $request->results;
+            foreach ($people as $person) {
+                $gendersToSeed[] =
+                    [
+                        'type' => $person->gender,
+                        'created_at' => date('Y-m-d H:i:s', strtotime('now')),
+                        'updated_at' => date('Y-m-d H:i:s', strtotime('now')),
+                    ];
+            }
+            $this->genderRepository->saveMany($gendersToSeed);
+
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }

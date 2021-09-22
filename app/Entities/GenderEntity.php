@@ -4,26 +4,25 @@
 namespace App\Entities;
 
 
+use DateTime;
+
 class GenderEntity
 {
-    public $id;
-    public $type;
-    public $created_at;
-    public $updated_at;
+    public ?int $id;
+    public string $type;
+    public DateTime $created_at;
+    public DateTime $updated_at;
 
     /**
      * GenderEntity constructor.
-     * @param $id
-     * @param $type
-     * @param $created_at
-     * @param $updated_at
+     * @param array $parameters
      */
-    public function __construct($id, $type, $created_at, $updated_at)
+    public function __construct(array $parameters)
     {
-        $this->id = $id;
-        $this->type = $type;
-        $this->created_at = $created_at;
-        $this->updated_at = $updated_at;
+        $this->id = $parameters['id'];
+        $this->created_at = $parameters['created_at'];
+        $this->updated_at = $parameters['updated_at'];
+        $this->type = $parameters['type'];
     }
 
     /**
