@@ -42,8 +42,7 @@ class GenderSeeder extends Seeder
         while ($link) {
             $request = json_decode(Http::get($link));
             $gendersToSeed = [];
-            $people = $request->results;
-            foreach ($people as $person) {
+            foreach ($request->results as $person) {
                 $gendersToSeed[] =
                     [
                         'type' => $person->gender,

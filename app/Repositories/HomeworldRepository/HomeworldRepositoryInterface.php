@@ -4,27 +4,26 @@
 namespace App\Repositories\HomeworldRepository;
 
 
-use App\Repositories\BaseRepositoryInterface;
+use App\Entities\HomeworldEntity;
 
 interface HomeworldRepositoryInterface
 {
     /**
-     * Gets all instances from a storage
-     * @return array
+     * Gets all instances from the repository
+     * @return HomeworldEntity[]
      */
     public function getAll();
 
     /**
-     * Gets instance's id by the specified parameter and its value
-     * @param string $parameterName
-     * @param string $parameterValue
+     * Gets instance's id by its name
+     * @param string $name
      * @return int
      */
-    public function getIdByParameter(string $parameterName, string $parameterValue);
+    public function getIdByName(string $name);
 
 
     /**
-     * Add all passed instances to a storage
+     * Add all passed instances to the repository
      * @param array $entities
      */
     public function saveMany(array $entities);

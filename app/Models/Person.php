@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Storage;
 
 /**
- * Class Person
+ * Class PersonEntity
  *
  * @package App\Models
  * @mixin Eloquent
@@ -125,7 +125,7 @@ class Person extends Model
      */
     public function updatePerson(array $request)
     {
-        /* Person update with validated data */
+        /* PersonEntity update with validated data */
         $this->update($request);
         self::processRelations($request, $this);
         return $this;
@@ -145,7 +145,7 @@ class Person extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Person's related entities' processing
+    | PersonEntity's related entities' processing
     |--------------------------------------------------------------------------
     */
 
