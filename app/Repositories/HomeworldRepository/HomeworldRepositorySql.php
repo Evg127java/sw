@@ -34,7 +34,7 @@ class HomeworldRepositorySql implements HomeworldRepositoryInterface
      */
     public function getIdByName(string $name)
     {
-        $id = DB::table($this->tableName)->where($name)->first()->id;
+        $id = DB::table($this->tableName)->where('name', $name)->first()->id;
         if ($id) {
             return $id;
         }

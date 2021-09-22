@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Film;
-use App\Models\Person;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
-use App\Repositories\RepositoryInterface;
+use DB;
+use Http;
 use Illuminate\Database\Seeder;
 
 /**
@@ -17,6 +16,7 @@ class FilmPersonSeeder extends Seeder
 {
     protected FilmRepositoryInterface $filmRepository;
     protected PersonRepositoryInterface $personRepository;
+    private string $apiAddress;
 
     /**
      * Run the database seeds.
@@ -30,30 +30,37 @@ class FilmPersonSeeder extends Seeder
         $this->filmRepository = $filmRepository;
         $this->personRepository = $personRepository;
 
-        $apiAddress = config('app.peopleApiSource');
-        $this->bindFilmsToPeople($apiAddress);
+        $this->apiAddress = config('app.peopleApiSource');
+        $this->bindFilmsToPeople();
     }
 
     /**
      * Binds films to people as relations
-     * @param $apiAddress
      */
-    private function bindFilmsToPeople($apiAddress)
+    private function bindFilmsToPeople()
     {
-        $personRequest = json_decode(\Http::get($apiAddress));
+        $link = $this->apiAddress;
 
-        $people = $personRequest->results;
-        foreach ($people as $person) {
-            foreach ($person->films as $filmLink) {
-                $person = $this->personRepository
-                    ->getOneByParameter('name', $person->name);
-                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
-                $film = $this->filmRepository->getOneById($filmId);
-                $person->films()->attach($film);
+        while ($link) {
+            $request = json_decode(Http::get($link));
+
+            $dateTime = date('Y-m-d H:i:s', strtotime('now'));
+            foreach ($request->results as $person) {
+                foreach ($person->films as $filmLink) {
+                    $person = $this->personRepository->getOneByName($person->name);
+                    $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
+                    DB::table('film_person')->insertOrIgnore(
+                        [
+                            'person_id' => $person->getId(),
+                            'film_id' => $filmId,
+                            'created_at' => $dateTime,
+                            'updated_at' => $dateTime,
+                        ]
+                    );
+                }
             }
-        }
-        if ($personRequest->next) {
-            $this->bindFilmsToPeople($personRequest->next);
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }

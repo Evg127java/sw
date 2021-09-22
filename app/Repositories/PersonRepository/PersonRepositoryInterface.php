@@ -5,42 +5,35 @@ namespace App\Repositories\PersonRepository;
 
 
 
+use App\Entities\PersonEntity;
+
 interface PersonRepositoryInterface
 {
     /**
-     * Gets all instances by specified sort type
+     * Gets all instances by a specified sort type
      * @param string $sortedBy
      * @param string $sortDirection
-     * @param array $relationEntities array of related entities
-     * @param bool $paginate paginate using flag
-     * @return mixed
-     */
-    public function getAllSorted(string $sortedBy, string $sortDirection, array $relationEntities = [], $paginate = false);
-
-    /**
-     * Gets all instances by the specified parameter and its value
-     * @param string $parameter
-     * @param string $value parameter's value
      * @param array $relatedEntities array of related entities
      * @param bool $paginate paginate using flag
-     * @return mixed
+     * @return PersonEntity[]
      */
-    public function getAllByParameter(string $parameter, $value, array $relatedEntities = [], $paginate = false);
+    public function getAllSorted(string $sortedBy, string $sortDirection, array $relatedEntities = [], $paginate = false);
 
     /**
-     * Gets the only instance by the specified id
+     * Gets all instances by a specified parameter and its value
+     * @param string $homeworld
+     * @param array $relatedEntities array of related entities
+     * @param bool $paginate paginate using flag
+     * @return PersonEntity[]
+     */
+    public function getAllByHomeworld(string $homeworld, array $relatedEntities = [], $paginate = false);
+
+    /**
+     * Gets the only instance by a specified id
      * @param int $id
-     * @return mixed
+     * @return PersonEntity
      */
     public function getOneById(int $id);
-
-    /**
-     * Add all passed instances to the DB
-     * @param array $data
-     * @return mixed
-     */
-    public function saveFromData(array $data);
-
 
     /**
      * Add all passed instances to a storage
@@ -50,9 +43,8 @@ interface PersonRepositoryInterface
 
     /**
      * Gets the only instance by the specified parameter and its value
-     * @param string $parameter
-     * @param $value
-     * @return mixed
+     * @param string $name
+     * @return PersonEntity
      */
-    public function getOneByParameter(string $parameter, $value);
+    public function getOneByName(string $name);
 }

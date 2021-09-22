@@ -14,8 +14,8 @@ class FilmEntity
     public $producer;
     public $release_date;
     public $url;
-    public $created_at;
-    public $updated_at;
+    public string $created_at;
+    public string $updated_at;
 
     /**
      * FilmEntity constructor.

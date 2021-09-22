@@ -38,7 +38,7 @@ class HomeworldController extends Controller
     public function show(Homeworld $homeworld, PersonRepositoryInterface $personRepository)
     {
         $people = $personRepository
-            ->getAllByParameter('homeworld_id', $homeworld->id, ['films', 'images'], true);
+            ->getAllByHomeworld('homeworld_id', $homeworld->id, ['films', 'images'], true);
         $homeworlds = $this->homeworldRepository->getAll();
 
         return view('homeworld',

@@ -33,7 +33,7 @@ class GenderRepositorySql implements GenderRepositoryInterface
      */
     public function getIdByType(string $type)
     {
-        $id = DB::table($this->tableName)->where($type)->first()->id;
+        $id = DB::table($this->tableName)->where('type', $type)->first()->id;
         if ($id) {
             return $id;
         }
