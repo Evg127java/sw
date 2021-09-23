@@ -43,8 +43,8 @@ class FilmPersonSeeder extends Seeder
 
         while ($link) {
             $request = json_decode(Http::get($link));
-
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
+
             foreach ($request->results as $person) {
                 $dataToInsert = [];
                 foreach ($person->films as $filmLink) {

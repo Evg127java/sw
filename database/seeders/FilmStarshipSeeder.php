@@ -53,7 +53,7 @@ class FilmStarshipSeeder extends Seeder
                     $starship = $this->starshipRepository->getOneByName($starship->name);
                     $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
-                        'specie_id' => $starship->getId(),
+                        'starship_id' => $starship->getId(),
                         'film_id' => $filmId,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,

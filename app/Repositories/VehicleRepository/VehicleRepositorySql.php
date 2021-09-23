@@ -4,27 +4,35 @@
 namespace App\Repositories\VehicleRepository;
 
 
-use App\Models\Vehicle;
+use App\Entities\VehicleEntity;
+use DB;
+use Exception;
 
 class VehicleRepositorySql implements VehicleRepositoryInterface
 {
+    private string $tableName = 'vehicles';
+
     /**
-     * Add all passed instances to a storage
+     * Gets the only instance by its name
+     * @param string $name
+     * @return VehicleEntity
+     * @throws Exception
+     */
+    public function getOneByName(string $name)
+    {
+        $starship = DB::table($this->tableName)->where('name',$name)->first();
+        if ($starship) {
+            return new VehicleEntity(get_object_vars($starship));
+        }
+        throw new Exception('No records for the passed name');
+    }
+
+    /**
+     * Add all passed instances to the sql repository
      * @param array $vehicles
      */
     public function saveMany(array $vehicles)
     {
-        Vehicle::insertOrIgnore($vehicles);
-    }
-
-    /**
-     * Gets the only instance by the specified parameter and its value
-     * @param string $parameter
-     * @param $value
-     * @return mixed
-     */
-    public function getOneByParameter(string $parameter, $value)
-    {
-        return Vehicle::firstWhere($parameter, $value);
+        DB::table($this->tableName)->insertOrIgnore($vehicles);
     }
 }

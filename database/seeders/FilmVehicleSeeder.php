@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Film;
-use App\Models\Vehicle;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
-use App\Repositories\RepositoryInterface;
 use App\Repositories\VehicleRepository\VehicleRepositoryInterface;
+use DB;
+use Http;
 use Illuminate\Database\Seeder;
 
 class FilmVehicleSeeder extends Seeder
@@ -42,19 +41,28 @@ class FilmVehicleSeeder extends Seeder
      */
     private function bindFilmsToVehicles($apiAddress)
     {
-        $vehicleRequest = json_decode(\Http::get($apiAddress));
+        $link = $apiAddress;
 
-        $vehicles = $vehicleRequest->results;
-        foreach ($vehicles as $vehicle) {
-            foreach ($vehicle->films as $filmLink) {
-                $vehicle = $this->vehicleRepository->getOneByParameter('name', $vehicle->name);
-                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
-                $film = $this->filmRepository->getOneById($filmId);
-                $vehicle->films()->attach($film);
+        while ($link) {
+            $request = json_decode(Http::get($link));
+            $dateTime = date('Y-m-d H:i:s', strtotime('now'));
+
+            foreach ($request->results as $vehicle) {
+                $dataToInsert = [];
+                foreach ($vehicle->films as $filmLink) {
+                    $vehicle = $this->vehicleRepository->getOneByName($vehicle->name);
+                    $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
+                    $dataToInsert[] = [
+                        'vehicle_id' => $vehicle->getId(),
+                        'film_id' => $filmId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
+                DB::table('film_vehicle')->insertOrIgnore($dataToInsert);
             }
-        }
-        if ($vehicleRequest->next) {
-            $this->bindFilmsToVehicles($vehicleRequest->next);
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }

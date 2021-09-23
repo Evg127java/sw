@@ -99,8 +99,9 @@ class PersonRepositorySql implements PersonRepositoryInterface
      * @param array $dataToUpdate
      * @return mixed|void
      */
-    public function updateMany(array $dataToUpdate)
+    public function update(array $dataToUpdate)
     {
+        //dd($dataToUpdate);
         DB::table($this->tableName)->update($dataToUpdate);
     }
 }

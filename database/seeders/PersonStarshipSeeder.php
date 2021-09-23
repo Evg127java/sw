@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Film;
-use App\Models\Person;
-use App\Models\Starship;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
-use App\Repositories\RepositoryInterface;
 use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
+use DB;
+use Http;
 use Illuminate\Database\Seeder;
 
 class PersonStarshipSeeder extends Seeder
@@ -20,6 +18,7 @@ class PersonStarshipSeeder extends Seeder
      * @var StarshipRepositoryInterface
      */
     protected StarshipRepositoryInterface $starshipRepository;
+    private string $tableName = 'person_starship';
 
     /**
      * Run the database seeds.
@@ -33,7 +32,7 @@ class PersonStarshipSeeder extends Seeder
         $this->personRepository = $personRepository;
         $this->starshipRepository = $starshipRepository;
 
-        $apiAddress = config('app.starshipsApiSource');
+        $apiAddress = config('app.peopleApiSource');
         $this->bindPeopleToStarships($apiAddress);
     }
 
@@ -43,19 +42,28 @@ class PersonStarshipSeeder extends Seeder
      */
     private function bindPeopleToStarships($apiAddress)
     {
-        $starshipRequest = json_decode(\Http::get($apiAddress));
+        $link = $apiAddress;
 
-        $starships = $starshipRequest->results;
-        foreach ($starships as $starship) {
-            foreach ($starship->pilots as $pilotLink) {
-                $starship = $this->starshipRepository->getOneByName('name', $starship->name);
-                $pilotId = preg_split('~\/~', $pilotLink)[config('app.linkPartNumber')];
-                $pilot = $this->personRepository->getOneById($pilotId);
-                $starship->people()->attach($pilot);
+        while ($link) {
+            $request = json_decode(Http::get($link));
+            $dateTime = date('Y-m-d H:i:s', strtotime('now'));
+
+            foreach ($request->results as $person) {
+                $dataToInsert = [];
+                foreach ($person->starships as $starshipLink) {
+                    $person = $this->personRepository->getOneByName($person->name);
+                    $starshipId = preg_split('~/~', $starshipLink)[config('app.linkPartNumber')];
+                    $dataToInsert[] = [
+                        'person_id' => $person->getId(),
+                        'starship_id' => $starshipId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
+                DB::table($this->tableName)->insertOrIgnore($dataToInsert);
             }
-        }
-        if ($starshipRequest->next) {
-            $this->bindPeopleToStarships($starshipRequest->next);
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }

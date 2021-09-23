@@ -6,19 +6,21 @@ namespace App\Repositories\VehicleRepository;
 
 
 
+use App\Entities\VehicleEntity;
+
 interface VehicleRepositoryInterface
 {
     /**
-     * Add all passed instances to a storage
+     * Gets the only instance by its name
+     * @param string $name
+     * @return VehicleEntity
+     */
+    public function getOneByName(string $name);
+
+    /**
+     * Add all passed instances to the sql repository
      * @param array $entities
      */
     public function saveMany(array $entities);
 
-    /**
-     * Gets the only instance by the specified parameter and its value
-     * @param string $parameter
-     * @param $value
-     * @return mixed
-     */
-    public function getOneByParameter(string $parameter, $value);
 }

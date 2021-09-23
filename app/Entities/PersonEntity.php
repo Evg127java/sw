@@ -18,7 +18,6 @@ class PersonEntity
     public string $birth_year;
     public ?int $gender_id;
     public ?int $homeworld_id;
-    public ?int $specie_id;
     public string $url;
     public string $created_at;
     public string $updated_at;
@@ -39,7 +38,6 @@ class PersonEntity
         $this->birth_year = $parameters['birth_year'];
         $this->gender_id = $parameters['gender_id'];
         $this->homeworld_id = $parameters['homeworld_id'];
-        $this->specie_id = $parameters['specie_id'];
         $this->url = $parameters['url'];
         $this->created_at = $parameters['created_at'];
         $this->updated_at = $parameters['updated_at'];

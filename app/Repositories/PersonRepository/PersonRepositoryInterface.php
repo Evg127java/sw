@@ -58,5 +58,5 @@ interface PersonRepositoryInterface
      * @param array $dataToUpdate
      * @return mixed
      */
-    public function updateMany(array $dataToUpdate);
+    public function update(array $dataToUpdate);
 }
