@@ -47,4 +47,16 @@ interface PersonRepositoryInterface
      * @return PersonEntity
      */
     public function getOneByName(string $name);
+
+    /**
+     * @param string $name
+     * @return int
+     */
+    public function getIdByName(string $name);
+
+    /**
+     * @param array $dataToUpdate
+     * @return mixed
+     */
+    public function updateMany(array $dataToUpdate);
 }

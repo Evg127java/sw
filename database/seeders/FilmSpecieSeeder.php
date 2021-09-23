@@ -7,6 +7,8 @@ use App\Models\Specie;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\RepositoryInterface;
 use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
+use DB;
+use Http;
 use Illuminate\Database\Seeder;
 
 class FilmSpecieSeeder extends Seeder
@@ -42,20 +44,28 @@ class FilmSpecieSeeder extends Seeder
      */
     private function bindFilmsToSpecies($apiAddress)
     {
+        $link = $apiAddress;
 
-        $specieRequest = json_decode(\Http::get($apiAddress));
+        while ($link) {
+            $request = json_decode(Http::get($link));
 
-        $species = $specieRequest->results;
-        foreach ($species as $specie) {
-            foreach ($specie->films as $filmLink) {
-                $specie = $this->specieRepository->getOneByParameter('name', $specie->name);
-                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
-                $film = $this->filmRepository->getOneById($filmId);
-                $specie->films()->attach($film);
+            $dateTime = date('Y-m-d H:i:s', strtotime('now'));
+            foreach ($request->results as $specie) {
+                $dataToInsert = [];
+                foreach ($specie->films as $filmLink) {
+                    $specie = $this->specieRepository->getOneByName($specie->name);
+                    $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
+                    $dataToInsert[] = [
+                        'specie_id' => $specie->getId(),
+                        'film_id' => $filmId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
+                DB::table('film_specie')->insertOrIgnore($dataToInsert);
             }
-        }
-        if ($specieRequest->next) {
-            $this->bindFilmsToSpecies($specieRequest->next);
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }

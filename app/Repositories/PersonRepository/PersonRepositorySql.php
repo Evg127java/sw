@@ -80,4 +80,27 @@ class PersonRepositorySql implements PersonRepositoryInterface
     {
         DB::table($this->tableName)->insertOrIgnore($entities);
     }
+
+    /**
+     * @param string $name
+     * @return int
+     * @throws Exception
+     */
+    public function getIdByName(string $name)
+    {
+        $id = DB::table($this->tableName)->where('name', $name)->first()->id;
+        if ($id) {
+            return $id;
+        }
+        throw new Exception('No records for the passed name');
+    }
+
+    /**
+     * @param array $dataToUpdate
+     * @return mixed|void
+     */
+    public function updateMany(array $dataToUpdate)
+    {
+        DB::table($this->tableName)->update($dataToUpdate);
+    }
 }

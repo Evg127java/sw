@@ -46,18 +46,18 @@ class FilmPersonSeeder extends Seeder
 
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
             foreach ($request->results as $person) {
+                $dataToInsert = [];
                 foreach ($person->films as $filmLink) {
                     $person = $this->personRepository->getOneByName($person->name);
                     $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
-                    DB::table('film_person')->insertOrIgnore(
-                        [
-                            'person_id' => $person->getId(),
-                            'film_id' => $filmId,
-                            'created_at' => $dateTime,
-                            'updated_at' => $dateTime,
-                        ]
-                    );
+                    $dataToInsert[] = [
+                        'person_id' => $person->getId(),
+                        'film_id' => $filmId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
                 }
+                DB::table('film_person')->insertOrIgnore($dataToInsert);
             }
             /* If there is more than one page at API resource */
             $link = $request->next ?? null;

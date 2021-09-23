@@ -46,7 +46,7 @@ class SpecieSeeder extends Seeder
         foreach ($species as $specie) {
 
             $homeworldId = is_null($specie->homeworld) ?
-                null : preg_split('~\/~', $specie->homeworld)[config('app.linkPartNumber')];
+                null : preg_split('~/~', $specie->homeworld)[config('app.linkPartNumber')];
 
             $speciesToSeed[] =
                 [
@@ -58,7 +58,7 @@ class SpecieSeeder extends Seeder
                     'hair_colors' => $specie->hair_colors,
                     'eye_colors' => $specie->eye_colors,
                     'average_lifespan' => $specie->average_lifespan,
-                    'homeworld' => $homeworldId,
+                    'homeworld_id' => $homeworldId,
                     'language' => $specie->language,
                     'created_at' => date('Y-m-d H:i:s', strtotime($specie->created)),
                     'updated_at' => date('Y-m-d H:i:s', strtotime($specie->edited)),

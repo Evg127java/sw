@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Person;
-use App\Models\Specie;
-use App\Models\Starship;
+
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
-use App\Repositories\RepositoryInterface;
 use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
+use DB;
+use Http;
 use Illuminate\Database\Seeder;
 
 class PersonSpecieSeeder extends Seeder
@@ -33,29 +32,32 @@ class PersonSpecieSeeder extends Seeder
         $this->personRepository = $personRepository;
         $this->specieRepository = $specieRepository;
 
-        $apiAddress = config('app.speciesApiSource');
+        $apiAddress = config('app.peopleApiSource');
         $this->bindPeopleToSpecies($apiAddress);
     }
 
     /**
-     * Binds people to starships as relations
+     * Binds people to species as relations
      * @param $apiAddress
      */
     private function bindPeopleToSpecies($apiAddress)
     {
-        $specieRequest = json_decode(\Http::get($apiAddress));
+        $link = $apiAddress;
 
-        $species = $specieRequest->results;
-        foreach ($species as $specie) {
-            foreach ($specie->people as $personLink) {
-                $specie = $this->specieRepository->getOneByParameter('name', $specie->name);
-                $personId = preg_split('~\/~', $personLink)[config('app.linkPartNumber')];
-                $person = $this->personRepository->getOneById($personId);
-                $specie->people()->save($person);
+        while ($link) {
+            $request = json_decode(Http::get($link));
+
+            foreach ($request->results as $person) {
+                $personId = $this->personRepository->getIdByName($person->name);
+                $dataToUpdate = [];
+                foreach ($person->species as $specieLink) {
+                    $specieId = preg_split('~/~', $specieLink)[config('app.linkPartNumber')];
+                    $dataToUpdate[] = ['id' => $personId, 'specie_id' => $specieId];
+                }
+                $this->personRepository->updateMany($dataToUpdate);
             }
-        }
-        if ($specieRequest->next) {
-            $this->bindPeopleToSpecies($specieRequest->next);
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }
