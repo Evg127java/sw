@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Film;
-use App\Models\Starship;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
-use App\Repositories\RepositoryInterface;
 use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
+use DB;
+use Http;
 use Illuminate\Database\Seeder;
 
 class FilmStarshipSeeder extends Seeder
@@ -42,19 +41,28 @@ class FilmStarshipSeeder extends Seeder
      */
     private function bindFilmsToStarships($apiAddress)
     {
-        $starshipRequest = json_decode(\Http::get($apiAddress));
+        $link = $apiAddress;
 
-        $starships = $starshipRequest->results;
-        foreach ($starships as $starship) {
-            foreach ($starship->films as $filmLink) {
-                $starship = $this->starshipRepository->getOneByParameter('name', $starship->name);
-                $filmId = preg_split('~\/~', $filmLink)[config('app.linkPartNumber')];
-                $film = $this->filmRepository->getOneById($filmId);
-                $starship->films()->attach($film);
+        while ($link) {
+            $request = json_decode(Http::get($link));
+            $dateTime = date('Y-m-d H:i:s', strtotime('now'));
+
+            foreach ($request->results as $starship) {
+                $dataToInsert = [];
+                foreach ($starship->films as $filmLink) {
+                    $starship = $this->starshipRepository->getOneByName($starship->name);
+                    $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
+                    $dataToInsert[] = [
+                        'specie_id' => $starship->getId(),
+                        'film_id' => $filmId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
+                DB::table('film_starship')->insertOrIgnore($dataToInsert);
             }
-        }
-        if ($starshipRequest->next) {
-            $this->bindFilmsToStarships($starshipRequest->next);
+            /* If there is more than one page at API resource */
+            $link = $request->next ?? null;
         }
     }
 }

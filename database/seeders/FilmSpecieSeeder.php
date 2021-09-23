@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Film;
-use App\Models\Specie;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
-use App\Repositories\RepositoryInterface;
 use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
 use DB;
 use Http;

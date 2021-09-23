@@ -48,7 +48,7 @@ class PersonStarshipSeeder extends Seeder
         $starships = $starshipRequest->results;
         foreach ($starships as $starship) {
             foreach ($starship->pilots as $pilotLink) {
-                $starship = $this->starshipRepository->getOneByParameter('name', $starship->name);
+                $starship = $this->starshipRepository->getOneByName('name', $starship->name);
                 $pilotId = preg_split('~\/~', $pilotLink)[config('app.linkPartNumber')];
                 $pilot = $this->personRepository->getOneById($pilotId);
                 $starship->people()->attach($pilot);

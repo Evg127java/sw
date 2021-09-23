@@ -4,27 +4,35 @@
 namespace App\Repositories\StarshipRepository;
 
 
-use App\Models\Starship;
+use App\Entities\StarshipEntity;
+use DB;
+use Exception;
 
 class StarshipRepositorySql implements StarshipRepositoryInterface
 {
+    private string $tableName = 'starships';
+
     /**
-     * Add all passed instances to a storage
+     * Gets the only instance by its name
+     * @param string $name
+     * @return StarshipEntity
+     * @throws Exception
+     */
+    public function getOneByName(string $name)
+    {
+        $starship = DB::table($this->tableName)->where('name',$name)->first();
+        if ($starship) {
+            return new StarshipEntity(get_object_vars($starship));
+        }
+        throw new Exception('No records for the passed name');
+    }
+
+    /**
+     * Add all passed instances to the sql repository
      * @param array $starships
      */
     public function saveMany(array $starships)
     {
-        Starship::insertOrIgnore($starships);
-    }
-
-    /**
-     * Gets the only instance by the specified parameter and its value
-     * @param string $parameter
-     * @param $value
-     * @return mixed
-     */
-    public function getOneByParameter(string $parameter, $value)
-    {
-        return Starship::firstWhere($parameter, $value);
+        DB::table($this->tableName)->insertOrIgnore($starships);
     }
 }

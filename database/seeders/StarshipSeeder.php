@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Person;
-use App\Models\Starship;
-use App\Repositories\RepositoryInterface;
 use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
+use Http;
 use Illuminate\Database\Seeder;
 
 class StarshipSeeder extends Seeder
@@ -34,40 +32,42 @@ class StarshipSeeder extends Seeder
 
     /**
      * Seeds starships to starships table in DB
-     * @param string $apiRequest
+     * @param string $apiAddress
      */
-    private function seedStarships(string $apiRequest)
+    private function seedStarships(string $apiAddress)
     {
-        $starshipsToSeed = [];
-        $starshipRequest = json_decode(\Http::get($apiRequest));
+        $link = $apiAddress;
 
-        $starships = $starshipRequest->results;
-        foreach ($starships as $starship) {
+        while ($link) {
+            $request = json_decode(Http::get($link));
+            $starshipsToSeed = [];
 
-            $starshipsToSeed[] =
-                [
-                    'name' => $starship->name,
-                    'model' => $starship->model,
-                    'manufacturer' => $starship->manufacturer,
-                    'cost_in_credits' => $starship->cost_in_credits,
-                    'length' => $starship->length,
-                    'max_atmosphering_speed' => $starship->max_atmosphering_speed,
-                    'passengers' => $starship->passengers,
-                    'crew' => $starship->crew,
-                    'cargo_capacity' => $starship->cargo_capacity,
-                    'consumables' => $starship->consumables,
-                    'hyperdrive_rating' => $starship->hyperdrive_rating,
-                    'mglt' => $starship->MGLT,
-                    'starship_class' => $starship->starship_class,
-                    'created_at' => date('Y-m-d H:i:s', strtotime($starship->created)),
-                    'updated_at' => date('Y-m-d H:i:s', strtotime($starship->edited)),
-                    'url' => $starship->url,
-                ];
-        }
-        $this->starshipRepository->saveMany($starshipsToSeed);
-        /* If there are more than one pages at API resource */
-        if ($starshipRequest->next) {
-            $this->seedStarships($starshipRequest->next);
+            foreach ($request->results as $starship) {
+
+                $starshipsToSeed[] =
+                    [
+                        'name' => $starship->name,
+                        'model' => $starship->model,
+                        'manufacturer' => $starship->manufacturer,
+                        'cost_in_credits' => $starship->cost_in_credits,
+                        'length' => $starship->length,
+                        'max_atmosphering_speed' => $starship->max_atmosphering_speed,
+                        'passengers' => $starship->passengers,
+                        'crew' => $starship->crew,
+                        'cargo_capacity' => $starship->cargo_capacity,
+                        'consumables' => $starship->consumables,
+                        'hyperdrive_rating' => $starship->hyperdrive_rating,
+                        'mglt' => $starship->MGLT,
+                        'starship_class' => $starship->starship_class,
+                        'created_at' => date('Y-m-d H:i:s', strtotime($starship->created)),
+                        'updated_at' => date('Y-m-d H:i:s', strtotime($starship->edited)),
+                        'url' => $starship->url,
+                    ];
+            }
+            $this->starshipRepository->saveMany($starshipsToSeed);
+
+            /* If there are more than one pages at API resource */
+            $link = $request->next ?? null;
         }
     }
 }
