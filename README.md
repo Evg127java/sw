@@ -6,7 +6,6 @@ The project uses the following microservices:
 <li>Api service based on Laravel framework
 <li>User authentication based on VueJS framework
 </ul>
-<hr>
 <br>
 <h2>Requirements</h2>
 <ul>
@@ -15,6 +14,7 @@ The project uses the following microservices:
 <li> Node 14.9.0
 <li> npm 7.19.1
 </ul>
+<br>
 
 <h2>Installation for local development</h2>
 <ul>
@@ -29,12 +29,11 @@ The project uses the following microservices:
 <li>Run php artisan serve
 <li>Run in a separate terminal: php artisan queue:work
 </ul>
+<br>
 
 <h2>API service</h2>
-<b>API routes:</b>
 
-<br>
-Public routes:<br><hr>
+<h6>Public routes:</h6>
 <b>post('/api/register')</b> User's register. Returns user and token <br>
 <b>post('/api/login')</b>  User's login. Returns token <br> 
 <b>get('/api/people')</b> Gets all people array<br>
@@ -45,8 +44,8 @@ Public routes:<br><hr>
 <b>get('/api/images/{id}')</b> Gets one image by specified id<br>
 <b>get('/api/films')</b> Gets all films array<br>
 <b>get('/api/films/{id}')</b> Gets one film type by specified id<br>
-<br><br>
-Protected routes(only for authenticated users):<br><hr>
+<br>
+<h6>Protected routes(only for authenticated users):</h6>
 <b>post('/api/logout')</b>  User's logout. Returns inform message <br>
 <b>put('/api/people/{id}')</b>  Persons's update. Returns updated person <br>
 <b>delete('/api/people/{id}')</b>  Persons's delete. Returns null <br>
