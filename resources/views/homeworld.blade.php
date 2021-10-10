@@ -23,10 +23,10 @@
                                         </option>
                                         @foreach($homeworlds as $homeworld)
                                             <option
-                                                value="/homeworld/{{ $homeworld->name ?? '' }}"
-                                                {{ isset($homeworldName) && $homeworldName === $homeworld->name ? ' selected' : '' }}
+                                                value="/homeworld/{{ $homeworld->getName() ?? '' }}"
+                                                {{ isset($homeworldName) && $homeworldName === $homeworld->getName() ? ' selected' : '' }}
                                             >
-                                                {{ $homeworld->name }}
+                                                {{ $homeworld->getName() }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -61,16 +61,16 @@
                             <tbody>
                             @foreach($people as $person)
                                 <tr>
-                                    <td><a href="/people/{{ $person->id }}">{{ $person->name }}</a></td>
+                                    <td><a href="/people/{{ $person->getId() }}">{{ $person->getName() }}</a></td>
                                     <td>{{ $homeworldName }}</td>
                                     <td>
-                                        @foreach($person->films as $film)
+                                        @foreach($person->getFilms() as $film)
                                             {{ $film->title }}<br>
                                         @endforeach
                                     </td>
                                     <td>
                                         <div class="d-flex flex-wrap justify-content-center">
-                                            @forelse($person->images as $image)
+                                            @forelse($person->getImages() as $image)
                                                 <div>
                                                     <a href="{{ asset($image->path) }}">
                                                         <img src="{{ asset($image->path) }}" alt="image"

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
 use DB;
 use Http;
@@ -11,24 +10,18 @@ use Illuminate\Database\Seeder;
 class FilmStarshipSeeder extends Seeder
 {
     /**
-     * @var FilmRepositoryInterface
-     */
-    protected FilmRepositoryInterface $filmRepository;
-    /**
      * @var StarshipRepositoryInterface
      */
-    protected StarshipRepositoryInterface $starshipRepository;
+    private StarshipRepositoryInterface $starshipRepository;
 
     /**
      * Run the database seeds.
      *
      * @param StarshipRepositoryInterface $starshipRepository
-     * @param FilmRepositoryInterface $filmRepository
      * @return void
      */
-    public function run(StarshipRepositoryInterface $starshipRepository, FilmRepositoryInterface $filmRepository)
+    public function run(StarshipRepositoryInterface $starshipRepository)
     {
-        $this->filmRepository = $filmRepository;
         $this->starshipRepository = $starshipRepository;
 
         $apiAddress = config('app.starshipsApiSource');
@@ -47,10 +40,10 @@ class FilmStarshipSeeder extends Seeder
             $request = json_decode(Http::get($link));
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
 
-            foreach ($request->results as $starship) {
+            foreach ($request->results as $starshipFromApi) {
                 $dataToInsert = [];
-                foreach ($starship->films as $filmLink) {
-                    $starship = $this->starshipRepository->getOneByName($starship->name);
+                foreach ($starshipFromApi->films as $filmLink) {
+                    $starship = $this->starshipRepository->getOneByName($starshipFromApi->name);
                     $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
                         'starship_id' => $starship->getId(),

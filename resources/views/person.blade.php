@@ -13,65 +13,65 @@
                         <table class="table">
                             <thead class="thead-light">
                             <th scope="col" colspan="2">
-                                {{ $person->name }}
+                                {{ $person->getName() }}
                             </th>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>mass</td>
-                                <td class="text-right">{{ $person->mass }}</td>
+                                <td class="text-right">{{ $person->getMass() }}</td>
                             </tr>
                             <tr>
                                 <td>Height</td>
-                                <td class="text-right">{{ $person->height }}</td>
+                                <td class="text-right">{{ $person->getHeight() }}</td>
                             </tr>
                             <tr>
                                 <td>Hair color</td>
-                                <td class="text-right">{{ $person->hair_color }}</td>
+                                <td class="text-right">{{ $person->getHairColor() }}</td>
                             </tr>
                             <tr>
                                 <td>Birth year</td>
-                                <td class="text-right">{{ $person->birth_year }}</td>
+                                <td class="text-right">{{ $person->getBirthYear() }}</td>
                             </tr>
                             <tr>
                                 <td>Gender</td>
-                                <td class="text-right">{{ $person->gender->type }}</td>
+                                <td class="text-right">{{ $person->getGender() }}</td>
                             </tr>
                             <tr>
                                 <td>Home world</td>
-                                <td class="text-right">{{ $person->homeworld->name }}</td>
+                                <td class="text-right">{{ $person->getHomeworld() }}</td>
                             </tr>
                             <tr>
                                 <td>Url</td>
                                 <td class="text-right">
-                                    @if ($person->url === 'unknown')
+                                    @if ($person->getUrl() === 'unknown')
                                         unknown
                                     @else
-                                        <a href="{{ $person->url }}">{{ $person->url }}</a>
+                                        <a href="{{ $person->getUrl() }}">{{ $person->geturl() }}</a>
                                     @endif
                                 </td>
                             </tr>
                             <tr>
                                 <td>Films</td>
                                 <td class="text-right">
-                                    @foreach($person->films as $film)
+                                    @foreach($person->getFilms() as $film)
                                         -{{ $film->title }}<br>
                                     @endforeach
                                 </td>
                             </tr>
                             <tr>
                                 <td>Created</td>
-                                <td class="text-right">{{ $person->created_at }}</td>
+                                <td class="text-right">{{ $person->getCreatedAt() }}</td>
                             </tr>
                             <tr>
                                 <td>Last update</td>
-                                <td class="text-right">{{ $person->updated_at }}</td>
+                                <td class="text-right">{{ $person->getUpdatedAt() }}</td>
                             </tr>
                             <tr>
-                                <td><a href="/edit/{{ $person->id }}">
+                                <td><a href="/edit/{{ $person->getId() }}">
                                         <button class="btn btn-secondary">Edit</button>
                                     </a></td>
-                                <td class="text-right"><a href="/delete/{{ $person->id }}">
+                                <td class="text-right"><a href="/delete/{{ $person->getId() }}">
                                         <button class="btn btn-danger">Delete</button>
                                     </a></td>
                             </tr>
@@ -79,7 +79,7 @@
                         </table>
                     </div>
                     <div class="col-md-8 text-center">
-                        @forelse($person->images as $image)
+                        @forelse($person->getImages() as $image)
                             <a href="{{ asset($image->path) }}">
                                 <img src="{{ asset($image->path) }}"
                                      alt="person image"

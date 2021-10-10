@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
  */
 class GenderSeeder extends Seeder
 {
-    protected GenderRepositoryInterface $genderRepository;
+    private GenderRepositoryInterface $genderRepository;
 
     /**
      * Run the database seeds.

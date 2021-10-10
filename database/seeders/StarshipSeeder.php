@@ -11,7 +11,7 @@ class StarshipSeeder extends Seeder
     /**
      * @var StarshipRepositoryInterface
      */
-    protected StarshipRepositoryInterface $starshipRepository;
+    private StarshipRepositoryInterface $starshipRepository;
 
     /**
      * Run the database seeds.

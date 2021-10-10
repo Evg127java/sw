@@ -21,7 +21,7 @@ class HomeworldRepositorySql implements HomeworldRepositoryInterface
     {
         $homeworldsCollection = DB::table($this->tableName)->get();
         $homeworlds = $homeworldsCollection->map(function ($item) {
-            return new GenderEntity(get_object_vars($item));
+            return new HomeworldEntity(get_object_vars($item));
         });
         return $homeworlds->toArray();
     }
@@ -37,6 +37,37 @@ class HomeworldRepositorySql implements HomeworldRepositoryInterface
         $id = DB::table($this->tableName)->where('name', $name)->first()->id;
         if ($id) {
             return $id;
+        }
+        throw new Exception('No records for the passed name');
+    }
+
+    /**
+     * Gets the only instance by its name
+     * @param string $name
+     * @return HomeworldEntity
+     * @throws Exception
+     */
+    public function getOneByName(string $name)
+    {
+        $homeworld = DB::table($this->tableName)->where('name', $name)->first();
+        if ($homeworld) {
+            return new HomeworldEntity(get_object_vars($homeworld));
+        }
+        throw new Exception('No records for the passed name');
+    }
+
+    /**
+     * Gets the only instance by its id value
+     *
+     * @param int $id
+     * @return HomeworldEntity
+     * @throws Exception
+     */
+    public function getOneById(int $id)
+    {
+        $homeworld = DB::table($this->tableName)->where('id', $id)->first();
+        if ($homeworld) {
+            return new HomeworldEntity(get_object_vars($homeworld));
         }
         throw new Exception('No records for the passed name');
     }

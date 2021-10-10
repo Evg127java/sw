@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
  */
 class HomeworldSeeder extends Seeder
 {
-    protected HomeworldRepositoryInterface $homeworldRepository;
+    private HomeworldRepositoryInterface $homeworldRepository;
 
     /**
      * Run the database seeds.

@@ -13,8 +13,8 @@ use Illuminate\Database\Seeder;
  */
 class PersonSeeder extends Seeder
 {
-    protected GenderRepositoryInterface $genderRepository;
-    protected PersonRepositoryInterface $personRepository;
+    private GenderRepositoryInterface $genderRepository;
+    private PersonRepositoryInterface $personRepository;
 
     /**
      * Run the database seeds.

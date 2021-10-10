@@ -41,24 +41,24 @@
                             <tbody>
                             @foreach($people as $person)
                                 <tr>
-                                    <td><a href="/people/{{ $person->id }}">{{ $person->name }}</a></td>
-                                    <td>{{ $person->height }}</td>
-                                    <td>{{ $person->mass }}</td>
-                                    <td>{{ $person->hair_color }}</td>
-                                    <td>{{ $person->birth_year }}</td>
-                                    <td>{{ $person->gender->type }}</td>
-                                    <td>{{ $person->homeworld->name }}</td>
+                                    <td><a href="/people/{{ $person->getId() }}">{{ $person->getName() }}</a></td>
+                                    <td>{{ $person->getHeight() }}</td>
+                                    <td>{{ $person->getMass() }}</td>
+                                    <td>{{ $person->getHairColor() }}</td>
+                                    <td>{{ $person->getBirthYear() }}</td>
+                                    <td>{{ $person->getGender() }}</td>
+                                    <td>{{ $person->getHomeworld() }}</td>
                                     <td>
-                                        @foreach($person->films as $film)
+                                        @foreach($person->getFilms() as $film)
                                             -{{ $film->title }}<br>
                                         @endforeach
                                     </td>
-                                    <td>{{ $person->created_at }}</td>
+                                    <td>{{ $person->getCreatedAt() }}</td>
                                     <td>
-                                        @if ($person->url === 'unknown')
+                                        @if ($person->getUrl() === 'unknown')
                                             unknown
                                         @else
-                                            <a href="{{ $person->url }}">{{ $person->url }}</a>
+                                            <a href="{{ $person->getUrl() }}">{{ $person->getUrl() }}</a>
                                         @endif
                                     </td>
                                 </tr>

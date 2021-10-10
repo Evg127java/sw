@@ -6,23 +6,23 @@ namespace App\Entities;
 
 class StarshipEntity
 {
-    public ?int $id;
-    public string $name;
-    public string $model;
-    public string $manufacturer;
-    public int $cost_in_credits;
-    public float $length;
-    public int $max_atmosphering_speed;
-    public string $passengers;
-    public string $crew;
-    public int $cargo_capacity;
-    public string $consumables;
-    public float $hyperdrive_rating;
-    public int $mglt;
-    public string $starship_class;
-    public string $url;
-    public string $created_at;
-    public string $updated_at;
+    private ?int $id;
+    private string $name;
+    private string $model;
+    private string $manufacturer;
+    private int $cost_in_credits;
+    private float $length;
+    private int $max_atmosphering_speed;
+    private string $passengers;
+    private string $crew;
+    private int $cargo_capacity;
+    private string $consumables;
+    private float $hyperdrive_rating;
+    private int $mglt;
+    private string $starship_class;
+    private string $url;
+    private string $created_at;
+    private string $updated_at;
 
     /**
      * StarshipEntity constructor.
@@ -50,11 +50,23 @@ class StarshipEntity
     }
 
     /**
+     * Gets the StarshipEntity's id
+     *
      * @return int|mixed|null
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Gets the StarshipEntity's name
+     *
+     * @return mixed|string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
 

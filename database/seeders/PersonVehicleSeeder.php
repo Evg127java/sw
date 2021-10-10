@@ -13,24 +13,18 @@ class PersonVehicleSeeder extends Seeder
     /**
      * @var PersonRepositoryInterface
      */
-    protected PersonRepositoryInterface $personRepository;
-    /**
-     * @var VehicleRepositoryInterface
-     */
-    protected VehicleRepositoryInterface $vehicleRepository;
+    private PersonRepositoryInterface $personRepository;
     private string $tableName = 'person_vehicle';
 
     /**
      * Run the database seeds.
      *
-     * @param VehicleRepositoryInterface $vehicleRepository
      * @param PersonRepositoryInterface $personRepository
      * @return void
      */
-    public function run(VehicleRepositoryInterface $vehicleRepository, PersonRepositoryInterface $personRepository)
+    public function run(PersonRepositoryInterface $personRepository)
     {
         $this->personRepository = $personRepository;
-        $this->vehicleRepository = $vehicleRepository;
 
         $apiAddress = config('app.peopleApiSource');
         $this->bindPeopleToVehicles($apiAddress);
@@ -48,10 +42,10 @@ class PersonVehicleSeeder extends Seeder
             $request = json_decode(Http::get($link));
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
 
-            foreach ($request->results as $person) {
+            foreach ($request->results as $personFromApi) {
                 $dataToInsert = [];
-                foreach ($person->vehicles as $vehicleLink) {
-                    $person = $this->personRepository->getOneByName($person->name);
+                foreach ($personFromApi->vehicles as $vehicleLink) {
+                    $person = $this->personRepository->getOneByName($personFromApi->name);
                     $vehicleId = preg_split('~/~', $vehicleLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
                         'person_id' => $person->getId(),

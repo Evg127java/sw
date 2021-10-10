@@ -4,7 +4,7 @@
 namespace App\Http\Resources;
 
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class CollectionLinksBuilder
 {
@@ -13,7 +13,7 @@ class CollectionLinksBuilder
      *
      * @param Collection $resources
      * @param string $collection
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function __invoke(Collection $resources, string $collection)
     {

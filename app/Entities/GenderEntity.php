@@ -4,14 +4,12 @@
 namespace App\Entities;
 
 
-use DateTime;
-
 class GenderEntity
 {
-    public ?int $id;
-    public string $type;
-    public DateTime $created_at;
-    public DateTime $updated_at;
+    private ?int $id;
+    private string $type;
+    private string $created_at;
+    private string $updated_at;
 
     /**
      * GenderEntity constructor.
@@ -26,6 +24,8 @@ class GenderEntity
     }
 
     /**
+     * Gets GenderEntity's id
+     *
      * @return mixed
      */
     public function getId()
@@ -34,6 +34,8 @@ class GenderEntity
     }
 
     /**
+     * Sets GenderEntity's id
+     *
      * @param mixed $id
      */
     public function setId($id): void
@@ -42,6 +44,8 @@ class GenderEntity
     }
 
     /**
+     * Gets GenderEntity's type
+     *
      * @return mixed
      */
     public function getType()
@@ -50,44 +54,12 @@ class GenderEntity
     }
 
     /**
+     * Sets GenderEntity's id
+     *
      * @param mixed $type
      */
     public function setType($type): void
     {
         $this->type = $type;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param mixed $created_at
-     */
-    public function setCreatedAt($created_at): void
-    {
-        $this->created_at = $created_at;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @param mixed $updated_at
-     */
-    public function setUpdatedAt($updated_at): void
-    {
-        $this->updated_at = $updated_at;
-    }
-
-
 }

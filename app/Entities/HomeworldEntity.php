@@ -4,23 +4,21 @@
 namespace App\Entities;
 
 
-use DateTime;
-
 class HomeworldEntity
 {
-    public ?int $id;
-    public string $name;
-    public int $rotation_period;
-    public int $orbital_period;
-    public int $diameter;
-    public string $climate;
-    public string $gravity;
-    public string $terrain;
-    public string $surface_water;
-    public string $population;
-    public string $url;
-    public DateTime $created_at;
-    public DateTime $updated_at;
+    private ?int $id;
+    private string $name;
+    private int $rotation_period;
+    private int $orbital_period;
+    private int $diameter;
+    private string $climate;
+    private string $gravity;
+    private string $terrain;
+    private string $surface_water;
+    private string $population;
+    private string $url;
+    private string $created_at;
+    private string $updated_at;
 
     /**
      * HomeworldEntity constructor.
@@ -43,5 +41,23 @@ class HomeworldEntity
         $this->updated_at = $parameters['updated_at'];
     }
 
+    /**
+     * Gets HomeworldEntity's id
+     *
+     * @return int|mixed|null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    /**
+     * Gets HomeworldEntity's name
+     *
+     * @return mixed|string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

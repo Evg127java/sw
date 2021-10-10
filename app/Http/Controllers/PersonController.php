@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\PersonEntity;
 use App\Http\Requests\PersonFormRequest;
-use App\Models\Person;
 use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Services\PersonFilmsHandler;
+use App\Services\PersonImagesHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -39,8 +41,12 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $people = $this->personRepository
-            ->getAllSorted('id', 'desc', ['films', 'gender', 'homeworld'], true);
+        $people = $this->personRepository->getAllSorted(
+            'id',
+            'desc',
+            [],
+            config('app.peoplePerPageAtAll')
+        );
         return view('people', ['people' => $people]);
 
     }
@@ -67,7 +73,16 @@ class PersonController extends Controller
     public function store(PersonFormRequest $request)
     {
         $personFormRequest = $request->all();
-        Person::createNewPerson($personFormRequest);
+        $person = new PersonEntity($personFormRequest);
+        $dataToInsert = array_intersect_key($personFormRequest, $person->toArray());
+        $person = $this->personRepository->saveOne($dataToInsert);
+
+        /* Process person's data to store */
+        $request = (new PersonFilmsHandler($person, $personFormRequest))->run();
+        $request = (new PersonImagesHandler($person, $request))->run();
+        $dataToUpdate = array_intersect_key($request, $person->toArray());
+
+        $this->personRepository->updateOne($person, (array)$dataToUpdate);
 
         return redirect('/');
     }
@@ -109,10 +124,13 @@ class PersonController extends Controller
         $personFormRequest = $request->all();
         $person = $this->personRepository->getOneById(request('id'));
 
-        /* Update person's data */
-        $person->updatePerson($personFormRequest);
+        /* Process person's data to update */
+        $request = (new PersonFilmsHandler($person, $personFormRequest))->run();
+        $request = (new PersonImagesHandler($person, $request))->run();
+        $dataToUpdate = array_intersect_key($request, $person->toArray());
 
-        return redirect('/people/' . $person->id);
+        $person = $this->personRepository->updateOne($person, (array)$dataToUpdate);
+        return redirect('/people/' . $person->getId());
     }
 
     /**
@@ -122,7 +140,7 @@ class PersonController extends Controller
      */
     public function destroy()
     {
-        Person::deletePersonById(request('id'));
+        PersonEntity::deletePersonById(request('id'));
         return redirect('/');
     }
 }

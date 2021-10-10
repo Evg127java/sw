@@ -4,35 +4,27 @@ namespace Database\Seeders;
 
 
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
-use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
 use DB;
 use Http;
 use Illuminate\Database\Seeder;
-use function PHPUnit\Framework\isEmpty;
 
 class PersonSpecieSeeder extends Seeder
 {
     /**
      * @var PersonRepositoryInterface
      */
-    protected PersonRepositoryInterface $personRepository;
-    /**
-     * @var SpecieRepositoryInterface
-     */
-    protected SpecieRepositoryInterface $specieRepository;
+    private PersonRepositoryInterface $personRepository;
     private string $tableName = 'person_specie';
 
     /**
      * Run the database seeds.
      *
-     * @param SpecieRepositoryInterface $specieRepository
      * @param PersonRepositoryInterface $personRepository
      * @return void
      */
-    public function run(SpecieRepositoryInterface $specieRepository, PersonRepositoryInterface $personRepository)
+    public function run(PersonRepositoryInterface $personRepository)
     {
         $this->personRepository = $personRepository;
-        $this->specieRepository = $specieRepository;
 
         $apiAddress = config('app.peopleApiSource');
         $this->bindPeopleToSpecies($apiAddress);
@@ -50,10 +42,10 @@ class PersonSpecieSeeder extends Seeder
             $request = json_decode(Http::get($link));
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
 
-            foreach ($request->results as $person) {
+            foreach ($request->results as $personFromApi) {
                 $dataToInsert = [];
-                foreach ($person->species as $specieLink) {
-                    $person = $this->personRepository->getOneByName($person->name);
+                foreach ($personFromApi->species as $specieLink) {
+                    $person = $this->personRepository->getOneByName($personFromApi->name);
                     $specieId = preg_split('~/~', $specieLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
                         'person_id' => $person->getId(),

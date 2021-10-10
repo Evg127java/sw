@@ -31,7 +31,7 @@
                             @endif
                         </div>
                         <form class="formWithValidation table-bordered pt-4"
-                              action="/edit/{{ $person->id }}"
+                              action="/edit/{{ $person->getId() }}"
                               method="post"
                               enctype="multipart/form-data"
                               style="background-color: rgba(190, 210, 190, 0.1);"
@@ -46,7 +46,7 @@
                                     <input type="text"
                                            class="form-control"
                                            id="name"
-                                           value="{{ $person->name }}"
+                                           value="{{ $person->getName() }}"
                                            name="name"
                                            required
                                     >
@@ -59,7 +59,7 @@
                                     <input type="text"
                                            class="form-control"
                                            id="height"
-                                           value="{{ $person->height === 'unknown' ? '' : $person->height }}"
+                                           value="{{ $person->getHeight() === 'unknown' ? '' : $person->getHeight() }}"
                                            name="height">
                                     <div class="error" id="heightErr"></div>
                                 </div>
@@ -69,7 +69,7 @@
                                     <input type="text"
                                            class="form-control"
                                            id="mass"
-                                           value="{{ $person->mass === 'unknown' ? '' : $person->mass }}"
+                                           value="{{ $person->getMass() === 'unknown' ? '' : $person->getMass() }}"
                                            name="mass">
                                     <div class="error" id="massErr"></div>
                                 </div>
@@ -78,7 +78,7 @@
                                     <input type="text"
                                            class="form-control"
                                            id="hair_color"
-                                           value="{{ $person->hair_color === 'unknown' ? '' : $person->hair_color }}"
+                                           value="{{ $person->getHairColor() === 'unknown' ? '' : $person->getHairColor() }}"
                                            name="hair_color">
                                     <div class="error" id="hair_colorErr"></div>
                                 </div>
@@ -87,7 +87,7 @@
                                     <input type="text"
                                            class="form-control"
                                            id="birth_year"
-                                           value="{{ $person->birth_year }}"
+                                           value="{{ $person->getBirthYear() }}"
                                            name="birth_year"
                                            required
                                     >
@@ -100,8 +100,8 @@
                                     <select class="form-control" id="gender" name="gender_id">
                                         @foreach($genders as $gender)
                                             <option
-                                                value="{{ $gender->id }}" {{ $gender->type === $person->gender->type ? ' selected' : '' }}>
-                                                {{ $gender->type }}
+                                                value="{{ $gender->getId() }}" {{ $gender->getType() === $person->getGender() ? ' selected' : '' }}>
+                                                {{ $gender->getType() }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -112,8 +112,8 @@
                                     <select class="form-control" id="homeworld" name="homeworld_id">
                                         @foreach($homeworlds as $homeworld)
                                             <option
-                                                value="{{ $homeworld->id }}" {{ $homeworld->name === $person->homeworld->name ? ' selected' : '' }}>
-                                                {{ $homeworld->name }}
+                                                value="{{ $homeworld->getId() }}" {{ $homeworld->getName() === $person->getHomeworld() ? ' selected' : '' }}>
+                                                {{ $homeworld->getName() }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -127,8 +127,8 @@
                                     <select multiple class="form-control" id="films" name="films[]">
                                         @foreach($films as $film)
                                             <option
-                                                value="{{ $film->id }}" {{ $person->films->contains($film) ? ' selected' : '' }}>
-                                                {{ $film->title }}
+                                                value="{{ $film->getId() }}" {{ $person->containsFilm($film) ? ' selected' : '' }}>
+                                                {{ $film->getTitle() }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -140,7 +140,7 @@
                                     <input type="text"
                                            class="form-control"
                                            id="url"
-                                           value="{{ $person->url === 'unknown' ? '' : $person->url }}"
+                                           value="{{ $person->getUrl() === 'unknown' ? '' : $person->getUrl() }}"
                                            name="url">
                                     <div class="error" id="urlErr"></div>
                                 </div>
@@ -155,8 +155,8 @@
                             <div class="row mx-0  col-md-12  justify-content-center">
                                 <div class="form-group">
                                     <div class="d-flex flex-wrap justify-content-center border-bottom">
-                                        @if ($person->images->isNotEmpty())
-                                            @foreach($person->images as $image)
+                                        @if (!empty($person->getImages()))
+                                            @foreach($person->getImages() as $image)
                                                 <div class="position-relative">
                                                     <a href="{{ asset($image->path) }}">
                                                         <img src="{{ asset($image->path) }}" alt="image"

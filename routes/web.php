@@ -28,7 +28,7 @@ Route::get('/', [PersonController::class, 'index']);
 Route::get('/people/{id}', [PersonController::class, 'show'])->whereNumber('id');
 Route::post('/create', [PersonController::class, 'store']);
 Route::get('/homeworld', [HomeworldController::class, 'index']);
-Route::get('/homeworld/{homeworld:name}', [HomeworldController::class, 'show'])->whereAlpha('homeworld:name');
+Route::get('/homeworld/{name}', [HomeworldController::class, 'show']);
 
 
 /* Authentication routes */

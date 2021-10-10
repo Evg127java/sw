@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
  */
 class FilmSeeder extends Seeder
 {
-    protected FilmRepositoryInterface $filmRepository;
+    private FilmRepositoryInterface $filmRepository;
 
     /**
      * Run the database seeds.

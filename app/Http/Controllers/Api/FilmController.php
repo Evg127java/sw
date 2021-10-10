@@ -4,13 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FilmResource;
-use App\Models\Film;
-use Illuminate\Http\Request;
+use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 
 class FilmController extends Controller
 {
+    private FilmRepositoryInterface $filmRepository;
+
+    /**
+     * FilmController constructor.
+     * @param FilmRepositoryInterface $filmRepository
+     */
+    public function __construct(FilmRepositoryInterface $filmRepository)
+    {
+        $this->filmRepository = $filmRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,17 +32,6 @@ class FilmController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param int $id
@@ -41,30 +39,7 @@ class FilmController extends Controller
      */
     public function show($id)
     {
-        $film = Film::findOrFail($id);
+        $film = $this->filmRepository->getOneById($id);
         return new filmResource($film);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

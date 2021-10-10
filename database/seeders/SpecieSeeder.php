@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Person;
-use App\Models\Specie;
-use App\Models\Vehicle;
-use App\Repositories\RepositoryInterface;
 use App\Repositories\SpecieRepository\SpecieRepositoryInterface;
 use Http;
 use Illuminate\Database\Seeder;
@@ -15,7 +11,7 @@ class SpecieSeeder extends Seeder
     /**
      * @var SpecieRepositoryInterface
      */
-    protected SpecieRepositoryInterface $specieRepository;
+    private SpecieRepositoryInterface $specieRepository;
 
     /**
      * Run the database seeds.

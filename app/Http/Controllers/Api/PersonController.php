@@ -2,32 +2,27 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Entities\PersonEntity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PersonFormRequest;
 use App\Http\Resources\PersonResource;
-use App\Models\Film;
-use App\Models\Gender;
-use App\Models\Homeworld;
-use App\Models\Person;
-use App\Repositories\RepositoryInterface;
-use App\Services\PersonServiceInterface;
-use App\Services\PersonServices;
-use Illuminate\Http\Request;
+use App\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Services\PersonFilmsHandler;
+use App\Services\PersonImagesHandler;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class PersonController extends Controller
 {
-    protected PersonServiceInterface $personServices;
+    private PersonRepositoryInterface $personRepository;
 
-    public function __construct(
-        RepositoryInterface $repository,
-        PersonServiceInterface $personServices,
-        Person $person,
-        Film $film, Gender $gender, Homeworld $homeworld)
+    /**
+     * PersonController constructor.
+     * @param PersonRepositoryInterface $personRepository
+     */
+    public function __construct(PersonRepositoryInterface $personRepository)
     {
-        parent::__construct($repository, $person, $film, $gender, $homeworld);
-        $this->personServices = $personServices;
+        $this->personRepository = $personRepository;
     }
 
     /**
@@ -37,7 +32,9 @@ class PersonController extends Controller
      */
     public function index()
     {
-        return PersonResource::collection($this->personRepository->getAll());
+        return PersonResource::collection(
+            $this->personRepository->getAll(config('app.peoplePerPageForAPI'))
+        );
     }
 
     /**
@@ -49,13 +46,16 @@ class PersonController extends Controller
     public function store(PersonFormRequest $request)
     {
         $personFormRequest = $request->all();
-        $person = Person::createNewPerson($personFormRequest);
+        $person = new PersonEntity($personFormRequest);
+        $dataToInsert = array_intersect_key($personFormRequest, $person->toArray());
+        $person = $this->personRepository->saveOne($dataToInsert);
 
-        /* Process person's external relations */
-        $this->personServices
-            ->setPerson($person)
-            ->setRequest($personFormRequest)
-            ->processPersonRelations();
+        /* Process person's data to store */
+        $request = (new PersonFilmsHandler($person, $personFormRequest))->run();
+        $request = (new PersonImagesHandler($person, $request))->run();
+        $dataToUpdate = array_intersect_key($request, $person->toArray());
+
+        $person = $this->personRepository->updateOne($person, (array)$dataToUpdate);
 
         return new PersonResource($person);
     }
@@ -75,36 +75,32 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param PersonFormRequest $request
      * @return PersonResource
      */
-    public function update(PersonFormRequest $request, $id)
+    public function update(PersonFormRequest $request)
     {
         $personFormRequest = $request->all();
-        $person = $this->personRepository->getOneById($id);
+        $person = $this->personRepository->getOneById(request('id'));
 
-        /* Update person's base data */
-        $person = $person->updatePerson($personFormRequest);
+        /* Process person's data to update */
+        $request = (new PersonFilmsHandler($person, $personFormRequest))->run();
+        $request = (new PersonImagesHandler($person, $request))->run();
+        $dataToUpdate = array_intersect_key($request, $person->toArray());
 
-        /* Process person's external relations */
-        $this->personServices
-            ->setPerson($person)
-            ->setRequest($personFormRequest)
-            ->processPersonRelations();
-
+        $person = $this->personRepository->updateOne($person, (array)$dataToUpdate);
         return new PersonResource($person);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function destroy($id)
     {
-        Person::deletePersonById($id);
+        PersonEntity::deletePersonById($id);
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

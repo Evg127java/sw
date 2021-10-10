@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
-use App\Repositories\StarshipRepository\StarshipRepositoryInterface;
 use DB;
 use Http;
 use Illuminate\Database\Seeder;
@@ -13,24 +12,18 @@ class PersonStarshipSeeder extends Seeder
     /**
      * @var PersonRepositoryInterface
      */
-    protected PersonRepositoryInterface $personRepository;
-    /**
-     * @var StarshipRepositoryInterface
-     */
-    protected StarshipRepositoryInterface $starshipRepository;
+    private PersonRepositoryInterface $personRepository;
     private string $tableName = 'person_starship';
 
     /**
      * Run the database seeds.
      *
      * @param PersonRepositoryInterface $personRepository
-     * @param StarshipRepositoryInterface $starshipRepository
      * @return void
      */
-    public function run(PersonRepositoryInterface $personRepository, StarshipRepositoryInterface $starshipRepository)
+    public function run(PersonRepositoryInterface $personRepository)
     {
         $this->personRepository = $personRepository;
-        $this->starshipRepository = $starshipRepository;
 
         $apiAddress = config('app.peopleApiSource');
         $this->bindPeopleToStarships($apiAddress);
@@ -48,10 +41,10 @@ class PersonStarshipSeeder extends Seeder
             $request = json_decode(Http::get($link));
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
 
-            foreach ($request->results as $person) {
+            foreach ($request->results as $personFromApi) {
                 $dataToInsert = [];
-                foreach ($person->starships as $starshipLink) {
-                    $person = $this->personRepository->getOneByName($person->name);
+                foreach ($personFromApi->starships as $starshipLink) {
+                    $person = $this->personRepository->getOneByName($personFromApi->name);
                     $starshipId = preg_split('~/~', $starshipLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
                         'person_id' => $person->getId(),

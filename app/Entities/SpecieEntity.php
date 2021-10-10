@@ -6,20 +6,20 @@ namespace App\Entities;
 
 class SpecieEntity
 {
-    public ?int $id;
-    public string $name;
-    public string $classification;
-    public string $designation;
-    public string $average_height;
-    public string $skin_colors;
-    public string $hair_colors;
-    public string $eye_colors;
-    public string $average_lifespan;
-    public int $homeworld_id;
-    public string $language;
-    public string $url;
-    public string $created_at;
-    public string $updated_at;
+    private ?int $id;
+    private string $name;
+    private string $classification;
+    private string $designation;
+    private string $average_height;
+    private string $skin_colors;
+    private string $hair_colors;
+    private string $eye_colors;
+    private string $average_lifespan;
+    private int $homeworld_id;
+    private string $language;
+    private string $url;
+    private string $created_at;
+    private string $updated_at;
 
     /**
      * SpecieEntity constructor.
@@ -44,6 +44,8 @@ class SpecieEntity
     }
 
     /**
+     * Gets the SpecieEntity's id
+     *
      * @return int|mixed|null
      */
     public function getId()
@@ -52,6 +54,8 @@ class SpecieEntity
     }
 
     /**
+     * Sets the SpecieEntity's id
+     *
      * @param int|mixed|null $id
      */
     public function setId($id): void
@@ -60,6 +64,8 @@ class SpecieEntity
     }
 
     /**
+     * Gets the SpecieEntity's name
+     *
      * @return mixed|string
      */
     public function getName()
@@ -68,6 +74,8 @@ class SpecieEntity
     }
 
     /**
+     * Sets the SpecieEntity's name
+     *
      * @param mixed|string $name
      */
     public function setName($name): void
@@ -76,196 +84,12 @@ class SpecieEntity
     }
 
     /**
-     * @return mixed|string
-     */
-    public function getClassification()
-    {
-        return $this->classification;
-    }
-
-    /**
-     * @param mixed|string $classification
-     */
-    public function setClassification($classification): void
-    {
-        $this->classification = $classification;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getDesignation()
-    {
-        return $this->designation;
-    }
-
-    /**
-     * @param mixed|string $designation
-     */
-    public function setDesignation($designation): void
-    {
-        $this->designation = $designation;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getAverageHeight()
-    {
-        return $this->average_height;
-    }
-
-    /**
-     * @param mixed|string $average_height
-     */
-    public function setAverageHeight($average_height): void
-    {
-        $this->average_height = $average_height;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getSkinColors()
-    {
-        return $this->skin_colors;
-    }
-
-    /**
-     * @param mixed|string $skin_colors
-     */
-    public function setSkinColors($skin_colors): void
-    {
-        $this->skin_colors = $skin_colors;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getHairColors()
-    {
-        return $this->hair_colors;
-    }
-
-    /**
-     * @param mixed|string $hair_colors
-     */
-    public function setHairColors($hair_colors): void
-    {
-        $this->hair_colors = $hair_colors;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getEyeColors()
-    {
-        return $this->eye_colors;
-    }
-
-    /**
-     * @param mixed|string $eye_colors
-     */
-    public function setEyeColors($eye_colors): void
-    {
-        $this->eye_colors = $eye_colors;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getAverageLifespan()
-    {
-        return $this->average_lifespan;
-    }
-
-    /**
-     * @param mixed|string $average_lifespan
-     */
-    public function setAverageLifespan($average_lifespan): void
-    {
-        $this->average_lifespan = $average_lifespan;
-    }
-
-    /**
-     * @return int|mixed
-     */
-    public function getHomeworldId()
-    {
-        return $this->homeworld_id;
-    }
-
-    /**
-     * @param int|mixed $homeworld_id
-     */
-    public function setHomeworldId($homeworld_id): void
-    {
-        $this->homeworld_id = $homeworld_id;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param mixed|string $language
-     */
-    public function setLanguage($language): void
-    {
-        $this->language = $language;
-    }
-
-    /**
+     * Gets the SpecieEntity's url
+     *
      * @return mixed|string
      */
     public function getUrl()
     {
         return $this->url;
     }
-
-    /**
-     * @param mixed|string $url
-     */
-    public function setUrl($url): void
-    {
-        $this->url = $url;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getCreatedAt()
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param mixed|string $created_at
-     */
-    public function setCreatedAt($created_at): void
-    {
-        $this->created_at = $created_at;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @param mixed|string $updated_at
-     */
-    public function setUpdatedAt($updated_at): void
-    {
-        $this->updated_at = $updated_at;
-    }
-
-
 }

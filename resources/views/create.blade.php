@@ -99,8 +99,8 @@
                                     <label for="gender">Gender choice</label>
                                     <select class="form-control" id="gender" name="gender_id">
                                         @foreach($genders as $gender)
-                                            <option value="{{ $gender->id }}" {{ $gender->type === 'n/a' ? ' selected' : '' }}>
-                                                {{ $gender->type }}
+                                            <option value="{{ $gender->getId() }}" {{ $gender->getType() === 'n/a' ? ' selected' : '' }}>
+                                                {{ $gender->getType() }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -110,8 +110,8 @@
                                     <label for="homeworld">Home world</label>
                                     <select class="form-control" id="homeworld" name="homeworld_id">
                                         @foreach($homeworlds as $homeworld)
-                                            <option value="{{ $homeworld->id }}" {{ $homeworld->name === 'unknown' ? ' selected' : '' }}>
-                                                {{ $homeworld->name }}
+                                            <option value="{{ $homeworld->getId() }}" {{ $homeworld->getName() === 'unknown' ? ' selected' : '' }}>
+                                                {{ $homeworld->getName() }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -123,7 +123,7 @@
                                     <label for="films">Films</label>
                                     <select multiple class="form-control" id="films" name="films[]">
                                         @foreach($films as $film)
-                                            <option value="{{ $film->id }}">{{ $film->title }}</option>
+                                            <option value="{{ $film->getId() }}">{{ $film->getTitle() }}</option>
                                         @endforeach
                                     </select>
                                 </div>

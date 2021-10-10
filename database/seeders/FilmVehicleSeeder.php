@@ -11,24 +11,18 @@ use Illuminate\Database\Seeder;
 class FilmVehicleSeeder extends Seeder
 {
     /**
-     * @var FilmRepositoryInterface
-     */
-    protected FilmRepositoryInterface $filmRepository;
-    /**
      * @var VehicleRepositoryInterface
      */
-    protected VehicleRepositoryInterface $vehicleRepository;
+    private VehicleRepositoryInterface $vehicleRepository;
 
     /**
      * Run the database seeds.
      *
      * @param VehicleRepositoryInterface $vehicleRepository
-     * @param FilmRepositoryInterface $filmRepository
      * @return void
      */
-    public function run(VehicleRepositoryInterface $vehicleRepository, FilmRepositoryInterface $filmRepository)
+    public function run(VehicleRepositoryInterface $vehicleRepository)
     {
-        $this->filmRepository = $filmRepository;
         $this->vehicleRepository = $vehicleRepository;
 
         $apiAddress = config('app.vehiclesApiSource');
@@ -47,10 +41,10 @@ class FilmVehicleSeeder extends Seeder
             $request = json_decode(Http::get($link));
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
 
-            foreach ($request->results as $vehicle) {
+            foreach ($request->results as $vehicleFromApi) {
                 $dataToInsert = [];
-                foreach ($vehicle->films as $filmLink) {
-                    $vehicle = $this->vehicleRepository->getOneByName($vehicle->name);
+                foreach ($vehicleFromApi->films as $filmLink) {
+                    $vehicle = $this->vehicleRepository->getOneByName($vehicleFromApi->name);
                     $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
                         'vehicle_id' => $vehicle->getId(),

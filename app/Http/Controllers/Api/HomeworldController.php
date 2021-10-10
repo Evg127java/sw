@@ -4,11 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HomeworldResource;
-use Illuminate\Http\Request;
+use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class HomeworldController extends Controller
 {
+    private HomeworldRepositoryInterface $homeworldRepository;
+
+    /**
+     * HomeworldController constructor.
+     * @param HomeworldRepositoryInterface $homeworldRepository
+     */
+    public function __construct(HomeworldRepositoryInterface $homeworldRepository)
+    {
+        $this->homeworldRepository = $homeworldRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,17 +28,6 @@ class HomeworldController extends Controller
     public function index()
     {
         return HomeworldResource::collection($this->homeworldRepository->getAll());
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -40,28 +40,5 @@ class HomeworldController extends Controller
     {
         $homeworld = $this->homeworldRepository->getOneById($id);
         return new HomeworldResource($homeworld);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

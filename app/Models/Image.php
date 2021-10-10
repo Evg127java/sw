@@ -31,13 +31,15 @@ class Image extends Model
 
     /**
      * Makes a new Image model's instance with specified data
-     * @param $imagePath image's model property value
+     * @param string $imagePath image's model property value
+     * @param int $personId
      * @return Image|Model
      */
-    public static function getNewImageInstance(string $imagePath)
+    public static function getNewImageInstance(string $imagePath, int $personId)
     {
         return self::create([
             'path' => $imagePath,
+            'person_id' => $personId,
         ]);
     }
 
@@ -68,7 +70,7 @@ class Image extends Model
                 $path = self::saveImageInStorage($image, $personId);
 
                 /* Form the stored images' instances array */
-                $imageInstance = self::getNewImageInstance($path);
+                $imageInstance = self::getNewImageInstance($path, $personId);
                 $storedImagesInstances[] = $imageInstance;
             }
         }

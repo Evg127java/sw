@@ -11,24 +11,18 @@ use Illuminate\Database\Seeder;
 class FilmSpecieSeeder extends Seeder
 {
     /**
-     * @var FilmRepositoryInterface
-     */
-    protected FilmRepositoryInterface $filmRepository;
-    /**
      * @var SpecieRepositoryInterface
      */
-    protected SpecieRepositoryInterface $specieRepository;
+    private SpecieRepositoryInterface $specieRepository;
 
     /**
      * Run the database seeds.
      *
      * @param SpecieRepositoryInterface $specieRepository
-     * @param FilmRepositoryInterface $filmRepository
      * @return void
      */
-    public function run(SpecieRepositoryInterface $specieRepository, FilmRepositoryInterface $filmRepository)
+    public function run(SpecieRepositoryInterface $specieRepository)
     {
-        $this->filmRepository = $filmRepository;
         $this->specieRepository = $specieRepository;
 
         $apiAddress = config('app.speciesApiSource');
@@ -47,10 +41,10 @@ class FilmSpecieSeeder extends Seeder
             $request = json_decode(Http::get($link));
 
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
-            foreach ($request->results as $specie) {
+            foreach ($request->results as $specieFromApi) {
                 $dataToInsert = [];
-                foreach ($specie->films as $filmLink) {
-                    $specie = $this->specieRepository->getOneByName($specie->name);
+                foreach ($specieFromApi->films as $filmLink) {
+                    $specie = $this->specieRepository->getOneByName($specieFromApi->name);
                     $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
                         'specie_id' => $specie->getId(),

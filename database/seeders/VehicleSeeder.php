@@ -11,7 +11,7 @@ class VehicleSeeder extends Seeder
     /**
      * @var VehicleRepositoryInterface
      */
-    protected VehicleRepositoryInterface $vehicleRepository;
+    private VehicleRepositoryInterface $vehicleRepository;
 
     /**
      * Run the database seeds.

@@ -8,7 +8,6 @@ use App\Repositories\GenderRepository\GenderRepositoryInterface;
 use App\Repositories\GenderRepository\GenderRepositorySql;
 use App\Repositories\HomeworldRepository\HomeworldRepositoryInterface;
 use App\Repositories\HomeworldRepository\HomeworldRepositorySql;
-use App\Repositories\PersonRepository\PersonRepositoryApi;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositorySql;
 use App\Repositories\SpecieRepository\SpecieRepositoryInterface;

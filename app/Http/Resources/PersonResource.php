@@ -15,17 +15,17 @@ class PersonResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->name,
-            'height' => $this->height,
-            'mass' => $this->mass,
-            'hair_color' => $this->hair_color,
-            'birth_year' => $this->birth_year,
-            'gender' => $this->gender['type'],
-            'homeworld' => (new SingleLinkBuilder())($this->homeworld['id'], 'homeworlds/'),
-            'films' => (new CollectionLinksBuilder())($this->films, 'films/'),
-            'SWAPIUrl' => $this->url,
-            'images' => (new CollectionLinksBuilder())($this->images, 'images/'),
-            'url' => (new SingleLinkBuilder())($this->id, 'people/'),
+            'name' => $this->getName(),
+            'height' => $this->getHeight(),
+            'mass' => $this->getMass(),
+            'hair_color' => $this->getHairColor(),
+            'birth_year' => $this->getBirthYear(),
+            'gender' => $this->getGenderId(),
+            'homeworld' => (new SingleLinkBuilder())($this->getHomeworldId(), 'homeworlds/'),
+            'films' => (new CollectionLinksBuilder())(collect($this->getFilms()), 'films/'),
+            'SWAPIUrl' => $this->getUrl(),
+            'images' => (new CollectionLinksBuilder())($this->getImages(), 'images/'),
+            'url' => (new SingleLinkBuilder())($this->getId(), 'people/'),
         ];
     }
 }

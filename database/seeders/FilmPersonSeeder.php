@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Repositories\FilmRepository\FilmRepositoryInterface;
 use App\Repositories\PersonRepository\PersonRepositoryInterface;
 use DB;
 use Http;
@@ -14,20 +13,17 @@ use Illuminate\Database\Seeder;
  */
 class FilmPersonSeeder extends Seeder
 {
-    protected FilmRepositoryInterface $filmRepository;
-    protected PersonRepositoryInterface $personRepository;
+    private PersonRepositoryInterface $personRepository;
     private string $apiAddress;
 
     /**
      * Run the database seeds.
      *
      * @param PersonRepositoryInterface $personRepository
-     * @param FilmRepositoryInterface $filmRepository
      * @return void
      */
-    public function run(PersonRepositoryInterface $personRepository, FilmRepositoryInterface $filmRepository)
+    public function run(PersonRepositoryInterface $personRepository)
     {
-        $this->filmRepository = $filmRepository;
         $this->personRepository = $personRepository;
 
         $this->apiAddress = config('app.peopleApiSource');
@@ -45,10 +41,10 @@ class FilmPersonSeeder extends Seeder
             $request = json_decode(Http::get($link));
             $dateTime = date('Y-m-d H:i:s', strtotime('now'));
 
-            foreach ($request->results as $person) {
+            foreach ($request->results as $personFromApi) {
                 $dataToInsert = [];
-                foreach ($person->films as $filmLink) {
-                    $person = $this->personRepository->getOneByName($person->name);
+                foreach ($personFromApi->films as $filmLink) {
+                    $person = $this->personRepository->getOneByName($personFromApi->name);
                     $filmId = preg_split('~/~', $filmLink)[config('app.linkPartNumber')];
                     $dataToInsert[] = [
                         'person_id' => $person->getId(),

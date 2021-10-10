@@ -240,6 +240,7 @@ return [
 
     'peoplePerPageAtAll' => 10,
     'peoplePerPageOnPlanet' => 5,
+    'peoplePerPageForAPI' => 10,
 
     /*
     |--------------------------------------------------------------------------

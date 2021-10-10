@@ -9,7 +9,7 @@ use App\Entities\FilmEntity;
 interface FilmRepositoryInterface
 {
     /**
-     * Gets all instances from the repository
+     * Gets all the instances from the repository
      * @return FilmEntity[]
      */
     public function getAll();
@@ -21,10 +21,23 @@ interface FilmRepositoryInterface
      */
     public function getOneById(int $id);
 
-
     /**
-     * Add all passed instances to the repository
+     * Add all the passed instances to the repository
      * @param array $entities
      */
     public function saveMany(array $entities);
+
+    /**
+     * Gets all the instances ids by the specified person id
+     * @param int $id
+     * @return mixed
+     */
+    public function getAllFilmsIdsByPersonId(int $id);
+
+    /**
+     * Removes all the instances by the specified person id
+     * @param int $id
+     * @return mixed
+     */
+    public function removeAllByPersonId(int $id);
 }

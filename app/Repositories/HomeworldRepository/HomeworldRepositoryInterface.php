@@ -21,6 +21,19 @@ interface HomeworldRepositoryInterface
      */
     public function getIdByName(string $name);
 
+    /**
+     * Gets the only instance by its name
+     * @param string $name
+     * @return HomeworldEntity
+     */
+    public function getOneByName(string $name);
+
+    /**
+     * Gets the only instance by its id
+     * @param int $id
+     * @return mixed
+     */
+    public function getOneById(int $id);
 
     /**
      * Add all passed instances to the repository
