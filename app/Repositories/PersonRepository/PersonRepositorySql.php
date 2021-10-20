@@ -91,9 +91,8 @@ class PersonRepositorySql implements PersonRepositoryInterface
         int $homeworld_id, array $relatedEntities = [], $perPage = null)
     {
         $temp = DB::table($this->tableName)
-            ->leftjoin('homeworlds','people.homeworld_id', '=', 'homeworlds.id')
-            ->leftJoin('images','images.person_id', '=', 'people.id')
-            ->select('people.*', 'homeworlds.id as homeworld_id', 'homeworlds.name as homeworld')
+            ->leftJoin('homeworlds','people.homeworld_id', '=', 'homeworlds.id')
+            ->select('people.*', 'homeworlds.name as homeworld')
             ->where('homeworld_id', $homeworld_id)
             ->paginate($perPage);
         $updated = $temp->getCollection()
