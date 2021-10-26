@@ -1,33 +1,39 @@
 <h2>About the project</h2>
 This project gets data from external API and reproduce it like a database with GUI and its own API microservice. 
 
-The project uses the following microservices:
+The project implements the following microservices:
 <ul>
-<li>Api service based on Laravel framework
-<li>User authentication based on VueJS framework
+<li>Database service based on Laravel framework 8.0
+<li>Api service based on Laravel framework 8.0
 </ul>
 <br>
 <h2>Requirements</h2>
 <ul>
 <li> PHP:7.4+, MySQL:5.7+
-<li> Composer 2.08
-<li> Node 14.9.0
-<li> npm 7.19.1
+<li> Composer latest
+<li> Node latest
+<li> npm latest
 </ul>
 <br>
 
-<h2>Installation for local development</h2>
+<h2>Deployment for local development</h2>
 <ul>
-<li>Create database named Laravel in your MySQL
-<li>Clone this repository to your local machine
-<li>Go to the root directory of the project
-<li>Create .env file and edit it according to your configuration
-<li>Run php artisan key:generate
-<li>Run composer install
-<li>Run nmp install && run dev
-<li>Run php artisan migrate --seed
-<li>Run php artisan serve
-<li>Run in a separate terminal: php artisan queue:work
+<li>Create MySQL database named laravel
+<li>Make a project folder on your local machine
+<li>Clone this repository to the project folder
+<li>Go to the project folder
+<li>Run <code>cp .env.example .env</code>  and edit <code>.env</code> file according to your configuration:
+<ul>
+<li>Set environment in DB SECTION
+<li>Set environment in MAIL SECTION 
+</ul>
+<li>Run <code>php artisan key:generate</code>
+<li>Run <code>composer install</code>
+<li>Run <code>nmp install && run dev</code>
+<li>Run <code>php artisan migrate --seed</code>
+<li>Run <code>php artisan storage:link</code>
+<li>Run <code>php artisan serve</code>
+<li>Run <code>php artisan queue:work</code> in a separate terminal 
 </ul>
 <br>
 
