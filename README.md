@@ -18,7 +18,6 @@ The project implements the following microservices:
 
 <h2>Deployment for local development</h2>
 <ul>
-<li>Create MySQL database named laravel
 <li>Make a project folder on your local machine
 <li>Clone this repository to the project folder
 <li>Go to the project folder
@@ -27,6 +26,7 @@ The project implements the following microservices:
 <li>Set environment in DB SECTION
 <li>Set environment in MAIL SECTION 
 </ul>
+<li>Create MySQL database named like DB_DATABASE value in .env file
 <li>Run <code>php artisan key:generate</code>
 <li>Run <code>composer install</code>
 <li>Run <code>nmp install && run dev</code>
